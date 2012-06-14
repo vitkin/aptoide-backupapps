@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/scroll_view"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:scrollbars="vertical">
+	<LinearLayout 
+		android:layout_width="fill_parent"
+		android:orientation="vertical"
+		android:layout_height="fill_parent" >
+		<TextView android:id="@+id/form_intro"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/form_intro"
+			android:textSize="10pt"/>
+		<EditText android:id="@+id/form_name"
+			android:layout_height="wrap_content"
+			android:hint="@string/form_name"
+			android:inputType="text"
+			android:layout_width="fill_parent" 
+			android:layout_marginLeft="25sp"
+			android:layout_marginRight="25sp"
+			android:textSize="8pt"/>
+		<Spinner android:id="@+id/form_rating"
+			android:layout_height="wrap_content"
+			android:prompt="@string/form_rating"
+			android:layout_width="fill_parent" 
+			android:layout_marginLeft="25sp"
+			android:layout_marginRight="25sp"
+			android:entries="@array/rating_array"
+			android:textSize="8pt"/>
+		<TextView android:id="@+id/form_separator"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/form_separator"
+			android:textSize="2pt"/>
+		<Spinner android:id="@+id/form_category"
+			android:layout_height="wrap_content"
+			android:prompt="@string/form_category"
+			android:layout_width="fill_parent"  
+			android:layout_marginLeft="25sp"
+			android:layout_marginRight="25sp"
+			android:entries="@array/category_array"
+			android:textSize="8pt"/>		
+		<EditText android:id="@+id/form_desc"
+			android:layout_height="wrap_content"
+			android:hint="@string/form_desc"
+			android:inputType="text"
+			android:layout_width="fill_parent" 
+			android:layout_marginLeft="25sp"
+			android:layout_marginRight="25sp"
+			android:textSize="8pt"/>
+		<EditText android:id="@+id/form_phone"
+			android:layout_height="wrap_content"
+			android:hint="@string/form_phone"
+			android:inputType="phone"
+			android:layout_width="fill_parent" 
+			android:layout_marginLeft="25sp"
+			android:layout_marginRight="25sp"
+			android:textSize="8pt"/>
+		<EditText android:id="@+id/form_e_mail"
+			android:layout_height="wrap_content"
+			android:hint="@string/form_e_mail"
+			android:inputType="textEmailAddress"
+			android:layout_width="fill_parent" 
+			android:layout_marginLeft="25sp"
+			android:layout_marginRight="25sp"
+			android:textSize="8pt"/>
+		<EditText android:id="@+id/form_url"
+			android:layout_height="wrap_content"
+			android:hint="@string/form_url"
+			android:inputType="textUri"
+			android:layout_width="fill_parent" 
+			android:layout_marginLeft="25sp"
+			android:layout_marginRight="25sp"
+			android:textSize="8pt"/>
+		<LinearLayout android:id="@+id/form_buttons" 
+			android:layout_height="wrap_content" 
+			android:layout_width="fill_parent" 
+			android:layout_marginLeft="25sp"
+			android:layout_marginRight="25sp"
+			android:layout_alignParentBottom="true">
+			<Button android:id="@+id/form_back"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:textSize="8pt"
+				android:layout_marginRight="17pt" 
+				android:text="@string/back"/>
+			<Button android:id="@+id/form_submit"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:textSize="8pt"
+				android:layout_marginLeft="17pt"
+				android:text="@string/submit"/>
+		</LinearLayout>
+	</LinearLayout>  
+</ScrollView>
+<!-- 
+ * Aptoide Uploader		uploads android apps to yout Bazaar repository
+ * Copyright (C) 20011  Duarte Silveira
+ * duarte.silveira@caixamagica.pt
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->

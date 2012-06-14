@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aptoide Apps Backup</string>
+    
+    <string name="wifi">WiFi</string>
+    <string name="ethernet">Ethernet</string>
+    <string name="wimax">WiMax</string>
+    <string name="mobile">Mobile</string>
+    
+    <string name="apk">Apk</string>
+    
+    <string name="kB">kB</string>
+    
+    <string-array name="age_entries">
+        <item>@string/no_filter</item>
+        <item>@string/mature</item>
+        <item>@string/teen</item>
+        <item>@string/pre_teen</item>
+    </string-array>
+    
+    <string-array name="category_array">  
+		<item>@string/c1</item>
+		<item>@string/c2</item>
+		<item>@string/c3</item>
+		<item>@string/c4</item>
+		<item>@string/c5</item>
+		<item>@string/c6</item>
+		<item>@string/c7</item>
+		<item>@string/c8</item>
+		<item>@string/c9</item>
+		<item>@string/c10</item>
+		<item>@string/c11</item>
+		<item>@string/c12</item>
+		<item>@string/c13</item>
+		<item>@string/c14</item>
+		<item>@string/c15</item>
+		<item>@string/c16</item>
+		<item>@string/c17</item>
+		<item>@string/c18</item>
+		<item>@string/c19</item>
+		<item>@string/c20</item>
+		<item>@string/c21</item>
+		<item>@string/c22</item>
+	</string-array>
+	
+    <string-array name="rating_array">  
+		<item>@string/r1</item>
+		<item>@string/r2</item>
+		<item>@string/r3</item>
+		<item>@string/r4</item>
+	</string-array>
+    
+</resources>
