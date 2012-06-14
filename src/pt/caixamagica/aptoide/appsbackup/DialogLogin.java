@@ -4,6 +4,7 @@ import pt.caixamagica.aptoide.appsbackup.R;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewServerLogin;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,6 +16,8 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.text.InputType;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -44,6 +47,8 @@ public class DialogLogin extends Dialog{
 
 	private boolean success;	
 	private LoginState loginState;
+	
+	private ViewServerLogin serverLogin;
 	
 	private InvoqueType invoqueType;
 	
@@ -87,7 +92,7 @@ public class DialogLogin extends Dialog{
 		
 		
 		
-		this.setTitle(this.getContext().getString(R.string.bazaar_login));
+		this.setTitle(R.string.bazaar_login);
 		
 		username = ((EditText)findViewById(R.id.username));
 		password = ((EditText)findViewById(R.id.password));
@@ -209,35 +214,7 @@ public class DialogLogin extends Dialog{
 					Toast.makeText(DialogLogin.this.getContext(), DialogLogin.this.getContext().getString(R.string.no_private_repo_password), Toast.LENGTH_SHORT).show();
 				}else{
 					
-					//TODO ask for optional name
-					
-					ProgressDialog createAccountProgress = ProgressDialog.show(getContext(), getContext().getString(R.string.new_account), getContext().getString(R.string.please_wait),true);
-					createAccountProgress.setIcon(R.drawable.ic_menu_add);
-					createAccountProgress.setCancelable(true);
-					createAccountProgress.setOnDismissListener(new OnDismissListener(){
-						public void onDismiss(DialogInterface arg0) {
-								if(success){
-									dismiss();
-									Log.d("Aptoide-DialogLogin", "New User Created");
-								}else{
-//										switch (Response) {
-//										case bad_login:
-//										Toast.makeText(getContext(), DialogLogin.this.getContext().getString(R.string.bad_login), Toast.LENGTH_LONG).show();
-//											break;
-//
-//										default:
-//											break;
-//										}
-									
-								}
-								
-//								}else{
-//									Toast.makeText(getContext(), LoginDialog.this.getContext().getString(R.string.unabletoexecute), Toast.LENGTH_LONG).show();
-//								}
-						}
-					});
-					
-					ViewServerLogin serverLogin =  new ViewServerLogin(username.getText().toString(), password.getText().toString());
+					serverLogin =  new ViewServerLogin(username.getText().toString(), password.getText().toString());
 					if(serverLogin.getPasshash() == null){
 						serverLogin =  new ViewServerLogin(username.getText().toString(), password.getText().toString());
 					}
@@ -245,10 +222,8 @@ public class DialogLogin extends Dialog{
 					if(privt.isChecked()){
 						serverLogin.setRepoPrivate(priv_username.getText().toString(), priv_password.getText().toString());
 					}
-
-					Log.d("Aptoide-DialogLogin", "Creating new acocunt with login: "+serverLogin);
-					new CreateAccount(getContext(), createAccountProgress, serverLogin).execute();
 					
+					(new DialogName(DialogLogin.this.getContext())).show();
 				}
 			}
 		});
@@ -271,6 +246,48 @@ public class DialogLogin extends Dialog{
 				}
 			}
 		}
+	}
+	
+	public class DialogName extends Dialog{
+
+		public DialogName(Context context) {
+			super(context);
+		}
+		
+		@Override
+		protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.dialog_add_nickname);
+			
+			this.setTitle(R.string.name);
+			
+			final EditText nameBox = (EditText) findViewById(R.id.nickname);
+			
+			((Button)findViewById(R.id.submit)).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					
+					ProgressDialog createAccountProgress = ProgressDialog.show(getContext(), getContext().getString(R.string.new_account), getContext().getString(R.string.please_wait),true);
+					createAccountProgress.setIcon(R.drawable.ic_menu_add);
+					createAccountProgress.setCancelable(true);
+					createAccountProgress.setOnDismissListener(new OnDismissListener(){
+						public void onDismiss(DialogInterface arg0) {
+								if(success){
+									dismiss();
+									Log.d("Aptoide-DialogLogin", "New User Created");
+								}else{
+									
+								}
+						}
+					});
+					
+					serverLogin.setNickname(nameBox.getText().toString());
+					Log.d("Aptoide-DialogLogin", "Creating new acocunt with login: "+serverLogin);
+					new CreateAccount(getContext(), createAccountProgress, serverLogin).execute();
+				}
+			});
+		}
+		
 	}
 
 	

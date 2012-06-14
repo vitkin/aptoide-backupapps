@@ -32,6 +32,7 @@
     <string name="set_new_login">New login</string>
     <string name="set_new_login_sum">Set a new login</string>
     <string name="username">Username</string>
+    <string name="username_email">Username (email)</string>
     <string name="password">Password</string>
     <string name="show_password">Show password</string>  
     <string name="no_username">No Username</string>
@@ -168,6 +169,9 @@
     <string name="download_failed">Download failed</string>
     
     <string name="new_account">New Account</string>
+    <string name="set_account_name">Do you wish to enter a Name for the account\'s user?</string>
+    <string name="name">Name</string>
+    <string name="optional_name">Optional name</string>
     
     <string name="login_intro">Welcome!\nYou may insert your Bazaar username, password and repository now!</string>
     <string name="repository">Repository</string>

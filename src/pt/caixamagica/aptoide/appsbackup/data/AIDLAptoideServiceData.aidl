@@ -109,6 +109,7 @@ interface AIDLAptoideServiceData {
 	ViewDisplayAppVersionExtras callGetAppExtras(in int appFullHashid);
 	ViewDisplayListComments callGetVersionComments(in int appHashid);
 	
+	int callServerLoginCreate(in ViewServerLogin serverLogin);
 	String callGetServerToken();
 	int callServerLogin(in ViewServerLogin serverLogin);
 	ViewServerLogin callGetServerLogin();

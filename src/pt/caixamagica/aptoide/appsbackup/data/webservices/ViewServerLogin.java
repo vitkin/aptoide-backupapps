@@ -44,6 +44,7 @@ public class ViewServerLogin implements Parcelable{
 	private String priv_username;
 	private String priv_password;
 	
+	private String nickname;
 
 	/**
 	 * ViewLogin Constructor
@@ -102,6 +103,16 @@ public class ViewServerLogin implements Parcelable{
 	public String getPrivPassword(){
 		return this.priv_password;
 	}
+	
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	
 
 	@Override
 	public String toString() {
@@ -149,7 +160,7 @@ public class ViewServerLogin implements Parcelable{
 		out.writeValue(this.repoIsPrivate);
 		out.writeString(this.priv_username);
 		out.writeString(this.priv_password);
-		
+		out.writeString(this.nickname);
 	}
 
 	public void readFromParcel(Parcel in) {
@@ -159,6 +170,7 @@ public class ViewServerLogin implements Parcelable{
 		this.repoIsPrivate = (Boolean) in.readValue(null);
 		this.priv_username = in.readString();
 		this.priv_password = in.readString();
+		this.nickname = in.readString();
 	}
 	
 }

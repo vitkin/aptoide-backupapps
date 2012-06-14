@@ -394,6 +394,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		}
 
 		@Override
+		public int callServerLoginCreate(ViewServerLogin serverLogin) throws RemoteException {
+			return serverLoginCreate(serverLogin);
+		}
+
+		@Override
 		public String callGetServerToken() throws RemoteException {
 			return getServerToken();
 		}
@@ -2065,6 +2070,10 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	
 	public ViewDisplayListComments getAppComments(int appFullHashid){
 		return appInfoComments.remove(Integer.valueOf(appFullHashid));
+	}
+	
+	public int serverLoginCreate(ViewServerLogin serverLogin) {
+		return 0;
 	}
 	
 
