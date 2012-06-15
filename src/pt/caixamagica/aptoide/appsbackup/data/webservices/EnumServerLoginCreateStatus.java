@@ -1,5 +1,5 @@
 /**
- * EnumServerLoginStatus,		part of aptoide
+ * EnumServerLogiCreatenStatus,		part of aptoide
  * Copyright (C) 2011  Duarte Silveira
  * duarte.silveira@caixamagica.pt
  *
@@ -21,21 +21,32 @@
 package pt.caixamagica.aptoide.appsbackup.data.webservices;
 
 /**
- * EnumServerLoginStatus, typeSafes Server Login's Status in Aptoide
+ * EnumServerLoginCreateStatus, typeSafes Server Login's Creation Status in Aptoide
  * 
  * @author dsilveira
  * @since 3.0
  *
  */
-public enum EnumServerLoginStatus {
+public enum EnumServerLoginCreateStatus {
 	SUCCESS,
 	REPO_SERVICE_UNAVAILABLE,
-	LOGIN_SERVICE_UNAVAILABLE,
-	BAD_LOGIN,
+	LOGIN_CREATE_SERVICE_UNAVAILABLE,
+	USERNAME_NOT_PROPER_EMAIL,
+	BAD_PASSWORD_HASH,
+	BAD_HMAC,
+	BAD_USER_AGENT,
+	USERNAME_ALREADY_REGISTERED,
+	MISSING_PARAMETER,
+	UNKNOWN_USERNAME,				// on nickname update
+	BAD_LOGIN, 						// on nickname update
+	BAD_REPO_NAME,					
+	REPO_REQUIRES_AUTHENTICATION,
+	REPO_ALREADY_EXISTS,
 	REPO_NOT_FROM_DEVELOPPER,
-	BAD_REPO_PRIVACY_LOGIN;
+	BAD_REPO_PRIVACY_LOGIN,
+	SERVER_ERROR;
 	
-	public static EnumServerLoginStatus reverseOrdinal(int ordinal){
+	public static EnumServerLoginCreateStatus reverseOrdinal(int ordinal){
 		return values()[ordinal];
 	}
 }

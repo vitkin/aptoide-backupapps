@@ -101,6 +101,7 @@ public class Constants {
 	public static final String URI_FORMAT_COMMENTS_WS = "http://www.bazaarandroid.com/webservices/listApkComments/%1$s/apphashid/%2$s/xml";
 	public static final String URI_ADD_COMMENT_POST_WS = "http://www.bazaarandroid.com/webservices/addApkComment";
 	public static final String URI_UPLOAD_WS = "http://www.bazaarandroid.com/webservices/uploadAppToRepo";
+	public static final String URI_LOGIN_CREATE_WS = "http://www.bazaarandroid.com/webservices/createUser";
 	
 	public static final String URI_LATEST_VERSION_XML = "http://aptoide.com/latest_version_appsbackup.xml";
 	public static final String FILE_LATEST_VERSION_INFO = PATH_CACHE + "latestVersionInfo.xml";

@@ -28,11 +28,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
@@ -46,6 +48,7 @@ import pt.caixamagica.aptoide.appsbackup.data.AptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.ViewClientStatistics;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewLogin;
 import pt.caixamagica.aptoide.appsbackup.data.util.Constants;
+import pt.caixamagica.aptoide.appsbackup.data.util.Security;
 import pt.caixamagica.aptoide.appsbackup.debug.exceptions.UnsuccessfullSubmitException;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -181,6 +184,110 @@ public class ManagerUploads {
 
 		Log.d("ManagerDownloads", "isPermittedConnectionAvailable: "+connectionAvailable+"  permissions: "+permissions);
 		return connectionAvailable;
+	}
+	
+	
+	
+	
+	public String calcHmac(ViewServerLogin serverLogin) throws InvalidKeyException, IllegalStateException, UnsupportedEncodingException, NoSuchAlgorithmException{
+		StringBuilder hmacMessage = new StringBuilder(serverLogin.getUsername()+serverLogin.getPasshash()+serverLogin.getRepoName());
+
+		if(serverLogin.isRepoPrivate()){
+			hmacMessage.append("true"+serverLogin.getPrivUsername()+serverLogin.getPrivPassword());
+		}
+		
+//		if(serverLogin.isUpdate()){
+//			hmac_message.append("true");
+//		}
+
+		return Security.computeHmacSha1(hmacMessage.toString(), "bazaar_hmac");
+
+	}
+	
+	
+	public EnumServerLoginCreateStatus loginCreate(ViewServerLogin serverLogin){
+		EnumServerLoginCreateStatus status = EnumServerLoginCreateStatus.LOGIN_CREATE_SERVICE_UNAVAILABLE;
+
+		try {
+			URL endpoint = new URL(Constants.URI_LOGIN_CREATE_WS);
+			HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection(); //Careful with UnknownHostException. Throws MalformedURLException, IOException
+			
+			connection.setRequestMethod("POST");
+			connection.setRequestProperty("Accept", "application/xml");
+			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+//			connection.setRequestProperty("User-Agent", getUserAgentString());
+
+			//Variable definition
+			StringBuilder postArguments = new StringBuilder();
+			postArguments.append(URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(serverLogin.getUsername(), "UTF-8"));
+			postArguments.append("&"+URLEncoder.encode("passhash", "UTF-8") + "=" + URLEncoder.encode(serverLogin.getPasshash(), "UTF-8"));
+			
+			if(serverLogin.getRepoName() != null && !serverLogin.getRepoName().equals("")){
+				postArguments.append("&"+URLEncoder.encode("repo", "UTF-8") + "=" + URLEncoder.encode(serverLogin.getRepoName(), "UTF-8"));
+			}
+
+			if(serverLogin.getNickname() != null && !serverLogin.getNickname().equals("")){
+				postArguments.append("&"+URLEncoder.encode("name", "UTF-8") + "=" + URLEncoder.encode(serverLogin.getNickname(), "UTF-8"));
+			}
+			if(serverLogin.isRepoPrivate()){
+				postArguments.append("&"+URLEncoder.encode("privacy", "UTF-8") + "=" + URLEncoder.encode("true", "UTF-8"));
+				postArguments.append("&"+URLEncoder.encode("privacy_user", "UTF-8") + "=" + URLEncoder.encode(serverLogin.getPrivUsername(), "UTF-8"));
+				postArguments.append("&"+URLEncoder.encode("privacy_pass", "UTF-8") + "=" + URLEncoder.encode(serverLogin.getPrivPassword(), "UTF-8"));
+			}else{
+//				postArguments.append("&"+URLEncoder.encode("privacy", "UTF-8") + "=" + URLEncoder.encode("false", "UTF-8"));				
+			}
+
+//			postArguments.append("&"+URLEncoder.encode("update", "UTF-8") + "=" + URLEncoder.encode(serverLogin., "UTF-8"));
+
+			
+			
+			try {
+				postArguments.append("&"+URLEncoder.encode("hmac", "UTF-8") + "=" + URLEncoder.encode(calcHmac(serverLogin), "UTF-8"));
+			} catch (Exception e) {
+				e.printStackTrace();
+				status = EnumServerLoginCreateStatus.BAD_HMAC;
+				return status;
+			} 
+			
+			postArguments.append("&"+URLEncoder.encode("mode", "UTF-8") + "=" + URLEncoder.encode("xml", "UTF-8"));
+
+
+			connection.setDoOutput(true);
+			connection.setDoInput(true);
+
+
+			OutputStreamWriter output = new OutputStreamWriter(connection.getOutputStream());
+			output.write(postArguments.toString());
+			output.flush();
+
+			status = serviceData.getManagerXml().dom.parseServerLoginCreateReturn(connection);
+			
+			if(status.equals(EnumServerLoginCreateStatus.SUCCESS)){
+				EnumServerLoginStatus loginStatus = login(serverLogin);
+				if(loginStatus.equals(EnumServerLoginStatus.SUCCESS)){
+//			        serviceData.getManagerPreferences().setServerLogin(new ViewLogin(serverLogin.getUsername(), serverLogin.getPasshash()));
+				}else{
+					status = EnumServerLoginCreateStatus.SERVER_ERROR;
+				}
+		    }
+			
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		
+		return status;
+		
 	}
 	
 	

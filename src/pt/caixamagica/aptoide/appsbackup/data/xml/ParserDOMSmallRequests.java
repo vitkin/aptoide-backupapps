@@ -40,6 +40,7 @@ import org.xml.sax.SAXException;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewAppDownloadInfo;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerAddAppVersionCommentStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerAddAppVersionLikeStatus;
+import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginCreateStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerUploadApkStatus;
@@ -61,6 +62,63 @@ public class ParserDOMSmallRequests{
 		
 	public ParserDOMSmallRequests(ManagerXml managerXml){
 		this.managerXml = managerXml;
+	}
+	
+	public EnumServerLoginCreateStatus parseServerLoginCreateReturn(HttpURLConnection connection) throws ParserConfigurationException, SAXException, IOException{
+		EnumServerLoginCreateStatus status = EnumServerLoginCreateStatus.LOGIN_CREATE_SERVICE_UNAVAILABLE;
+
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	
+		DocumentBuilder builder = factory.newDocumentBuilder();
+        Document dom = builder.parse( connection.getInputStream() );
+        dom.getDocumentElement().normalize();
+        NodeList receivedStatusList = dom.getElementsByTagName(EnumXmlTagsServerLogin.status.toString());
+        if(receivedStatusList.getLength()>0){
+        	Node receivedStatus = receivedStatusList.item(0);
+        	Log.d("Aptoide-ManagerUploads login create", receivedStatus.getNodeName());
+        	Log.d("Aptoide-ManagerUploads login create", receivedStatus.getFirstChild().getNodeValue().trim());
+        	if(receivedStatus.getFirstChild().getNodeValue().trim().equals("OK")){
+        		status = EnumServerLoginCreateStatus.SUCCESS;
+        	}else{
+        		NodeList receivedErrorsList = dom.getElementsByTagName(EnumXmlTagsServerLogin.entry.toString());
+    	        if(receivedErrorsList.getLength()>0){
+    	        	Node receivedErrors = receivedErrorsList.item(0);
+    	        	String error = receivedErrors.getFirstChild().getNodeValue();
+    	        	Log.d("Aptoide-ManagerUploads login create", receivedErrors.getNodeName());
+    	        	Log.d("Aptoide-ManagerUploads login create", receivedErrors.getFirstChild().getNodeValue().trim());
+    	        	if(error.equals("Missing email parameter")
+    	        		|| error.equals("Missing passhash parameter")
+    	        		|| error.equals("Missing hmac parameter")
+    	        		|| error.equals("Missing name parameter")
+    	        		|| error.equals("Missing user-agent")){
+    	        		status = EnumServerLoginCreateStatus.MISSING_PARAMETER;
+    	        	}else if(error.equals("Invalid email format")
+    	        		|| error.equals("Invalid passhash format")){
+    	        		status = EnumServerLoginCreateStatus.BAD_LOGIN;
+    	        	}else if(error.equals("Invalid hmac format")
+    	        		|| error.equals("HMAC Authentication failure")){
+    	        		status = EnumServerLoginCreateStatus.BAD_HMAC;
+    	        	}else if(error.equals("The email provided already exists in the system")){
+    	        		status = EnumServerLoginCreateStatus.USERNAME_ALREADY_REGISTERED;
+    	        	}else if(error.equals("The email provided does not exist in the system yet")){
+    	        		status = EnumServerLoginCreateStatus.UNKNOWN_USERNAME;
+    	        	}else if(error.equals("User authentication failed")){
+    	        		status = EnumServerLoginCreateStatus.BAD_LOGIN;
+    	        	}else if(error.equals("That store name is invalid, you can only use letters, numbers or dashes.")
+    	        		|| error.equals("That store name must be at least 3 characters long.")){
+    	        		status = EnumServerLoginCreateStatus.BAD_REPO_NAME;
+    	        	}else if(error.equals("You have to enter the username and password of the store.")){
+    	        		status = EnumServerLoginCreateStatus.REPO_REQUIRES_AUTHENTICATION;
+    	        	}else if(error.equals("That store name is already taken, you need to choose another one.")){
+    	        		status = EnumServerLoginCreateStatus.REPO_ALREADY_EXISTS;
+    	        	}else if(error.equals("The store could not be created. Please try again.")){
+    	        		status = EnumServerLoginCreateStatus.SERVER_ERROR;
+    	        	}
+    	        }
+        	}
+        }
+        
+    return status;
 	}
 	
 	public EnumServerLoginStatus parseServerLoginReturn(HttpURLConnection connection) throws ParserConfigurationException, SAXException, IOException{

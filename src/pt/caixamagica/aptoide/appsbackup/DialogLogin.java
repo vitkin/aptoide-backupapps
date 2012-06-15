@@ -1,6 +1,7 @@
 package pt.caixamagica.aptoide.appsbackup;
 
 import pt.caixamagica.aptoide.appsbackup.R;
+import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginCreateStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewServerLogin;
 
@@ -331,7 +332,7 @@ public class DialogLogin extends Dialog{
 		
 	}
 	
-	public class CreateAccount extends AsyncTask<Void, Void, EnumServerLoginStatus>{
+	public class CreateAccount extends AsyncTask<Void, Void, EnumServerLoginCreateStatus>{
 		
 		private Context context;
 		private ProgressDialog dialogProgress;
@@ -344,19 +345,19 @@ public class DialogLogin extends Dialog{
 		}
 		
 		@Override
-		protected EnumServerLoginStatus doInBackground(Void... args) {
+		protected EnumServerLoginCreateStatus doInBackground(Void... args) {
 			try {
-				return EnumServerLoginStatus.reverseOrdinal(serviceDataCaller.callServerLoginCreate(serverLogin));
+				return EnumServerLoginCreateStatus.reverseOrdinal(serviceDataCaller.callServerLoginCreate(serverLogin));
 			} catch (RemoteException e) {
 				e.printStackTrace();
 				return null;
 			}
 		}
 		
-		protected void onPostExecute(EnumServerLoginStatus status) {
+		protected void onPostExecute(EnumServerLoginCreateStatus status) {
 			if(status!=null){
 
-				if(status.equals(EnumServerLoginStatus.SUCCESS)){
+				if(status.equals(EnumServerLoginCreateStatus.SUCCESS)){
 					success = true;
 				}else{
 					success = false;
