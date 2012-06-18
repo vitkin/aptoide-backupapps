@@ -24,7 +24,7 @@ public class FixedTabsAdapter implements TabsAdapter {
 		
 		LayoutInflater inflater = mContext.getLayoutInflater();
 		tab = (ViewPagerTabButton) inflater.inflate(R.layout.tab_fixed, null);
-		tab.setText(EnumAppsLists.reverseOrdinal(position).toString());
+		tab.setText(EnumAppsLists.reverseOrdinal(position).toString());	//TODO i18n this
 		
 		return tab;
 	}
