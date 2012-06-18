@@ -110,7 +110,7 @@ public class DialogLogin extends Dialog{
         });
 		
 		repository = ((EditText)findViewById(R.id.repository));
-		privt = (CheckBox) findViewById(R.id.privt);
+		privt = (CheckBox) findViewById(R.id.privt_store);
 		privt.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if(isChecked){
@@ -230,7 +230,24 @@ public class DialogLogin extends Dialog{
 						serverLogin.setRepoPrivate(priv_username.getText().toString(), priv_password.getText().toString());
 					}
 					
-					(new DialogName(DialogLogin.this.getContext())).show();
+//					(new DialogName(DialogLogin.this.getContext())).show();
+					
+					ProgressDialog createAccountProgress = ProgressDialog.show(getContext(), getContext().getString(R.string.new_account), getContext().getString(R.string.please_wait),true);
+					createAccountProgress.setIcon(R.drawable.ic_menu_add);
+					createAccountProgress.setCancelable(true);
+					createAccountProgress.setOnDismissListener(new OnDismissListener(){
+						public void onDismiss(DialogInterface arg0) {
+								if(success){
+									dismiss();
+									Log.d("Aptoide-DialogLogin", "New User Created");
+								}else{
+									
+								}
+						}
+					});
+					
+					Log.d("Aptoide-DialogLogin", "Creating new acocunt with login: "+serverLogin);
+					new CreateAccount(getContext(), createAccountProgress, serverLogin).execute();
 				}
 			}
 		});

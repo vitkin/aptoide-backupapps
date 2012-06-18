@@ -173,7 +173,7 @@
     <string name="name">Name</string>
     <string name="optional_name">Optional name</string>
     
-    <string name="login_intro">Welcome!\nYou may insert your Bazaar username, password and store now:</string>
+    <string name="login_intro">You may now enter your Bazaar username, password and store:</string>
     <string name="repository">Store</string>
     <string name="privacy_username">Store Username</string>
     <string name="privacy_password">Store Password</string>

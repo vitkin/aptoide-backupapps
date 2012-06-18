@@ -99,6 +99,7 @@ public class Constants {
 	public static final String URI_FORMAT_ADD_LIKE_WS = "http://www.bazaarandroid.com/webservices/addApkLike/%1$s/%2$s/apphashid/%3$s/like/xml";
 	public static final String URI_FORMAT_ADD_DISLIKE_WS = "http://www.bazaarandroid.com/webservices/addApkLike/%1$s/%2$s/apphashid/%3$s/dontlike/xml";
 	public static final String URI_FORMAT_COMMENTS_WS = "http://www.bazaarandroid.com/webservices/listApkComments/%1$s/apphashid/%2$s/xml";
+	public static final String URI_FORMAT_CHECK_REPO_WS = "http://www.bazaarandroid.com/webservices/listRepositoryChange/%1$s//xml";
 	public static final String URI_ADD_COMMENT_POST_WS = "http://www.bazaarandroid.com/webservices/addApkComment";
 	public static final String URI_UPLOAD_WS = "http://www.bazaarandroid.com/webservices/uploadAppToRepo";
 	public static final String URI_LOGIN_CREATE_WS = "http://www.bazaarandroid.com/webservices/createUser";
