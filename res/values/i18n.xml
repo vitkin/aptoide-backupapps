@@ -23,7 +23,7 @@
     <string name="downloading_repo">Downloading store index</string>
     
 	<!-- this string name has to be misspelled because private is a reserved word -->
-    <string name="privt">Private store</string>
+    <string name="privt_store">Private store</string>
     <string name="bazaar_login">Bazaar login</string>
     <string name="logging_in">Logging in</string>
     <string name="please_wait">Please wait</string>
@@ -173,7 +173,7 @@
     <string name="name">Name</string>
     <string name="optional_name">Optional name</string>
     
-    <string name="login_intro">Insert your Bazaar username, password and store:</string>
+    <string name="login_intro">Welcome!\nYou may insert your Bazaar username, password and store now:</string>
     <string name="repository">Store</string>
     <string name="privacy_username">Store Username</string>
     <string name="privacy_password">Store Password</string>

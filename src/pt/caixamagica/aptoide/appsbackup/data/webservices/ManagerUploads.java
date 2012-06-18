@@ -194,6 +194,8 @@ public class ManagerUploads {
 
 		if(serverLogin.isRepoPrivate()){
 			hmacMessage.append("true"+serverLogin.getPrivUsername()+serverLogin.getPrivPassword());
+		}else{
+			hmacMessage.append("false");
 		}
 		
 //		if(serverLogin.isUpdate()){
@@ -235,7 +237,7 @@ public class ManagerUploads {
 				postArguments.append("&"+URLEncoder.encode("privacy_user", "UTF-8") + "=" + URLEncoder.encode(serverLogin.getPrivUsername(), "UTF-8"));
 				postArguments.append("&"+URLEncoder.encode("privacy_pass", "UTF-8") + "=" + URLEncoder.encode(serverLogin.getPrivPassword(), "UTF-8"));
 			}else{
-//				postArguments.append("&"+URLEncoder.encode("privacy", "UTF-8") + "=" + URLEncoder.encode("false", "UTF-8"));				
+				postArguments.append("&"+URLEncoder.encode("privacy", "UTF-8") + "=" + URLEncoder.encode("false", "UTF-8"));				
 			}
 
 //			postArguments.append("&"+URLEncoder.encode("update", "UTF-8") + "=" + URLEncoder.encode(serverLogin., "UTF-8"));

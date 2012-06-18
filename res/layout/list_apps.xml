@@ -12,76 +12,69 @@
         android:layout_weight="1"
         android:background="@drawable/border_background_normal"
         android:orientation="vertical" >
-
-        <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/loading"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp" >
-
-            <TextView
-                android:id="@+id/loading_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
-                android:text="@string/loading_apps"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#4f4f4f"
-                android:textSize="14sp" />
-
-            <ProgressBar
-                android:id="@+id/loading_bar"
-                style="@android:style/Widget.ProgressBar.Small.Inverse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_margin="10dp"
-                android:layout_toLeftOf="@+id/loading"
-                android:indeterminate="true"
-                android:visibility="visible" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/list_container"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/buttons"
-            android:layout_alignParentTop="true"
-            android:layout_below="@+id/loading"
-            android:orientation="vertical" >
-
-            <ListView
-                android:id="@android:id/list"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
-            </ListView>
-
-            <TextView
-                android:id="@android:id/empty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/no_apps"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="#4f4f4f"
-                android:textSize="14sp" />
-        </LinearLayout>
+		<RelativeLayout
+		    xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:id="@+id/loading"
+		    android:layout_width="fill_parent"
+	    	android:layout_height="wrap_content"
+		    android:padding="5dp" >
+		    <TextView
+	    	    android:id="@+id/loading_title"
+	        	android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+	    	    android:layout_marginTop="8dp"
+	        	android:text="@string/loading_apps"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textColor="#4f4f4f"
+	    	    android:textSize="14sp" />
+		    <ProgressBar
+		        android:id="@+id/loading_bar"
+	    	    style="@android:style/Widget.ProgressBar.Small.Inverse"
+	        	android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentTop="true"
+	    	    android:layout_margin="10dp"
+		        android:layout_toLeftOf="@+id/loading"
+		        android:indeterminate="true"
+	    	    android:visibility="visible" />
+		</RelativeLayout>
+		<LinearLayout
+		    android:id="@+id/list_container"
+        	android:layout_width="fill_parent"
+		    android:layout_alignParentTop="true"
+    	    android:layout_height="wrap_content"
+        	android:layout_below="@+id/loading"
+	        android:layout_above="@+id/buttons"
+    	    android:orientation="vertical" >	
+		    <ListView
+    		    android:id="@android:id/list"
+        		android:layout_width="fill_parent"
+	        	android:layout_height="wrap_content" />
+	    	<TextView
+    	    	android:id="@android:id/empty"
+	    	    android:layout_width="wrap_content"
+    	    	android:layout_height="wrap_content"
+	        	android:layout_gravity="center"
+		        android:text="@string/no_apps"
+    		    android:textAppearance="?android:attr/textAppearanceLarge"
+        		android:textColor="#4f4f4f"
+		        android:textSize="14sp" />
+    	</LinearLayout>
     </LinearLayout>
-
+    
     <LinearLayout
         android:id="@+id/buttons"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="2dp"
         android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/action"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+	    <Button
+	        android:id="@+id/action"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="bottom" />
     </LinearLayout>
-
+    
 </RelativeLayout>

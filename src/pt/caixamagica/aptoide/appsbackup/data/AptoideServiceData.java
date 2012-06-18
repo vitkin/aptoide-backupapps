@@ -2090,7 +2090,12 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 			EnumServerLoginStatus repoConnectionStatus;
 			ViewRepository repoInUse = null;
 			if(managerDatabase.anyReposInUse()){
-				repoInUse = managerDatabase.getRepoInUse();
+				try {
+					repoInUse = managerDatabase.getRepoInUse();
+				} catch (AptoideExceptionDatabase e) {
+					Log.d("AptoideAppsBakup-ServiceData", e.getMessage());
+					repoInUse = null;
+				}
 			}
 			if(repoInUse != null && (repoInUse.getUri().equals(serverLogin.getRepoUri()) 
 									&& repoInUse.getLogin().getUsername().equals(serverLogin.getPrivUsername())
@@ -2201,7 +2206,12 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 			EnumServerLoginStatus repoConnectionStatus;
 			ViewRepository repoInUse = null;
 			if(managerDatabase.anyReposInUse()){
-				repoInUse = managerDatabase.getRepoInUse();
+				try {
+					repoInUse = managerDatabase.getRepoInUse();
+				} catch (AptoideExceptionDatabase e) {
+					Log.d("AptoideAppsBakup-ServiceData", e.getMessage());
+					repoInUse = null;
+				}
 			}
 			if(repoInUse != null && (repoInUse.getUri().equals(serverLogin.getRepoUri()) 
 									&& repoInUse.getLogin().getUsername().equals(serverLogin.getPrivUsername())
