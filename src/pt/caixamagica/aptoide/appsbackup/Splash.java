@@ -47,7 +47,7 @@ public class Splash extends Activity {
             public void run() {
             	finish();
             }
-        }, 2000);
+        }, 500);
 		
 	}
 	

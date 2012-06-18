@@ -38,13 +38,13 @@ public class DialogLogin extends Dialog{
 	private EditText username;
 	private EditText password;
 //	private boolean isLoginSubmited;
-	private CheckBox showPass;
+//	private CheckBox showPass;
 	
 	private EditText repository;
 	private CheckBox privt;
 	private EditText priv_username;
 	private EditText priv_password;
-	private CheckBox priv_showPass;
+//	private CheckBox priv_showPass;
 
 	private boolean success;	
 	private LoginState loginState;
@@ -97,17 +97,17 @@ public class DialogLogin extends Dialog{
 		
 		username = ((EditText)findViewById(R.id.username));
 		password = ((EditText)findViewById(R.id.password));
-		showPass = (CheckBox) findViewById(R.id.show_password);
-		showPass.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                    password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                } else {
-                    password.setInputType(129);
-//                    password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD );
-                }
-            }
-        });
+//		showPass = (CheckBox) findViewById(R.id.show_password);
+//		showPass.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(isChecked) {
+//                    password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+//                } else {
+//                    password.setInputType(129);
+////                    password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD );
+//                }
+//            }
+//        });
 		
 		repository = ((EditText)findViewById(R.id.repository));
 		privt = (CheckBox) findViewById(R.id.privt);
@@ -116,11 +116,16 @@ public class DialogLogin extends Dialog{
 				if(isChecked){
 					priv_username.setEnabled(true);
 					priv_password.setEnabled(true);
-					priv_showPass.setEnabled(true);
+//					priv_showPass.setEnabled(true);
+					priv_username.setVisibility(View.VISIBLE);
+					priv_password.setVisibility(View.VISIBLE);
 				}else{
-					priv_username.setEnabled(false);
-					priv_password.setEnabled(false);
-					priv_showPass.setEnabled(false);
+//					priv_username.setEnabled(false);
+//					priv_password.setEnabled(false);
+//					priv_showPass.setEnabled(false);
+					
+					priv_username.setVisibility(View.GONE);
+					priv_password.setVisibility(View.GONE);
 				}
 			}
 		});
@@ -128,18 +133,18 @@ public class DialogLogin extends Dialog{
 		priv_username.setEnabled(false);
 		priv_password = ((EditText)findViewById(R.id.priv_password));
 		priv_password.setEnabled(false);
-		priv_showPass = (CheckBox) findViewById(R.id.priv_show_password);
-		priv_showPass.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked) {
-                	priv_password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                } else {
-                	priv_password.setInputType(129);
-//                    password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD );
-                }
-            }
-        });
-		priv_showPass.setEnabled(false);
+//		priv_showPass = (CheckBox) findViewById(R.id.priv_show_password);
+//		priv_showPass.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if(isChecked) {
+//                	priv_password.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+//                } else {
+//                	priv_password.setInputType(129);
+////                    password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD );
+//                }
+//            }
+//        });
+//		priv_showPass.setEnabled(false);
 		
 		
 		((Button)findViewById(R.id.login)).setOnClickListener(new View.OnClickListener(){

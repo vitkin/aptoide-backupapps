@@ -28,8 +28,8 @@ package pt.caixamagica.aptoide.appsbackup;
  *
  */
 public enum EnumAppsLists {
-	Installed,
-	Backup;
+	BACKUP,
+	RESTORE;
 	
 	public static EnumAppsLists reverseOrdinal(int ordinal){
 		return values()[ordinal];

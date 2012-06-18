@@ -582,11 +582,11 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //			emptyAvailableAppsList = LinearLayout.inflate(this, R.layout.list_apps_empty, appsListFlipper);
 			emptyAvailableAppsList = availableView.findViewById(android.R.id.empty);
 			emptyAvailableAppsList.setVisibility(View.GONE);
-			emptyAvailableAppsList.setTag(EnumAppsLists.Backup);
+			emptyAvailableAppsList.setTag(EnumAppsLists.RESTORE);
 //			emptyInstalledAppsList = LinearLayout.inflate(this, R.layout.list_apps_empty, appsListFlipper);
 			emptyInstalledAppsList = installedView.findViewById(android.R.id.empty);
 			emptyInstalledAppsList.setVisibility(View.GONE);
-			emptyInstalledAppsList.setTag(EnumAppsLists.Installed);
+			emptyInstalledAppsList.setTag(EnumAppsLists.BACKUP);
 //			emptyUpdatableAppsList = LinearLayout.inflate(this, R.layout.list_apps_empty, appsListFlipper);
 //			emptyUpdatableAppsList = updatableView.findViewById(android.R.id.empty);
 //			emptyUpdatableAppsList.setVisibility(View.GONE);
@@ -595,13 +595,13 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //			loadingCategoriesList = categoriesView.findViewById(R.id.loading);
 //			loadingAvailableAppsList = LinearLayout.inflate(this, R.layout.list_loading, appsListFlipper);
 			loadingAvailableAppsList = availableView.findViewById(R.id.loading);
-			loadingAvailableAppsList.setTag(EnumAppsLists.Backup);
+			loadingAvailableAppsList.setTag(EnumAppsLists.RESTORE);
 			loadingAvailableAppsProgress = (ProgressBar) loadingAvailableAppsList.findViewById(R.id.loading_bar);
 			loadingAvailableAppsProgressCompletionTarget = new AtomicInteger(0);
 			loadingAvailableAppsProgressCurrent = new AtomicInteger(0);
 //			loadingInstalledAppsList = LinearLayout.inflate(this, R.layout.list_loading, appsListFlipper);
 			loadingInstalledAppsList = installedView.findViewById(R.id.loading);
-			loadingInstalledAppsList.setTag(EnumAppsLists.Installed);
+			loadingInstalledAppsList.setTag(EnumAppsLists.BACKUP);
 //			loadingUpdatableAppsList = LinearLayout.inflate(this, R.layout.list_loading, appsListFlipper);
 //			loadingUpdatableAppsList = updatableView.findViewById(R.id.loading);
 //			loadingUpdatableAppsList.setTag(EnumAppsLists.Updates);
@@ -619,7 +619,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 			availableAppsListView.setCacheColorHint(Color.TRANSPARENT);
 //			availableAppsListView.setOnTouchListener(swypeListener);
 			availableAppsListView.setOnItemClickListener(this);
-			availableAppsListView.setTag(EnumAppsLists.Backup);
+			availableAppsListView.setTag(EnumAppsLists.RESTORE);
 			availableAppsListView.setPersistentDrawingCache(ViewGroup.PERSISTENT_ALL_CACHES);
 	//		appsListFlipper.addView(availableAppsList);
 			
@@ -628,7 +628,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 			installedAppsListView.setCacheColorHint(Color.TRANSPARENT);
 //			installedAppsListView.setOnTouchListener(swypeListener);
 			installedAppsListView.setOnItemClickListener(this);
-			installedAppsListView.setTag(EnumAppsLists.Installed);
+			installedAppsListView.setTag(EnumAppsLists.BACKUP);
 			installedAppsListView.setPersistentDrawingCache(ViewGroup.PERSISTENT_ALL_CACHES);
 	//		appsListFlipper.addView(installedAppsList);
 			
@@ -1355,7 +1355,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
     @Override
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long positionLong) {
     	
-    	if(appsListPager.getCurrentItem() == EnumAppsLists.Installed.ordinal()){
+    	if(appsListPager.getCurrentItem() == EnumAppsLists.BACKUP.ordinal()){
 	    	InstalledRowViewHolder viewHolder = (InstalledRowViewHolder) view.getTag();
 	    	if(((ViewDisplayApplicationBackup) installedAdapter.getItem(position)).toggleCheck()){
 	    		viewHolder.setChecked(true);
@@ -1413,12 +1413,12 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 		super.onCreateOptionsMenu(menu);
 		currentAppsList = EnumAppsLists.reverseOrdinal(appsListPager.getCurrentItem());
 		switch (currentAppsList) {
-			case Backup:
+			case RESTORE:
 //				menu.add(Menu.NONE, EnumOptionsMenu.DELETE.ordinal(), EnumOptionsMenu.DELETE.ordinal(), R.string.delete)
 //					.setIcon(R.drawable.ic_menu_close_clear_cancel);
 				break;
 				
-			case Installed:
+			case BACKUP:
 				menu.add(Menu.NONE, EnumOptionsMenu.UNINSTALL.ordinal(), EnumOptionsMenu.UNINSTALL.ordinal(), R.string.uninstall)
 					.setIcon(R.drawable.ic_menu_delete);
 				break;
@@ -1586,11 +1586,11 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 				
 			case UN_SELECT_ALL:
 				switch (currentAppsList) {
-					case Backup:
+					case RESTORE:
 						availableAdapter.toggleSelectAll();						
 						break;
 						
-					case Installed:
+					case BACKUP:
 						installedAdapter.toggleSelectAll();						
 						break;
 	

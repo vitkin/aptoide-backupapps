@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#edece9"
     android:gravity="center_horizontal"
     android:orientation="vertical" >
 
@@ -9,11 +10,14 @@
         android:id="@+id/indicator"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#3C3C3C" />
+        android:background="#000" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/list_pager"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/list_pager"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+    
 
 </LinearLayout>
