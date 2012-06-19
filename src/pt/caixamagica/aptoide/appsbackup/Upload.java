@@ -187,7 +187,9 @@ public class Upload extends Activity {
 	
 	private void refreshUploadedLists(){
 		uploadedNames.clear();
+		uploadedAdapter.notifyDataSetChanged();
 		notUploadedNames.clear();
+		notUploadedAdapter.notifyDataSetChanged();
 		for (Entry<Integer, EnumServerUploadApkStatus> done : doneApks.entrySet()) {
 			uploadingApks.get(done.getKey()).setProgress(100);
 			if(done.getValue().equals(EnumServerUploadApkStatus.NO_ERROR)){
@@ -202,14 +204,15 @@ public class Upload extends Activity {
 				notUploadedNames.add(failed);
 			}
 		}
-		refreshUploadingList();
 		uploadedAdapter.notifyDataSetChanged();
 		notUploadedAdapter.notifyDataSetChanged();
+		refreshUploadingList();
 	}
 
 	private void refreshUploadingList(){
 		uploading.setVisibility(View.VISIBLE);
 		uploadingProgress.clear();
+		uploadingAdapter.notifyDataSetChanged();
 		int visible = 0;
 		for (Entry<Integer, ViewApk> uploading : uploadingApks.entrySet()){
 			if(uploading.getValue().getProgress() != 100){
@@ -219,10 +222,9 @@ public class Upload extends Activity {
 				uploadingProgress.add(upload);
 			}
 		}
+		uploadingAdapter.notifyDataSetChanged();
 		if(visible == 0){
 			uploading.setVisibility(View.GONE);			
-		}else{
-			uploadingAdapter.notifyDataSetChanged();
 		}
 	}
 	
@@ -347,8 +349,8 @@ public class Upload extends Activity {
 //	@Override
 //	public boolean onKeyDown(int keyCode, KeyEvent event) {
 //		if (keyCode == KeyEvent.KEYCODE_BACK ) {
-//			Log.d("Aptoide-SelfUpdate", "");
-//			//TODO cancel download
+//			Log.d("AptoideAppsBackup-Upload", "");
+//			//TODO check where we are and decide accordingly
 //			return true;
 //		}
 //		return super.onKeyDown(keyCode, event);
@@ -357,6 +359,12 @@ public class Upload extends Activity {
 
 	@Override
 	public void finish() {
+		try {
+			serviceDataCaller.callUpdateRepos();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		
 		if(serviceDataIsBound){
 			unbindService(serviceDataConnection);
 		}
@@ -662,7 +670,8 @@ public class Upload extends Activity {
 			backButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					finish();			
+					showUploadStatus();
+					refreshUploadedLists();
 				}
 			  });
 		}

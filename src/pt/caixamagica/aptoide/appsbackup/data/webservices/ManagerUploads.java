@@ -117,9 +117,11 @@ public class ManagerUploads {
 	
 	private String getUserAgentString(){
 		ViewClientStatistics clientStatistics = getClientStatistics();
-		return String.format(Constants.USER_AGENT_FORMAT
+		String userAgent = String.format(Constants.USER_AGENT_FORMAT
 				, clientStatistics.getAptoideVersionNameInUse(), clientStatistics.getScreenDimensions().getFormattedString()
 				, clientStatistics.getAptoideClientUUID(), getServerUsername());
+		Log.d("AptoideAppsBackup-ManagerUploads", "userAgent: "+userAgent);
+		return userAgent;
 	}
 	
 	
@@ -218,7 +220,7 @@ public class ManagerUploads {
 			connection.setRequestProperty("Accept", "application/xml");
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 
-//			connection.setRequestProperty("User-Agent", getUserAgentString());
+			connection.setRequestProperty("User-Agent", getUserAgentString());
 
 			//Variable definition
 			StringBuilder postArguments = new StringBuilder();
@@ -309,7 +311,7 @@ public class ManagerUploads {
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
 //			connection.setConnectTimeout(TIME_OUT);
 			
-//			connection.setRequestProperty("User-Agent", getUserAgentString());
+			connection.setRequestProperty("User-Agent", getUserAgentString());
 
 			status = serviceData.getManagerXml().dom.parseServerLoginReturn(connection);
 
@@ -561,11 +563,8 @@ public class ManagerUploads {
 
 			connection.setRequestProperty("Connection", "Keep-Alive");
 			connection.setRequestProperty("Content-Type", "multipart/form-data;boundary="+boundary);
-//		connection.setRequestProperty("User-Agent", USER_AGENT);
-//		
-//		if(!cookie.isNull()){
-//			connection.addRequestProperty("Cookie", cookie.getCookie());
-//		}
+			
+			connection.setRequestProperty("User-Agent", getUserAgentString());
 
 			outputStream = new DataOutputStream( connection.getOutputStream() );
 

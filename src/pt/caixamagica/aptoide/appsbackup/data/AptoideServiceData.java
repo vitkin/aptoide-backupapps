@@ -141,6 +141,8 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	
 	private ExecutorService cachedThreadPool;		//TODO in the future turn this into a priorityThreadPool, with a highest priority thread able to pause execution of other threads
 //	private ExecutorService scheduledThreadPool;
+	
+	Handler delayedExecutionHandler = new Handler();
     
 	private AtomicBoolean syncingInstalledApps;
 	
@@ -251,6 +253,15 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		@Override
 		public void callUnsetInUseRepo(int repoHashid) throws RemoteException {
 			toggleInUseRepo(repoHashid, false);
+		}
+
+		@Override
+		public void callUpdateRepos() throws RemoteException {
+			delayedExecutionHandler.postDelayed(new Runnable() {
+	            public void run() {
+	            	getDeltas(true);
+	            }
+	        }, 5000);
 		}
 
 		@Override
@@ -2683,7 +2694,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				EnumServerUploadApkStatus status = managerUploads.uploadApk(uploadingApk);
 				AptoideLog.d(AptoideServiceData.this, "upload done: "+uploadingApk.getName()+"  status: "+status);
 				if(status.equals(EnumServerUploadApkStatus.NO_ERROR)){
-					getDeltas(true);
+					delayedExecutionHandler.postDelayed(new Runnable() {
+			            public void run() {
+			            	getDeltas(true);
+			            }
+			        }, 5000);
 				}
 				try {
 					uploadClient.uploadDone(uploadingApk.getAppHashid(), status.ordinal());

@@ -80,7 +80,7 @@ public class Constants {
 	
 	public static final String TERMINAL_INFO = android.os.Build.MODEL + "("+ android.os.Build.PRODUCT + ")"
 											+";v"+android.os.Build.VERSION.RELEASE+";"+System.getProperty("os.arch");
-	public static final String USER_AGENT_FORMAT = "aptoide-%1$s;"+TERMINAL_INFO+";%2$s;id:%3$s;%4$s";
+	public static final String USER_AGENT_FORMAT = "aptoideAppsBackup-%1$s;"+TERMINAL_INFO+";%2$s;id:%3$s;%4$s";
 	
 	public static final String PATH_SDCARD = Environment.getExternalStorageDirectory().getPath();
 	public static final String PATH_CACHE = PATH_SDCARD + "/.aptoide/";
