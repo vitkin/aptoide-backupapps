@@ -1,80 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:orientation="vertical" >
-	<LinearLayout android:id="@+id/uploading_apps" 
-		android:layout_height="wrap_content" 
-		android:layout_width="fill_parent"
-		android:orientation="vertical"
-		>
-		<TextView android:id="@+id/uploading_intro"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/uploading_apps"
-			android:textSize="22sp"
-			android:layout_alignParentTop="true" />
-	     <ListView
-	        android:id="@+id/uploading_list"
-	        android:layout_width="fill_parent" 
-	        android:layout_height="wrap_content"
-			android:layout_marginLeft="25sp"
-			android:layout_marginRight="25sp"  />
-	</LinearLayout>
-	<LinearLayout android:id="@+id/uploaded_apps" 
-		android:layout_height="wrap_content" 
-		android:layout_width="fill_parent"
-		android:orientation="vertical"
-		android:layout_below="@+id/uploading_apps"
-		>
-		<TextView android:id="@+id/uploaded_intro"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/uploaded_apps"
-			android:textSize="22sp"
-			android:layout_alignParentTop="true" />
-	     <ListView
-	        android:id="@+id/uploaded_list"
-	        android:layout_width="fill_parent" 
-	        android:layout_height="wrap_content"
-			android:layout_marginLeft="25sp"
-			android:layout_marginRight="25sp"  />
-	</LinearLayout>
-	<LinearLayout android:id="@+id/failed_apps" 
-		android:layout_height="wrap_content" 
-		android:layout_width="fill_parent"
-		android:orientation="vertical"
-		android:layout_below="@+id/uploaded_apps">
-		<TextView android:id="@+id/failed_intro"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/not_uploaded_apps"
-			android:textSize="22sp"
-			android:layout_alignParentTop="true" />
-	     <ListView
-	        android:id="@+id/failed_list"
-	        android:layout_width="fill_parent" 
-	        android:layout_height="wrap_content"
-			android:layout_marginLeft="25sp"
-			android:layout_marginRight="25sp" />
-	</LinearLayout>
-	<LinearLayout android:id="@+id/uploaded_buttons" 
-		android:layout_height="wrap_content" 
-		android:layout_width="wrap_content" 
-		android:layout_below="@+id/not_uploaded_apps"
-		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true"
-		>
-		<Button
-			android:id="@+id/uploaded_exit"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/back_to_grid"
-			android:textSize="16sp"
-			android:layout_gravity="center_horizontal|bottom"/>
-	</LinearLayout>
-</RelativeLayout>
-<!-- 
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#edece9"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/uploading_apps"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/uploading_intro"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/black"
+            android:padding="10dp"
+            android:text="@string/uploading_apps"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#fff" />
+
+        <ListView
+            android:id="@+id/uploading_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_background_normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/uploaded_apps"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uploading_apps"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/uploaded_intro"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/black"
+            android:padding="10dp"
+            android:text="@string/uploaded_apps"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#fff" />
+
+        <ListView
+            android:id="@+id/uploaded_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_background_normal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/failed_apps"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/uploaded_apps"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/failed_intro"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/black"
+            android:padding="10dp"
+            android:text="@string/not_uploaded_apps"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#fff" />
+
+        <ListView
+            android:id="@+id/failed_list"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_background_normal" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/uploaded_exit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:text="@string/back_to_grid" />
+
+</RelativeLayout><!--
  * Aptoide Uploader		uploads android apps to yout Bazaar repository
  * Copyright (C) 20011  Duarte Silveira
  * duarte.silveira@caixamagica.pt
@@ -92,4 +105,5 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
---> 
+-->
+

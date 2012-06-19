@@ -1,103 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/scroll_view"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:scrollbars="vertical">
-	<LinearLayout 
-		android:layout_width="fill_parent"
-		android:orientation="vertical"
-		android:layout_height="fill_parent" >
-		<TextView android:id="@+id/form_intro"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/form_intro"
-			android:textSize="10pt"/>
-		<EditText android:id="@+id/form_name"
-			android:layout_height="wrap_content"
-			android:hint="@string/form_name"
-			android:inputType="text"
-			android:layout_width="fill_parent" 
-			android:layout_marginLeft="25sp"
-			android:layout_marginRight="25sp"
-			android:textSize="8pt"/>
-		<Spinner android:id="@+id/form_rating"
-			android:layout_height="wrap_content"
-			android:prompt="@string/form_rating"
-			android:layout_width="fill_parent" 
-			android:layout_marginLeft="25sp"
-			android:layout_marginRight="25sp"
-			android:entries="@array/rating_array"
-			android:textSize="8pt"/>
-		<TextView android:id="@+id/form_separator"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="@string/form_separator"
-			android:textSize="2pt"/>
-		<Spinner android:id="@+id/form_category"
-			android:layout_height="wrap_content"
-			android:prompt="@string/form_category"
-			android:layout_width="fill_parent"  
-			android:layout_marginLeft="25sp"
-			android:layout_marginRight="25sp"
-			android:entries="@array/category_array"
-			android:textSize="8pt"/>		
-		<EditText android:id="@+id/form_desc"
-			android:layout_height="wrap_content"
-			android:hint="@string/form_desc"
-			android:inputType="text"
-			android:layout_width="fill_parent" 
-			android:layout_marginLeft="25sp"
-			android:layout_marginRight="25sp"
-			android:textSize="8pt"/>
-		<EditText android:id="@+id/form_phone"
-			android:layout_height="wrap_content"
-			android:hint="@string/form_phone"
-			android:inputType="phone"
-			android:layout_width="fill_parent" 
-			android:layout_marginLeft="25sp"
-			android:layout_marginRight="25sp"
-			android:textSize="8pt"/>
-		<EditText android:id="@+id/form_e_mail"
-			android:layout_height="wrap_content"
-			android:hint="@string/form_e_mail"
-			android:inputType="textEmailAddress"
-			android:layout_width="fill_parent" 
-			android:layout_marginLeft="25sp"
-			android:layout_marginRight="25sp"
-			android:textSize="8pt"/>
-		<EditText android:id="@+id/form_url"
-			android:layout_height="wrap_content"
-			android:hint="@string/form_url"
-			android:inputType="textUri"
-			android:layout_width="fill_parent" 
-			android:layout_marginLeft="25sp"
-			android:layout_marginRight="25sp"
-			android:textSize="8pt"/>
-		<LinearLayout android:id="@+id/form_buttons" 
-			android:layout_height="wrap_content" 
-			android:layout_width="fill_parent" 
-			android:layout_marginLeft="25sp"
-			android:layout_marginRight="25sp"
-			android:layout_alignParentBottom="true">
-			<Button android:id="@+id/form_back"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:textSize="8pt"
-				android:layout_marginRight="17pt" 
-				android:text="@string/back"/>
-			<Button android:id="@+id/form_submit"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:textSize="8pt"
-				android:layout_marginLeft="17pt"
-				android:text="@string/submit"/>
-		</LinearLayout>
-	</LinearLayout>  
-</ScrollView>
-<!-- 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:background="#edece9"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/header"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/form_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="22dp"
+            android:padding="2dp"
+            android:text="@string/form_intro"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#fff" />
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="3dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/list_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/form_buttons"
+        android:layout_below="@+id/header"
+        android:background="#edece9"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scrollbars="vertical" >
+
+            <LinearLayout
+                android:id="@+id/list_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/border_background_normal"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/form_name_id"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/form_name"
+                    android:textColor="#424542"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/form_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/form_name" />
+
+                <TextView
+                    android:id="@+id/form_rating_id"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/form_rating"
+                    android:textColor="#424542"
+                    android:textSize="15sp" />
+
+                <Spinner
+                    android:id="@+id/form_rating"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/rating_array"
+                    android:prompt="@string/form_rating"
+                    android:textSize="8pt" />
+
+                <TextView
+                    android:id="@+id/form_category_id"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/form_category"
+                    android:textColor="#424542"
+                    android:textSize="15sp" />
+
+                <Spinner
+                    android:id="@+id/form_category"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/category_array"
+                    android:prompt="@string/form_category"
+                    android:textSize="8pt" />
+
+                <TextView
+                    android:id="@+id/form_desc_id"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/form_desc_optional"
+                    android:textColor="#424542"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/form_desc"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/form_desc" />
+
+                <TextView
+                    android:id="@+id/form_phone_id"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/form_phone_optional"
+                    android:textColor="#424542"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/form_phone"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/form_phone" />
+
+                <TextView
+                    android:id="@+id/form_e_mail_id"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/form_e_mail_optional"
+                    android:textColor="#424542"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/form_e_mail"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/form_e_mail" />
+
+                <TextView
+                    android:id="@+id/form_url_id"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/form_url_optional"
+                    android:textColor="#424542"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/form_url"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/form_url" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/form_buttons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" >
+
+        <Button
+            android:id="@+id/form_back"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/back"
+            android:textColor="@android:color/black"
+            android:textStyle="normal" />
+
+        <Button
+            android:id="@+id/form_submit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/submit"
+            android:textColor="@android:color/black"
+            android:textStyle="normal" />
+    </LinearLayout>
+
+</RelativeLayout><!--
  * Aptoide Uploader		uploads android apps to yout Bazaar repository
  * Copyright (C) 20011  Duarte Silveira
  * duarte.silveira@caixamagica.pt

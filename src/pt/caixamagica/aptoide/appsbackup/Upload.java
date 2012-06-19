@@ -295,7 +295,7 @@ public class Upload extends Activity {
 		ListView uploadedList = (ListView) findViewById(R.id.uploaded_list);
 		uploadedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, uploadedNames);
 		uploadedList.setAdapter(uploadedAdapter);
-		uploaded.setVisibility(View.INVISIBLE);
+		uploaded.setVisibility(View.GONE);
 		
 		notUploaded = (LinearLayout) findViewById(R.id.failed_apps);
 		ListView notUploadedList = (ListView) findViewById(R.id.failed_list);
@@ -309,7 +309,7 @@ public class Upload extends Activity {
 				new SubmitFormScreen(Upload.this, uploadingApks.get(appHashid), doneApks.get(appHashid));
 			}
 		});
-		notUploaded.setVisibility(View.INVISIBLE);
+		notUploaded.setVisibility(View.GONE);
 		
 		backButton = (Button) findViewById(R.id.uploaded_exit);
 		backButton.setOnClickListener(new OnClickListener() {

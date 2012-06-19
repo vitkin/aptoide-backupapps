@@ -189,7 +189,7 @@
     <string name="backup_selected_apps">Backup selected apps</string>
     <string name="restore_selected_apps">Restore selected apps</string>
     
-    <string name="form_intro">You may now fill out these fields that define the app you\'re about to upload!</string>
+    <string name="form_intro">You may fill out the form to:</string>
     <string name="form_name">App name</string>
     
     <string name="form_category">App category</string>
@@ -223,10 +223,14 @@
     <string name="r4">Mature (minimal age: 18)</string>
     
     <string name="form_separator">" "</string>
-    <string name="form_desc">Optional app description</string>
-    <string name="form_phone">Optional phone number</string>
-    <string name="form_e_mail">Optional e-mail</string>
-    <string name="form_url">Optional web site url</string>
+    <string name="form_desc_optional">App description (Optional)</string>
+    <string name="form_desc">App description</string>
+    <string name="form_phone_optional">Phone number (Optional)</string>
+    <string name="form_phone">Phone number</string>
+    <string name="form_e_mail_optional">E-mail (Optional)</string>
+    <string name="form_e_mail">E-mail</string>
+    <string name="form_url_optional">Web site url (Optional)</string>
+    <string name="form_url">Web site url</string>
 <!--     <string name="back">Back</string> -->
 <!--     <string name="submit">Submit</string> -->
     

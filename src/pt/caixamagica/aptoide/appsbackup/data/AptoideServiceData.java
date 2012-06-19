@@ -735,7 +735,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	public void onCreate() {
 	    if(!isRunning){
 
-	    	splash();
+//	    	splash();
 	    	
 	    	managerDatabase = new ManagerDatabase(this);
 			managerPreferences = new ManagerPreferences(this);
