@@ -120,7 +120,7 @@ public class Settings extends PreferenceActivity {
 				View clearCacheView = LinearLayout.inflate(Settings.this, R.layout.dialog_clear_cache, null);
 				Builder dialogBuilder = new AlertDialog.Builder(Settings.this).setView(clearCacheView);
 				final AlertDialog clearCacheDialog = dialogBuilder.create();
-				clearCacheDialog.setIcon(R.drawable.ic_menu_delete);
+				clearCacheDialog.setIcon(android.R.drawable.ic_menu_delete);
 				clearCacheDialog.setTitle(getString(R.string.clear_cache));
 				
 				final RadioButton icon = (RadioButton) clearCacheView.findViewById(R.id.icon);
@@ -343,7 +343,7 @@ public class Settings extends PreferenceActivity {
 				View iconDownloadView = LinearLayout.inflate(Settings.this, R.layout.dialog_icon_download_permissions, null);
 				Builder dialogBuilder = new AlertDialog.Builder(Settings.this).setView(iconDownloadView);
 				final AlertDialog iconDownloadDialog = dialogBuilder.create();
-				iconDownloadDialog.setIcon(R.drawable.ic_menu_manage);
+				iconDownloadDialog.setIcon(android.R.drawable.ic_menu_manage);
 				iconDownloadDialog.setTitle(getString(R.string.backup_uploads_permissions));
 				
 				final RadioButton wifi = (RadioButton) iconDownloadView.findViewById(R.id.wifi);

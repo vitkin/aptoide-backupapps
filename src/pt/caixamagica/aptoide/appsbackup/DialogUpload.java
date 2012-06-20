@@ -114,7 +114,7 @@ public class DialogUpload extends Dialog{
 				}else{
 						
 					ProgressDialog dialogProgress = ProgressDialog.show(getContext(), getContext().getString(R.string.logging_in), getContext().getString(R.string.please_wait),true);
-					dialogProgress.setIcon(R.drawable.ic_menu_info_details);
+					dialogProgress.setIcon(android.R.drawable.ic_menu_info_details);
 					dialogProgress.setCancelable(true);
 					
 //						final AtomicBoolean successLogin = new AtomicBoolean(true);

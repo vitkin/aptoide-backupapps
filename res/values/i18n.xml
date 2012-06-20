@@ -32,7 +32,8 @@
     <string name="set_new_login">New login</string>
     <string name="set_new_login_sum">Set a new login</string>
     <string name="username">Username</string>
-    <string name="username_email">Username (email)</string>
+    <string name="username_email">Username (e-mail)</string>
+    <string name="email">E-mail</string>
     <string name="password">Password</string>
     <string name="show_password">Show password</string>  
     <string name="no_username">No Username</string>
@@ -44,7 +45,7 @@
     
     <string name="about">About</string>
     <string name="description">Your Android application backup manager.\n</string>
-    <string name="version">v</string>
+    <string name="version">Version</string>
     
     <string name="size">Size</string>
     <string name="store">Store</string>
@@ -160,8 +161,15 @@
     <string name="submitting">Submitting</string>
     <string name="submitted">Submitted</string> 
     <string name="login">Login</string> 
+    <string name="sign_up">Sign Up</string>
     <string name="new_account">New Account</string>
+    <string name="registration">Bazaar Registration</string>
+    <string name="bazaar_url">http://www.bazaarandroid.com/</string>
+    <string name="store_privacy">Store Privacy</string>
+    <string name="public_store">Public</string>
+    <string name="private_store">Private</string>
     <string name="loading">Loading...</string>
+    <string name="accept_terms">By signing up you are agreeing to the Bazaar Terms of Service and Bazaar Content Policy for Developers</string>
     
     <string name="no_network_connection">No network connection</string>
     <string name="no_permitted_network_connection">No permitted network connection</string>
@@ -175,6 +183,7 @@
     
     <string name="login_intro">You may now enter your Bazaar username, password and store:</string>
     <string name="repository">Store</string>
+    <string name="repository_example">(Example: your username)</string>
     <string name="privacy_username">Store Username</string>
     <string name="privacy_password">Store Password</string>
     <string name="show_privacy_password">Show privacy password</string>  
@@ -261,4 +270,5 @@
     <string name="missing_name_and_category_and_bad_email">"Please enter a name,             select a category\nand correct the e-mail address!"</string>
     <string name="failed_server_connection">"Server connection failed, please retry!"</string>
     
+    <string name="no_error">No error</string>
 </resources>

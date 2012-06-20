@@ -173,7 +173,7 @@ public class DialogLogin extends Dialog{
 				}else{
 						
 					ProgressDialog loginProgress = ProgressDialog.show(getContext(), getContext().getString(R.string.logging_in), getContext().getString(R.string.please_wait),true);
-					loginProgress.setIcon(R.drawable.ic_menu_info_details);
+					loginProgress.setIcon(android.R.drawable.ic_menu_info_details);
 					loginProgress.setCancelable(true);
 					loginProgress.setOnDismissListener(new OnDismissListener(){
 						public void onDismiss(DialogInterface arg0) {
@@ -242,7 +242,7 @@ public class DialogLogin extends Dialog{
 //					(new DialogName(DialogLogin.this.getContext())).show();
 					
 					ProgressDialog createAccountProgress = ProgressDialog.show(getContext(), getContext().getString(R.string.new_account), getContext().getString(R.string.please_wait),true);
-					createAccountProgress.setIcon(R.drawable.ic_menu_add);
+					createAccountProgress.setIcon(android.R.drawable.ic_menu_add);
 					createAccountProgress.setCancelable(true);
 					createAccountProgress.setOnDismissListener(new OnDismissListener(){
 						public void onDismiss(DialogInterface arg0) {
@@ -301,7 +301,7 @@ public class DialogLogin extends Dialog{
 				public void onClick(View view) {
 					
 					ProgressDialog createAccountProgress = ProgressDialog.show(getContext(), getContext().getString(R.string.new_account), getContext().getString(R.string.please_wait),true);
-					createAccountProgress.setIcon(R.drawable.ic_menu_add);
+					createAccountProgress.setIcon(android.R.drawable.ic_menu_add);
 					createAccountProgress.setCancelable(true);
 					createAccountProgress.setOnDismissListener(new OnDismissListener(){
 						public void onDismiss(DialogInterface arg0) {

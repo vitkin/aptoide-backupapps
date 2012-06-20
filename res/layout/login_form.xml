@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:background="#edece9"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/header"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black" >
+
+        <TextView
+            android:id="@+id/sign_in"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/black"
+            android:padding="10dp"
+            android:text="@string/bazaar_login"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#fff" />
+
+        <Button
+            android:id="@+id/sign_up"
+            style="@style/button_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/blue_button"
+            android:text="@string/sign_up" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/login_form"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/login_button"
+        android:layout_below="@+id/header"
+        android:background="#edece9"
+        android:orientation="vertical"
+        android:padding="5dp" >
+
+        <ScrollView
+            android:id="@+id/scroller"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.30" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_background_normal"
+                    android:orientation="vertical"
+                    android:padding="5dp" >
+
+                    <TextView
+                        android:id="@+id/username_id"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/username"
+                        android:textColor="#424542"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/username"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/username"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true" />
+
+                    <TextView
+                        android:id="@+id/password_id"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/password"
+                        android:textColor="#424542"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/password"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/password"
+                        android:password="true"
+                        android:singleLine="true" />
+
+                    <TextView
+                        android:id="@+id/repository_id"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/repository"
+                        android:textColor="#424542"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/repository"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/repository"
+                        android:singleLine="true" />
+
+                    <TextView
+                        android:id="@+id/repository_example"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="-2dp"
+                        android:text="@string/repository_example"
+                        android:textColor="#424542"
+                        android:textSize="12sp" />
+
+                    <CheckBox
+                        android:id="@+id/privt_store"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/privt_store"
+                        android:textColor="#696969" />
+
+                    <TextView
+                        android:id="@+id/priv_username_id"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/privacy_username"
+                        android:textColor="#424542"
+                        android:textSize="15sp"
+                        android:visibility="gone" />
+
+                    <EditText
+                        android:id="@+id/priv_username"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:ems="200"
+                        android:hint="@string/privacy_username"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:textColor="#696969"
+                        android:textSize="18sp"
+                        android:visibility="gone" >
+                    </EditText>
+
+                    <TextView
+                        android:id="@+id/priv_password_id"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/privacy_password"
+                        android:textColor="#424542"
+                        android:textSize="15sp"
+                        android:visibility="gone" />
+
+                    <EditText
+                        android:id="@+id/priv_password"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:hint="@string/privacy_password"
+                        android:password="true"
+                        android:singleLine="true"
+                        android:textColor="#696969"
+                        android:textSize="18sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/bad_login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="2dp"
+                        android:textColor="#d90b0b" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/login_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <Button
+                        android:id="@+id/login"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login"
+                        android:textColor="@android:color/black"
+                        android:textStyle="normal" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</RelativeLayout><!--
+ * Aptoide Uploader		uploads android apps to yout Bazaar repository
+ * Copyright (C) 20011  Duarte Silveira
+ * duarte.silveira@caixamagica.pt
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-->
+

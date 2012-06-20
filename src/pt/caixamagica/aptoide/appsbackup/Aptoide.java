@@ -1420,7 +1420,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 				
 			case BACKUP:
 				menu.add(Menu.NONE, EnumOptionsMenu.UNINSTALL.ordinal(), EnumOptionsMenu.UNINSTALL.ordinal(), R.string.uninstall)
-					.setIcon(R.drawable.ic_menu_delete);
+					.setIcon(android.R.drawable.ic_menu_delete);
 				break;
 				
 //			case Updates:
@@ -1441,15 +1441,15 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //		menu.add(Menu.NONE, EnumOptionsMenu.SEARCH_MENU.ordinal(),EnumOptionsMenu.SEARCH_MENU.ordinal(),R.string.menu_search)
 //			.setIcon(android.R.drawable.ic_menu_search);
 		menu.add(Menu.NONE, EnumOptionsMenu.DISPLAY_OPTIONS.ordinal(), EnumOptionsMenu.DISPLAY_OPTIONS.ordinal(), R.string.display_options)
-			.setIcon(R.drawable.ic_menu_filter);
+			.setIcon(android.R.drawable.ic_menu_sort_by_size);
 		
 		menu.add(Menu.NONE, EnumOptionsMenu.UN_SELECT_ALL.ordinal(), EnumOptionsMenu.UN_SELECT_ALL.ordinal(), R.string.un_select_all)
-			.setIcon(R.drawable.ic_menu_add);
+			.setIcon(android.R.drawable.ic_menu_add);
 
 		menu.add(Menu.NONE, EnumOptionsMenu.ABOUT.ordinal(),EnumOptionsMenu.ABOUT.ordinal(),R.string.about)
-			.setIcon(R.drawable.ic_menu_help);
+			.setIcon(android.R.drawable.ic_menu_help);
 		menu.add(Menu.NONE, EnumOptionsMenu.SETTINGS.ordinal(), EnumOptionsMenu.SETTINGS.ordinal(), R.string.settings)
-			.setIcon(R.drawable.ic_menu_preferences);
+			.setIcon(android.R.drawable.ic_menu_preferences);
 		
 		
 		return true;
@@ -1487,7 +1487,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 					View displayOptions = displayOptionsInflater.inflate(R.layout.dialog_display_options, null);
 					Builder dialogBuilder = new AlertDialog.Builder(theme).setView(displayOptions);
 					final AlertDialog sortDialog = dialogBuilder.create();
-					sortDialog.setIcon(R.drawable.ic_menu_filter);
+					sortDialog.setIcon(android.R.drawable.ic_menu_sort_by_size);
 					sortDialog.setTitle(getString(R.string.display_options));
 
 					// ***********************************************************

@@ -9,12 +9,15 @@
         android:id="@+id/app_icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:padding="4sp"
-        android:scaleType="fitCenter" />
+        android:layout_gravity="center_vertical"
+        android:layout_margin="5dp" >
+
+    </ImageView>
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_weight="1"
         android:orientation="vertical" >
 
@@ -48,6 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/version_prefix"
             android:layout_below="@id/app_name"
+            android:layout_marginLeft="2dp"
             android:layout_toRightOf="@+id/version_prefix"
             android:ellipsize="end"
             android:maxLines="1"
@@ -61,27 +65,21 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/version_prefix"
             android:layout_below="@id/app_name"
-            android:layout_toRightOf="@+id/version_prefix"
-            android:layout_marginLeft="80sp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/version_name"
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
             android:textColor="#B3B3B3"
             android:textSize="12sp" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-        android:layout_weight="2"
-        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/status"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/version_prefix"
+            android:layout_centerHorizontal="true"
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
@@ -92,22 +90,23 @@
             android:id="@+id/size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/timestamp"
             android:layout_alignParentRight="true"
-            android:layout_alignBottom="@+id/version_prefix"
-            android:layout_below="@+id/status"
+            android:layout_alignTop="@+id/timestamp"
             android:ellipsize="end"
             android:maxLines="1"
             android:singleLine="true"
             android:textColor="#4F4F4F"
             android:textSize="12sp" />
+
     </RelativeLayout>
-    
-    <CheckBox 
+
+    <CheckBox
         android:id="@+id/check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-    	android:focusable="false"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:focusable="false" />
 
 </LinearLayout><!--
  * Since v3.0 Copyright (C) 2011 Duarte Silveira

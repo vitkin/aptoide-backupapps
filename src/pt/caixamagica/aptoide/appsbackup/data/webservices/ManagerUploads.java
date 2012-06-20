@@ -550,7 +550,9 @@ public class ManagerUploads {
 			
 			// This fixes #515 : Out of memory bug
 			connection.setChunkedStreamingMode(CHUNK_SIZE);
-
+			connection.setConnectTimeout(120000);
+			connection.setReadTimeout(120000);
+			
 			// Allow Inputs & Outputs
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
