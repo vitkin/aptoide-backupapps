@@ -68,7 +68,7 @@ public class DialogUpload extends Dialog{
 		super.onCreate(savedInstanceState);
 		
 		
-		setContentView(R.layout.login);
+		setContentView(R.layout.example_login);
 		
 		((Button)this.findViewById(R.id.new_account)).setOnClickListener(new View.OnClickListener(){
 			

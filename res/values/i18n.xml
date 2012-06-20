@@ -165,7 +165,7 @@
     <string name="new_account">New Account</string>
     <string name="registration">Bazaar Registration</string>
     <string name="store_privacy">Store Privacy</string>
-    <string name="public">Public</string>
+    <string name="publc">Public</string>
     <string name="privt">Private</string>
     <string name="loading">Loading...</string>
     <string name="accept_terms">By signing up you are agreeing to the Bazaar Terms of Service and Bazaar Content Policy for Developers</string>

@@ -92,25 +92,29 @@ public class ManagerNotifications {
 		repoAppUpdates = new ArrayList<ViewNotification>(5);
 		
 		/************ Compatibility with API level 4, ignore following lines (must be at bottom of constructor) *************/
-		try {
-	        startForeground = serviceData.getClass().getMethod("startForeground", startForegroundSignature);
-	        stopForeground = serviceData.getClass().getMethod("stopForeground", stopForegroundSignature);
-	    } catch (NoSuchMethodException e) {
-	        // Running on an older platform.
-	        startForeground = stopForeground = null;
-	        Log.w("Aptoide-ManagerNotifications", "No foreground service support on this android");
-//	        return;
-	    }
-	    try {
-	        setForeground = serviceData.getClass().getMethod("setForeground", setForegroundSignature);
-	    } catch (NoSuchMethodException e) {
-	        throw new IllegalStateException("OS doesn't have Service.startForeground OR Service.setForeground!");
-	    }
-	
-		startForegroundCompat(R.string.aptoide_started, getNotification());
-		
+//		try {
+//	        startForeground = serviceData.getClass().getMethod("startForeground", startForegroundSignature);
+//	        stopForeground = serviceData.getClass().getMethod("stopForeground", stopForegroundSignature);
+//	    } catch (NoSuchMethodException e) {
+//	        // Running on an older platform.
+//	        startForeground = stopForeground = null;
+//	        Log.w("Aptoide-ManagerNotifications", "No foreground service support on this android");
+////	        return;
+//	    }
+//	    try {
+//	        setForeground = serviceData.getClass().getMethod("setForeground", setForegroundSignature);
+//	    } catch (NoSuchMethodException e) {
+//	        throw new IllegalStateException("OS doesn't have Service.startForeground OR Service.setForeground!");
+//	    }
+//	
+//		startForegroundCompat(R.string.aptoide_started, getNotification());
+//		
 
 		/********************************************************************************************************************/
+	}
+	
+	public void destroy(){
+//		stopForegroundCompat(R.string.aptoide_started);		
 	}
 		
 	public void startNotification(ViewNotification notification){
@@ -386,10 +390,6 @@ public class ManagerNotifications {
 //	 };
 		
 //-------------------
-	
-	public void destroy(){
-		stopForegroundCompat(R.string.aptoide_started);		
-	}
 
 	
 	private Notification getNotification() {

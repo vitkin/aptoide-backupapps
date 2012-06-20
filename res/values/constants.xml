@@ -11,6 +11,8 @@
     
     <string name="kB">kB</string>
     
+    <string name="bazaar_url">http://www.bazaarandroid.com/</string>
+    
     <string-array name="age_entries">
         <item>@string/no_filter</item>
         <item>@string/mature</item>

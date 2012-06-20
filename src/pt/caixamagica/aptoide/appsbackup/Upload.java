@@ -433,7 +433,7 @@ public class Upload extends Activity {
 			
 			this.uploadingApk = uploadingApk;
 			
-	    	setContentView(R.layout.submit_form);
+	    	setContentView(R.layout.form_submit);
 			setAppNameBox();
 			setAppRatingBox(context);
 //			setApkPath();
@@ -449,7 +449,7 @@ public class Upload extends Activity {
 		public SubmitFormScreen(Context context, ViewApk uploadingApk, EnumServerUploadApkStatus errorState){
 			this.uploadingApk = uploadingApk;
 
-	    	setContentView(R.layout.submit_form);
+	    	setContentView(R.layout.form_submit);
 			setAppNameBox();
 			setAppRatingBox(context);
 //			setApkPath();

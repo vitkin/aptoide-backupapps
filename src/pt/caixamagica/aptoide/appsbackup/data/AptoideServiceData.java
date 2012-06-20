@@ -261,7 +261,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	            public void run() {
 	            	getDeltas(true);
 	            }
-	        }, 5000);
+	        }, 10000);
 		}
 
 		@Override
