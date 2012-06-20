@@ -200,7 +200,7 @@ public class Upload extends Activity {
 				HashMap<String, String> failed = new HashMap<String, String>();
 				failed.put("hashid", Integer.toString(done.getKey()));
 				failed.put("name", uploadingApks.get(done.getKey()).getName());
-				failed.put("status", done.getValue().getApkUploadStatus());
+				failed.put("status", done.getValue().toString().toLowerCase()); //TODO support proper Error strings with i18n
 				notUploadedNames.add(failed);
 			}
 		}
