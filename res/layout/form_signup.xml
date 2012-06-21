@@ -9,7 +9,7 @@
         android:id="@+id/header"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/black"
+        android:background="#7fa45c"
         android:orientation="horizontal" >
 
         <TextView
@@ -31,6 +31,7 @@
             android:layout_alignLeft="@+id/registration_intro"
             android:layout_below="@+id/registration_intro"
             android:text="@string/bazaar_url"
+            android:textColor="#e1dcd5"
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </RelativeLayout>
 
