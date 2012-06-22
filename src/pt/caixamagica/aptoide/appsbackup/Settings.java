@@ -222,19 +222,25 @@ public class Settings extends PreferenceActivity {
 				}
 				if(token == null){
 					Log.d("Aptoide-Settings", "No login set");
-					DialogLogin dialogLogin = new DialogLogin(Settings.this, serviceDataCaller, DialogLogin.InvoqueType.NO_CREDENTIALS_SET);
+					Intent login = new Intent(Settings.this, BazaarLogin.class);
+					login.putExtra("InvoqueType", BazaarLogin.InvoqueType.NO_CREDENTIALS_SET.ordinal());
+					startActivity(login);
+//					DialogLogin dialogLogin = new DialogLogin(Settings.this, serviceDataCaller, DialogLogin.InvoqueType.NO_CREDENTIALS_SET);
 //					loginComments.setOnDismissListener(new OnDismissListener() {
 //						@Override
 //						public void onDismiss(DialogInterface dialog) {
 //							addAppVersionComment();
 //						}
 //					});
-					dialogLogin.show();
+//					dialogLogin.show();
 				}else{
 					Log.d("Aptoide-Settings", "Login edit");
-					DialogLogin dialogLogin = new DialogLogin(Settings.this, serviceDataCaller, DialogLogin.InvoqueType.OVERRIDE_CREDENTIALS);
+					Intent login = new Intent(Settings.this, BazaarLogin.class);
+					login.putExtra("InvoqueType", BazaarLogin.InvoqueType.OVERRIDE_CREDENTIALS.ordinal());
+					startActivity(login);
+//					DialogLogin dialogLogin = new DialogLogin(Settings.this, serviceDataCaller, DialogLogin.InvoqueType.OVERRIDE_CREDENTIALS);
 //					Toast.makeText(Settings.this, "Login already set", Toast.LENGTH_SHORT).show();
-					dialogLogin.show();
+//					dialogLogin.show();
 				}
 				return true;
 			}

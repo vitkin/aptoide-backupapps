@@ -308,8 +308,7 @@ public class ParserDOMSmallRequests{
 						|| error.equals("An invalid APK was received, does not seem to contain data about the name, version code or version name. Please verify that you selected the right file, and try again.")
 						|| error.equals("An invalid APK was received, does not seem to be a ZIP file or seems to have some errors. Please verify that you selected the right file, and try again.")
 						|| error.equals("An invalid APK was received, does not seem to contain data about the label or icon. Please verify that you selected the right file, and try again.")
-						|| error.equals("An invalid APK was received. Please verify that you selected the right file, and try again.")
-						|| error.equals("MD5 NOT existent") ){
+						|| error.equals("An invalid APK was received. Please verify that you selected the right file, and try again.") ){
 						status = EnumServerUploadApkStatus.BAD_APK;
 					}
 					if(error.equals("Invalid rating!")){
@@ -336,6 +335,13 @@ public class ParserDOMSmallRequests{
 						|| error.equals("The file you uploaded exceeds the maximum size") ){
 						status = EnumServerUploadApkStatus.APK_TOO_BIG;
 					}
+					if(error.equals("MD5 NOT existent")){
+						status = EnumServerUploadApkStatus.NO_MD5;
+					}
+					if(error.equals("MD5 processing failed, please try again.")){
+						status = EnumServerUploadApkStatus.BAD_MD5;
+					}
+					
 					if(error.equals("Application duplicate: the uploaded apk already exists in this repository")){
 						status = EnumServerUploadApkStatus.APK_DUPLICATE;
 					}

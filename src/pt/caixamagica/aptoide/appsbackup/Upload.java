@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import pt.caixamagica.aptoide.appsbackup.data.AIDLAptoideServiceData;
@@ -98,6 +99,7 @@ public class Upload extends Activity {
 	ArrayList<HashMap<String, String>> notUploadedNames;
 	
 	Button backButton;
+	AtomicBoolean goingBackEnabled;
 	
 	private ExecutorService cachedThreadPool;
 	
@@ -224,7 +226,8 @@ public class Upload extends Activity {
 		}
 		uploadingAdapter.notifyDataSetChanged();
 		if(visible == 0){
-			uploading.setVisibility(View.GONE);			
+			uploading.setVisibility(View.GONE);
+			enableGoingBack();
 		}
 	}
 	
@@ -270,6 +273,7 @@ public class Upload extends Activity {
 	}
 	
 	public void upload(final ViewApk uploadingApk){
+		disableGoingBack();
 		cachedThreadPool.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -320,8 +324,18 @@ public class Upload extends Activity {
 				finish();			
 			}
 		  });
+		backButton.setEnabled(false);
 	}
 	
+	private void enableGoingBack(){
+//		backButton.setEnabled(true);
+		goingBackEnabled.set(true);
+	}
+	
+	private void disableGoingBack(){
+//		backButton.setEnabled(false);
+		goingBackEnabled.set(false);
+	}
 	
 	
 	@Override
@@ -342,19 +356,20 @@ public class Upload extends Activity {
 		
 		cachedThreadPool = Executors.newCachedThreadPool();
 		
+		goingBackEnabled = new AtomicBoolean(true);
+		
 		super.onCreate(savedInstanceState);
 	}
 
 	
-//	@Override
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if (keyCode == KeyEvent.KEYCODE_BACK ) {
-//			Log.d("AptoideAppsBackup-Upload", "");
-//			//TODO check where we are and decide accordingly
-//			return true;
-//		}
-//		return super.onKeyDown(keyCode, event);
-//	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && !goingBackEnabled.get()) {
+			Log.d("AptoideAppsBackup-Upload", "back press ignored");
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 
 
 	@Override

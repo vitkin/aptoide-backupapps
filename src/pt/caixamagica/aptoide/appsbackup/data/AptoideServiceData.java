@@ -288,6 +288,12 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		public void callLoadingRepos() throws RemoteException {
 			loadingAvailableListData();
 		}
+
+		@Override
+		public boolean callAnyReposInUse() throws RemoteException {
+			return areAnyReposInUse();
+		}
+		
 		
 
 		@Override
@@ -1296,6 +1302,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 //			}
 //		});
 //	}
+	
+	public boolean areAnyReposInUse(){
+		AptoideLog.d(AptoideServiceData.this, "Are any repos in use");
+		return managerDatabase.anyReposInUse();
+	}
 	
 
 	public ViewDisplayListRepos getRepos(){

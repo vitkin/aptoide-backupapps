@@ -46,6 +46,7 @@ import org.xml.sax.SAXException;
 
 import pt.caixamagica.aptoide.appsbackup.data.AptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.ViewClientStatistics;
+import pt.caixamagica.aptoide.appsbackup.data.cache.ViewCache;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewLogin;
 import pt.caixamagica.aptoide.appsbackup.data.util.Constants;
 import pt.caixamagica.aptoide.appsbackup.data.util.Security;
@@ -510,6 +511,17 @@ public class ManagerUploads {
 	}
 	
 	public EnumServerUploadApkStatus uploadApk(ViewApk viewApk){
+		EnumServerUploadApkStatus status = uploadApk(viewApk, true);
+		if(status.equals(EnumServerUploadApkStatus.BAD_MD5) || status.equals(EnumServerUploadApkStatus.NO_MD5) ){
+			status = uploadApk(viewApk, true);
+			if(status.equals(EnumServerUploadApkStatus.NO_MD5) ){
+				status = uploadApk(viewApk, false);
+			}
+		}
+		return status;
+	}
+	
+	public EnumServerUploadApkStatus uploadApk(ViewApk viewApk, boolean justMd5){
 		EnumServerUploadApkStatus status = EnumServerUploadApkStatus.NO_ERROR;
 		String apkPath = viewApk.getPath();
 		String token = serviceData.getManagerPreferences().getToken();
@@ -532,12 +544,22 @@ public class ManagerUploads {
 			body += formPart("apk_website", viewApk.getWebURL() );
 		}
 		
+		if(justMd5){
+			ViewCache apk = serviceData.getManagerCache().getNewViewCache(viewApk.getPath());
+			serviceData.getManagerCache().calculateMd5Hash(apk);
+			Log.d("Aptoide-ManagerUploads", "UploadApk - using just md5: "+apk.getMd5sum());
+			body += formPart("apk_md5sum",  apk.getMd5sum());
+		}
+		
 		body += formPart("token", token )
 			 + formPart("repo", viewApk.getRepository() )
 			 + formPart("apkname", viewApk.getName() )
 			 + formPart("rating", viewApk.getRating() )
-			 + formPart("mode", "xml" )
-			 + formBinaryPartNoTail("apk", "application/vnd.android.package-archive");
+			 + formPart("mode", "xml" );
+		
+		if(!justMd5){
+			body += formBinaryPartNoTail("apk", "application/vnd.android.package-archive");
+		}
 		
 		
 		
@@ -572,28 +594,26 @@ public class ManagerUploads {
 
 			outputStream.writeBytes(body);
 			
-//		if(submitting){
-			
-			FileInputStream apk = new FileInputStream(apkPath);
-			byte data[] = new byte[CHUNK_SIZE];
-			long lenTotal = 0;
-			int read;
-			long uploadSize = viewApk.getSize();
-			int progressPercentage = 0;
-			while((read = apk.read(data, 0, CHUNK_SIZE)) != -1) {
-			    outputStream.write(data,0,read);
-			    lenTotal += read;
-			    int newProgressPercentage = (int) (lenTotal*100/uploadSize);
-			    Log.d("OutputApk", "sent: "+read+"bytes, Total: "+lenTotal+" completion: "+newProgressPercentage+"% app: "+viewApk.getName());
-			    if(newProgressPercentage > (progressPercentage+10)){
-			    	progressPercentage = newProgressPercentage;
-			    	serviceData.uploadingProgressUpdate(viewApk.getAppHashid(), progressPercentage);
-			    }
+			if(!justMd5){
+				FileInputStream apk = new FileInputStream(apkPath);
+				byte data[] = new byte[CHUNK_SIZE];
+				long lenTotal = 0;
+				int read;
+				long uploadSize = viewApk.getSize();
+				int progressPercentage = 0;
+				while((read = apk.read(data, 0, CHUNK_SIZE)) != -1) {
+				    outputStream.write(data,0,read);
+				    lenTotal += read;
+				    int newProgressPercentage = (int) (lenTotal*100/uploadSize);
+				    Log.d("OutputApk", "sent: "+read+"bytes, Total: "+lenTotal+" completion: "+newProgressPercentage+"% app: "+viewApk.getName());
+				    if(newProgressPercentage > (progressPercentage+10)){
+				    	progressPercentage = newProgressPercentage;
+				    	serviceData.uploadingProgressUpdate(viewApk.getAppHashid(), progressPercentage);
+				    }
+				}
 			}
-//		return lenTotal;
-
+			
 			outputStream.writeBytes(LINE_END + TWO_HYPHENS + boundary + TWO_HYPHENS + LINE_END);
-//		}
 
 			outputStream.flush();
 			outputStream.close();

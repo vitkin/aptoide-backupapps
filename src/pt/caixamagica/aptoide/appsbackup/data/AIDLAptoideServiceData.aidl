@@ -74,6 +74,7 @@ interface AIDLAptoideServiceData {
 	void callUpdateLogin(in ViewRepository repo);
 	void callNoRepos();
 	void callLoadingRepos();
+	boolean callAnyReposInUse();
 	
 	void callRegisterInstalledAppsObserver(in AIDLAptoideInterface installedAppsObserver);
 	int callRegisterAvailableAppsObserver(in AIDLAptoideInterface availableAppsObserver);

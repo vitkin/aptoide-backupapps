@@ -164,6 +164,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	private ArrayList<EnumAptoideInterfaceTasks> queuedFlipperChanges;
 	
 	
+	private boolean anyReposInUse = true;
+	
 //	private ArrayList<ViewMyapp> handlingMyapps;
 	
 //	private StaticCategoriesListAdapter categoriesAdapter = null;
@@ -248,22 +250,23 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	        		            
 	            AptoideLog.v(Aptoide.this, "Called for registering as AvailableApps Observer");
 	            if(serviceDataCaller.callRegisterAvailableAppsObserver(serviceDataCallback) == EnumAvailableAppsStatus.NO_REPO_IN_USE.ordinal()){
-	            	DialogLogin dialogLogin = new DialogLogin(Aptoide.this, serviceDataCaller, DialogLogin.InvoqueType.NO_CREDENTIALS_SET);
-	            	dialogLogin.setOnDismissListener(new OnDismissListener() {
-						@Override
-						public void onDismiss(DialogInterface dialog) {
-							try {
-								authenticationToken = serviceDataCaller.callGetServerToken();
-							} catch (RemoteException e) {
-								e.printStackTrace();
-								finish();
-							}
-							if(authenticationToken == null){
-								finish();
-							}
-						}
-					});
-					dialogLogin.show();
+//	            	DialogLogin dialogLogin = new DialogLogin(Aptoide.this, serviceDataCaller, DialogLogin.InvoqueType.NO_CREDENTIALS_SET);
+//	            	dialogLogin.setOnDismissListener(new OnDismissListener() {
+//						@Override
+//						public void onDismiss(DialogInterface dialog) {
+//							try {
+//								authenticationToken = serviceDataCaller.callGetServerToken();
+//							} catch (RemoteException e) {
+//								e.printStackTrace();
+//								finish();
+//							}
+//							if(authenticationToken == null){
+//								finish();
+//							}
+//						}
+//					});
+//					dialogLogin.show();
+	            	anyReposInUse = false;
 	            }
 
 //	            AptoideLog.v(Aptoide.this, "Called for registering as Myapp Observer");
@@ -691,7 +694,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 						}
 					}else{
 						AptoideLog.d(Aptoide.this, "can't backup with no server login configured" );
-						Toast.makeText(Aptoide.this, R.string.login_required, Toast.LENGTH_SHORT).show();
+//						Toast.makeText(Aptoide.this, R.string.login_required, Toast.LENGTH_SHORT).show();
+						Login();
 					}
 					
 				}
@@ -703,17 +707,28 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 				
 				@Override
 				public void onClick(View v) {
-					ViewDisplayApplicationBackup app;
-					for (int i = 0; i < availableAdapter.getCount(); i++) {
-						app = ((ViewDisplayApplicationBackup) availableAdapter.getItem(i));
-						if(app.isChecked()){
-							try {
-								serviceDataCaller.callInstallApp(app.getAppHashid());
-							} catch (RemoteException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+					Log.d("Aptoide-AppsBackup", "Clicked on restore");
+					try {
+						anyReposInUse = serviceDataCaller.callAnyReposInUse();
+					} catch (RemoteException e) {
+						e.printStackTrace();
+					}
+					if(anyReposInUse){
+						ViewDisplayApplicationBackup app;
+						for (int i = 0; i < availableAdapter.getCount(); i++) {
+							app = ((ViewDisplayApplicationBackup) availableAdapter.getItem(i));
+							if(app.isChecked()){
+								try {
+									serviceDataCaller.callInstallApp(app.getAppHashid());
+								} catch (RemoteException e) {
+									e.printStackTrace();
+								}
 							}
 						}
+					}else{
+						AptoideLog.d(Aptoide.this, "can't restore with no repo configured" );
+//						Toast.makeText(Aptoide.this, R.string.login_required, Toast.LENGTH_SHORT).show();
+						Login();
 					}
 				}
 			});
@@ -799,6 +814,12 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
         	
         	cleanAptoideIntent();
         }
+	}
+	
+	private void Login(){
+		Intent login = new Intent(Aptoide.this, BazaarLogin.class);
+		login.putExtra("InvoqueType", BazaarLogin.InvoqueType.NO_CREDENTIALS_SET.ordinal());
+		startActivity(login);
 	}
 	
 	public void setAvailableListBy(boolean byCategory){

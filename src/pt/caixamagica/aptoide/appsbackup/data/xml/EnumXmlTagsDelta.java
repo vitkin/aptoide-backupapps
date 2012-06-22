@@ -52,7 +52,8 @@ public enum EnumXmlTagsDelta {
 	sz,
 	del,
 	apphashid,
-	unrecognized;
+	unrecognized,
+	hash;
 	
 	public static EnumXmlTagsDelta safeValueOf(String name){
 		EnumXmlTagsDelta tag;

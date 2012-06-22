@@ -127,41 +127,41 @@
                         android:singleLine="true"
                         android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/store_privacy"
-                        android:layout_width="fill_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_weight="1"
-                        android:text="@string/store_privacy"
-                        android:textColor="#424542"
-                        android:textSize="15sp" />
+<!--                     <TextView -->
+<!--                         android:id="@+id/store_privacy" -->
+<!--                         android:layout_width="fill_parent" -->
+<!--                         android:layout_height="0dp" -->
+<!--                         android:layout_marginLeft="2dp" -->
+<!--                         android:layout_marginTop="2dp" -->
+<!--                         android:layout_weight="1" -->
+<!--                         android:text="@string/store_privacy" -->
+<!--                         android:textColor="#424542" -->
+<!--                         android:textSize="15sp" /> -->
 
-                    <RadioGroup
-                        android:id="@+id/groupshow"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:orientation="horizontal" >
+<!--                     <RadioGroup -->
+<!--                         android:id="@+id/groupshow" -->
+<!--                         android:layout_width="wrap_content" -->
+<!--                         android:layout_height="0dp" -->
+<!--                         android:layout_weight="1" -->
+<!--                         android:orientation="horizontal" > -->
 
-                        <RadioButton
-                            android:id="@+id/public_store"
-                            android:layout_width="fill_parent"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_weight="1"
-                            android:checked="true"
-                            android:text="@string/publc"
-                            android:textColor="#4f4f4f" />
+<!--                         <RadioButton -->
+<!--                             android:id="@+id/public_store" -->
+<!--                             android:layout_width="fill_parent" -->
+<!--                             android:layout_gravity="center_horizontal" -->
+<!--                             android:layout_weight="1" -->
+<!--                             android:checked="true" -->
+<!--                             android:text="@string/publc" -->
+<!--                             android:textColor="#4f4f4f" /> -->
 
-                        <RadioButton
-                            android:id="@+id/private_store"
-                            android:layout_width="fill_parent"
-                            android:layout_weight="1"
-                            android:checked="false"
-                            android:text="@string/privt"
-                            android:textColor="#4f4f4f" />
-                    </RadioGroup>
+<!--                         <RadioButton -->
+<!--                             android:id="@+id/private_store" -->
+<!--                             android:layout_width="fill_parent" -->
+<!--                             android:layout_weight="1" -->
+<!--                             android:checked="false" -->
+<!--                             android:text="@string/privt" -->
+<!--                             android:textColor="#4f4f4f" /> -->
+<!--                     </RadioGroup> -->
 
                     <TextView
                         android:id="@+id/bad_registration"
@@ -180,7 +180,7 @@
                     android:orientation="vertical" >
 
                     <Button
-                        android:id="@+id/new_account"
+                        android:id="@+id/sign_up"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"

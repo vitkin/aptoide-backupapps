@@ -193,6 +193,9 @@ public class ParserRepoDelta extends DefaultHandler{
 					parseInfo.getNotification().setProgressCompletionTarget(repoSizeDifferential);
 					totalParsedApps = Integer.parseInt(tagContentBuilder.toString());
 					break;
+					
+				case hash:
+					Log.d("Aptoide-RepoDeltaParser", "server exception, sending info.xml when delta was required!");
 				case delta:
 					String delta = tagContentBuilder.toString();
 					if(delta == ""){

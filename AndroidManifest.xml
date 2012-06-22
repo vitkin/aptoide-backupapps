@@ -33,6 +33,14 @@
 		<activity android:name=".Settings" android:process=":aabInterface" android:launchMode="singleTask" 
 		    	  android:configChanges="keyboardHidden|orientation" >
 		</activity>
+
+		<activity android:name=".BazaarLogin" android:process=":aabInterface" android:launchMode="singleTask" 
+		    	  android:configChanges="keyboardHidden|orientation" >
+		</activity>
+
+		<activity android:name=".BazaarSignUp" android:process=":aabInterface" android:launchMode="singleTask" 
+		    	  android:configChanges="keyboardHidden|orientation" >
+		</activity>
 		
 		<service android:name=".data.AptoideServiceData" android:process=":aabData">
 <!-- ###### THESE NEXT INTENT FILTERS ARE ONLY FOR REFERENCE SINCE THEY ARE DYNAMICALLY FILTERED ######
