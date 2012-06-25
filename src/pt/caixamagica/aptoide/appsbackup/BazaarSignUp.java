@@ -44,6 +44,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,6 +112,9 @@ public class BazaarSignUp extends Activity {
 //	private CheckBox showPass;
 	
 	private EditText repository;
+	
+	private RadioButton privt;
+	
 // 	private CheckBox privt;
 // 	private TextView priv_username_id;
 // 	private EditText priv_username;
@@ -152,6 +156,9 @@ public class BazaarSignUp extends Activity {
  //        });
  		
  		repository = ((EditText)findViewById(R.id.repository));
+ 		
+ 		privt = (RadioButton) findViewById(R.id.private_store);
+ 		
 // 		privt = (CheckBox) findViewById(R.id.privt_store);
 // 		privt.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 // 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -218,9 +225,10 @@ public class BazaarSignUp extends Activity {
  						serverLogin =  new ViewServerLogin(username.getText().toString(), password.getText().toString());
  					}
  					serverLogin.setRepoName(repository.getText().toString());
-// 					if(privt.isChecked()){
+ 					if(privt.isChecked()){
 // 						serverLogin.setRepoPrivate(priv_username.getText().toString(), priv_password.getText().toString());
-// 					}
+ 						serverLogin.setRepoPrivate(serverLogin.getUsername(), serverLogin.getPasshash());
+ 					}
  					
  //					(new DialogName(Login.this)).show();
  					

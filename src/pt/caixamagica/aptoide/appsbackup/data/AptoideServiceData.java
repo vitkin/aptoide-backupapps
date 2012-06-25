@@ -2189,6 +2189,8 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 						AptoideLog.d(AptoideServiceData.this, "updating repo's login: "+repoInUse);
 						managerDatabase.updateLogin(repoInUse);
 					}
+				}else{
+					managerPreferences.clearServerLogin();
 				}
 			}
 			return repoConnectionStatus.ordinal();
@@ -2305,6 +2307,8 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 						AptoideLog.d(AptoideServiceData.this, "updating repo's login: "+repoInUse);
 						managerDatabase.updateLogin(repoInUse);
 					}
+				}else{
+					managerPreferences.clearServerLogin();
 				}
 			}
 			return repoConnectionStatus.ordinal();

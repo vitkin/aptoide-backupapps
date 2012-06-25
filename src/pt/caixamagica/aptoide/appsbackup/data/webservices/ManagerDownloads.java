@@ -366,8 +366,8 @@ public class ManagerDownloads {
 		Log.d("Aptoide-ManagerDownloads", "uri: "+uri);
 		
 		HttpParams httpParameters = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParameters, 10000);
-		HttpConnectionParams.setSoTimeout(httpParameters, 10000);
+		HttpConnectionParams.setConnectionTimeout(httpParameters, 120000);
+		HttpConnectionParams.setSoTimeout(httpParameters, 120000);
 		           
 		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
 		

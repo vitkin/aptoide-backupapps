@@ -115,7 +115,7 @@ public class BazaarLogin extends Activity {
 //	private CheckBox showPass;
 	
 	private EditText repository;
-// 	private CheckBox privt;
+ 	private CheckBox privt;
 // 	private TextView priv_username_id;
 // 	private EditText priv_username;
 // 	private TextView priv_password_id;
@@ -156,7 +156,7 @@ public class BazaarLogin extends Activity {
  //        });
  		
  		repository = ((EditText)findViewById(R.id.repository));
-// 		privt = (CheckBox) findViewById(R.id.privt_store);
+ 		privt = (CheckBox) findViewById(R.id.privt_store);
 // 		privt.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 // 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 // 				if(isChecked){
@@ -248,9 +248,10 @@ public class BazaarLogin extends Activity {
  						serverLogin =  new ViewServerLogin(username.getText().toString(), password.getText().toString());
  					}
  					serverLogin.setRepoName(repository.getText().toString());
-// 					if(privt.isChecked()){
+ 					if(privt.isChecked()){
 // 						serverLogin.setRepoPrivate(priv_username.getText().toString(), priv_password.getText().toString());
-// 					}
+ 						serverLogin.setRepoPrivate(serverLogin.getUsername(), serverLogin.getPasshash());
+ 					}
  
  					Log.d("Aptoide-Login", "Logging in, login: "+serverLogin);
  					new LoginTask(BazaarLogin.this, loginProgress, serverLogin).execute();
