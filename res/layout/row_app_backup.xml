@@ -66,6 +66,7 @@
             android:layout_alignBottom="@+id/version_prefix"
             android:layout_below="@id/app_name"
             android:layout_marginLeft="5dp"
+            android:layout_toLeftOf="@+id/size"
             android:layout_toRightOf="@+id/version_name"
             android:ellipsize="end"
             android:maxLines="1"
