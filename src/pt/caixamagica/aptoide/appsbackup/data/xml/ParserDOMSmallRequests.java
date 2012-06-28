@@ -254,7 +254,7 @@ public class ParserDOMSmallRequests{
 
 	
 	public EnumServerUploadApkStatus parseApkUploadXml(HttpURLConnection connection) throws ParserConfigurationException, SAXException, IOException{
-		EnumServerUploadApkStatus status = EnumServerUploadApkStatus.UNPREDICTABLE_ERROR;
+		EnumServerUploadApkStatus status = EnumServerUploadApkStatus.SERVER_ERROR;
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 	
@@ -266,7 +266,7 @@ public class ParserDOMSmallRequests{
         	Node receivedStatus = receivedStatusList.item(0);
         	Log.d("Aptoide-ManagerUploads uploadApk", receivedStatus.getNodeName()+":  "+receivedStatus.getFirstChild().getNodeValue().trim());
         	if(receivedStatus.getFirstChild().getNodeValue().trim().equals("OK")){
-        		status = EnumServerUploadApkStatus.NO_ERROR;
+        		status = EnumServerUploadApkStatus.SUCCESS;
         	}else{
         		NodeList receivedErrorsList = dom.getElementsByTagName(EnumXmlTagsServerLogin.entry.toString());
     	        if(receivedErrorsList.getLength()>0){
@@ -274,96 +274,68 @@ public class ParserDOMSmallRequests{
     	        	String error = receivedErrors.getFirstChild().getNodeValue();
     	        	Log.d("Aptoide-ManagerUploads uploadApk", receivedErrors.getNodeName()+":  "+receivedErrors.getFirstChild().getNodeValue().trim());
     	        	
-    	        	if(error.equals("MD5 processing failed, please try again.")
-    	        		|| error.equals("The file you sent is missing. Maybe the form session has expired. Please upload the file again.")
-    	        		|| error.equals("Unable to download Google Market screenshots.")){
-    	        		status = EnumServerUploadApkStatus.SERVER_ERROR;
-    	        	}
 					if(error.equals("Missing token parameter")){
 						status = EnumServerUploadApkStatus.MISSING_TOKEN;
-					}
-					if(error.equals("Missing apk parameter")){
+					}else if(error.equals("You need to upload an APK") 
+						||error.equals("Missing apk parameter")){
 						status = EnumServerUploadApkStatus.MISSING_APK;
-					}
-					if(error.equals("Missing apkname parameter")){
+					}else if(error.equals("Missing apkname parameter")){
 						status = EnumServerUploadApkStatus.MISSING_APK_NAME;
-					}
-					if(error.equals("Missing description parameter")){
+					}else if(error.equals("Missing description parameter")){
 						status = EnumServerUploadApkStatus.MISSING_DESCRIPTION;
-					}
-					if(error.equals("Missing rating parameter")){
+					}else if(error.equals("Missing rating parameter")){
 						status = EnumServerUploadApkStatus.MISSING_RATING;
-					}
-					if(error.equals("Missing category parameter")){
+					}else if(error.equals("Missing category parameter")){
 						status = EnumServerUploadApkStatus.MISSING_CATEGORY;
-					}
-					if(error.equals("Invalid token!")){
+					}else if(error.equals("Invalid token!")){
 						status = EnumServerUploadApkStatus.BAD_TOKEN;
-					}
-					if(error.equals("Invalid repo!")){
+					}else if(error.equals("Invalid repo!")){
 						status = EnumServerUploadApkStatus.BAD_REPO;
-					}
-					if(error.equals("You need to upload an APK") 
-						|| error.equals("An invalid APK was received, does not seem to contain all required data. Please verify that you selected the right file, and try again.")
+					}else if( error.equals("An invalid APK was received, does not seem to contain all required data. Please verify that you selected the right file, and try again.")
 						|| error.equals("An invalid APK was received, does not seem to contain data about the name, version code or version name. Please verify that you selected the right file, and try again.")
 						|| error.equals("An invalid APK was received, does not seem to be a ZIP file or seems to have some errors. Please verify that you selected the right file, and try again.")
 						|| error.equals("An invalid APK was received, does not seem to contain data about the label or icon. Please verify that you selected the right file, and try again.")
 						|| error.equals("An invalid APK was received. Please verify that you selected the right file, and try again.") ){
 						status = EnumServerUploadApkStatus.BAD_APK;
-					}
-					if(error.equals("Invalid rating!")){
+					}else if(error.equals("Invalid rating!")){
 						status = EnumServerUploadApkStatus.BAD_RATING;
-					}
-					if(error.equals("Invalid category!")){
+					}else if(error.equals("Invalid category!")){
 						status = EnumServerUploadApkStatus.BAD_CATEGORY;
-					}
-					if(error.equals("The website is not a valid URL.")){
+					}else if(error.equals("The website is not a valid URL.")){
 						status = EnumServerUploadApkStatus.BAD_WEBSITE;
-					}
-					if(error.equals("The e-mail address is not valid.")){
+					}else if(error.equals("The e-mail address is not valid.")){
 						status = EnumServerUploadApkStatus.BAD_EMAIL;
-					}
-					if(error.equals("Token doesn't match with Repo.")){
+					}else if(error.equals("Token doesn't match with Repo.")){
 						status = EnumServerUploadApkStatus.TOKEN_INCONSISTENT_WITH_REPO;
-					}
-					if(error.equals("Unable to upload the apk. Please try again.") 
+					}else if(error.equals("Unable to upload the apk. Please try again.") 
 						|| error.equals("The file transfer stopped before the upload was complete. Please try again.")
 						|| error.equals("The file transfer failed for some unknown reason. Please try again.") ){
 						status = EnumServerUploadApkStatus.BAD_APK_UPLOAD;
-					}
-					if(error.equals("The file you uploaded exceeds the maximum allowed size.")
+					}else if(error.equals("The file you uploaded exceeds the maximum allowed size.")
 						|| error.equals("The file you uploaded exceeds the maximum size") ){
 						status = EnumServerUploadApkStatus.APK_TOO_BIG;
-					}
-					if(error.equals("MD5 NOT existent")){
+					}else if(error.equals("MD5 NOT existent")){
 						status = EnumServerUploadApkStatus.NO_MD5;
-					}
-					if(error.equals("MD5 processing failed, please try again.")){
-						status = EnumServerUploadApkStatus.BAD_MD5;
-					}
-					
-					if(error.equals("Application duplicate: the uploaded apk already exists in this repository")){
+					}else if(error.equals("Application duplicate: the uploaded apk already exists in this repository")){
 						status = EnumServerUploadApkStatus.APK_DUPLICATE;
-					}
-					if(error.equals("It's not possible to upload the required APK since an infection was detected. If you are the developer/owner of the application, please contact Bazaar Staff.")){
+					}else if(error.equals("It's not possible to upload the required APK since an infection was detected. If you are the developer/owner of the application, please contact Bazaar Staff.")){
 						status = EnumServerUploadApkStatus.APK_INFECTED_WITH_VIRUS;
-					}
-					if(error.equals("Due to Intelectual Property reasons, it's not possible to upload the required APK. If you are the developer\\/owner of the application, please contact Bazaar Staff.")){
-						status = EnumServerUploadApkStatus.BLACK_LISTED;
-					}
-					
-					if(error.equals("Invalid screenshot ('<screenshot reference here>') uploaded! Please review your files.") ){
-						status = EnumServerUploadApkStatus.BAD_SCREENSHOT;
-					}
-					if(error.equals("One of your screenshots ('<screenshot reference here>') failed to be uploaded. Please Try Again.")
+					}else if(error.equals("Due to Intelectual Property reasons, it's not possible to upload the required APK. If you are the developer\\/owner of the application, please contact Bazaar Staff.")){
+						status = EnumServerUploadApkStatus.APK_BLACKLISTED;
+					}else if(error.equals("Unable to upload the apk icon.")){
+						status = EnumServerUploadApkStatus.SERVER_ERROR_ICON_UPLOAD;
+					}else if(error.equals("Unable to upload the Feature Graphic.")){
+						status = EnumServerUploadApkStatus.SERVER_ERROR_GRAPHIC_UPLOAD;
+					}else if(error.equals("MD5 processing failed, please try again.")){
+						status = EnumServerUploadApkStatus.SERVER_ERROR_MD5;
+					}else if(error.equals("The file you sent is missing. Maybe the form session has expired. Please upload the file again.")){
+        	        	status = EnumServerUploadApkStatus.SERVER_ERROR_MISSING_FILE;
+        	        }else if(error.startsWith("Invalid screenshot (")//'<screenshot reference here>') uploaded! Please review your files.")
+						|| error.equals("Unable to download Google Market screenshots.")){
+						status = EnumServerUploadApkStatus.SERVER_ERROR_SCREENSHOTS;
+					}else if(error.startsWith("One of your screenshots (")//'<screenshot reference here>') failed to be uploaded. Please Try Again.")
 						|| error.equals("Unable to upload the screenshots.")){
-						status = EnumServerUploadApkStatus.BAD_SCREENSHOT_UPLOAD;
-					}
-					if(error.equals("Unable to upload the apk icon.")){
-						status = EnumServerUploadApkStatus.BAD_ICON_UPLOAD;
-					}
-					if(error.equals("Unable to upload the Feature Graphic.")){
-						status = EnumServerUploadApkStatus.BAD_FEATURE_GRAPHIC_UPLOAD;
+						status = EnumServerUploadApkStatus.SERVER_ERROR_SCREENSHOTS_UPLOAD;
 					}
     	        }
         	}

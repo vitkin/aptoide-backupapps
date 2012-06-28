@@ -192,9 +192,10 @@ public class Upload extends Activity {
 		uploadedAdapter.notifyDataSetChanged();
 		notUploadedNames.clear();
 		notUploadedAdapter.notifyDataSetChanged();
+		String statusString = "";
 		for (Entry<Integer, EnumServerUploadApkStatus> done : doneApks.entrySet()) {
 			uploadingApks.get(done.getKey()).setProgress(100);
-			if(done.getValue().equals(EnumServerUploadApkStatus.NO_ERROR)){
+			if(done.getValue().equals(EnumServerUploadApkStatus.SUCCESS)){
 				uploaded.setVisibility(View.VISIBLE);
 				uploadedNames.add(uploadingApks.get(done.getKey()).getName());
 			}else{
@@ -202,7 +203,98 @@ public class Upload extends Activity {
 				HashMap<String, String> failed = new HashMap<String, String>();
 				failed.put("hashid", Integer.toString(done.getKey()));
 				failed.put("name", uploadingApks.get(done.getKey()).getName());
-				failed.put("status", done.getValue().toString().toLowerCase()); //TODO support proper Error strings with i18n
+				switch (done.getValue()) {
+					case APK_DUPLICATE:
+						statusString = getString(R.string.apk_duplicate);
+						break;
+					case APK_INFECTED_WITH_VIRUS:
+						statusString = getString(R.string.apk_infected);
+						break;
+					case APK_TOO_BIG:
+						statusString = getString(R.string.apk_too_big);
+						break;
+					case BAD_APK:
+						statusString = getString(R.string.invalid_apk);
+						break;
+					case BAD_APK_UPLOAD:
+						statusString = getString(R.string.failed_apk_upload);
+						break;
+					case BAD_CATEGORY:
+						statusString = getString(R.string.invalid_category);
+						break;
+					case BAD_EMAIL:
+						statusString = getString(R.string.invalid_email);
+						break;
+					case BAD_LOGIN:
+						statusString = getString(R.string.check_login);
+						break;
+					case BAD_RATING:
+						statusString = getString(R.string.invalid_rating);
+						break;
+					case BAD_REPO:
+						statusString = getString(R.string.invalid_repo_name);
+						break;
+					case BAD_TOKEN:
+						statusString = getString(R.string.token_error);
+						break;
+					case BAD_WEBSITE:
+						statusString = getString(R.string.invalid_website);
+						break;
+					case APK_BLACKLISTED:
+						statusString = getString(R.string.apk_blacklisted);
+						break;
+					case CONNECTION_ERROR:
+						statusString = getString(R.string.failed_server_connection);
+						break;
+					case MISSING_APK:
+						statusString = getString(R.string.missing_apk);
+						break;
+					case MISSING_APK_NAME:
+						statusString = getString(R.string.enter_apk_name);
+						break;
+					case MISSING_CATEGORY:
+						statusString = getString(R.string.select_category);
+						break;
+					case MISSING_DESCRIPTION:
+						statusString = getString(R.string.enter_description);
+						break;
+					case MISSING_RATING:
+						statusString = getString(R.string.select_rating);
+						break;
+					case MISSING_TOKEN:
+						statusString = getString(R.string.missing_token);
+						break;
+					case SERVER_ERROR_GRAPHIC_UPLOAD:
+						statusString = getString(R.string.server_error_graphic_upload);
+						break;
+					case SERVER_ERROR_ICON_UPLOAD:
+						statusString = getString(R.string.server_error_icon_upload);
+						break;
+					case SERVER_ERROR_MD5:
+						statusString = getString(R.string.server_error_md5);
+						break;
+					case SERVER_ERROR_MISSING_FILE:
+						statusString = getString(R.string.server_error_apk);
+						break;
+					case SERVER_ERROR_SCREENSHOTS_UPLOAD:
+					case SERVER_ERROR_SCREENSHOTS:
+						statusString = getString(R.string.server_error_screenshots);
+						break;
+					case SERVER_ERROR:
+						statusString = getString(R.string.server_error);
+						break;
+					case TOKEN_INCONSISTENT_WITH_REPO:
+						statusString = getString(R.string.repo_not_associated_with_user);
+						break;
+					case SUCCESS:
+						statusString = getString(R.string.success);
+						break;
+	
+					default:
+						statusString = getString(R.string.server_error);
+						break;
+				}
+				failed.put("status", statusString);
 				notUploadedNames.add(failed);
 			}
 		}
@@ -510,36 +602,16 @@ public class Upload extends Activity {
 
 			prepareErrorIntro();
 			
-			if(missingAppName && missingAppCategory && missingDescription){
-				errorIntro.setText(R.string.missing_name_and_category_and_description);
-			}else if(missingAppName && missingAppCategory && badWebsite){
-				errorIntro.setText(R.string.missing_name_and_category_and_bad_website);
-			}else if(missingAppName && missingAppCategory && badEmail){
-				errorIntro.setText(R.string.missing_name_and_category_and_bad_email);
-			}else if(missingAppName && missingAppCategory){
-				errorIntro.setText(R.string.missing_name_and_category);
-			}else if(missingAppName && missingDescription){
-				errorIntro.setText(R.string.missing_name_and_description);
-			}else if(missingAppName && badWebsite){
-				errorIntro.setText(R.string.missing_name_and_bad_website);
-			}else if(missingAppName && badEmail){
-				errorIntro.setText(R.string.missing_name_and_bad_email);
-			}else if(missingAppCategory && missingDescription){
-				errorIntro.setText(R.string.missing_category_and_description);
-			}else if(missingAppCategory && badWebsite){
-				errorIntro.setText(R.string.missing_category_and_bad_website);
-			}else if(missingAppCategory && badEmail){
-				errorIntro.setText(R.string.missing_category_and_bad_email);
-			}else if(missingAppName){
-				errorIntro.setText(R.string.missing_apk_name);
+			if(missingAppName){
+				errorIntro.setText(R.string.enter_apk_name);
 			}else if(missingAppCategory){
-				errorIntro.setText(R.string.missing_category);
+				errorIntro.setText(R.string.select_category);
 			}else if(missingDescription){
-				errorIntro.setText(R.string.missing_description);
+				errorIntro.setText(R.string.enter_description);
 			}else if(badWebsite){
-				errorIntro.setText(R.string.bad_website);
+				errorIntro.setText(R.string.invalid_website);
 			}else if(badEmail){
-				errorIntro.setText(R.string.bad_email);
+				errorIntro.setText(R.string.invalid_email);
 			}
 			
 			scrollView.pageScroll(View.FOCUS_UP);

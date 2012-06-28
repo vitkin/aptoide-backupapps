@@ -242,32 +242,58 @@
 <!--     <string name="back">Back</string> -->
 <!--     <string name="submit">Submit</string> -->
     
-    <string name="uploading_apps">"Uploading apps:"</string>
-    <string name="uploaded_apps">"Uploaded apps:"</string>
-    <string name="not_uploaded_apps">"Failed to upload:"</string>    
+    <string name="uploading_apps">Uploading apps:</string>
+    <string name="uploaded_apps">Uploaded apps:</string>
+    <string name="not_uploaded_apps">Failed to upload:</string>    
     <string name="back_to_grid">Return to apps list</string>
     
-    <string name="bad_login">"Please check your username and password!"</string>
-    <string name="bad_repo">"Please check your repository!"</string>
-    <string name="token_inconsistent_with_repo">"This repo is not associated with this user, please correct it!"</string>
-    <string name="bad_repo_login">"Please check your repo's privacy username and password!"</string>
     
-    <string name="missing_apk_name">"Please enter an application name!             "</string>
-    <string name="missing_category">"Please select a category!                     "</string>
-    <string name="missing_description">"Please enter a description!                    "</string>
-    <string name="bad_website">"Please correct the website url!               "</string>
-    <string name="bad_email">"Please correct the e-mail address!           "</string>
-    <string name="missing_name_and_category">"Please enter a name             and select a category!"</string>
-    <string name="missing_name_and_description">"Please enter a name             and a description!"</string>
-    <string name="missing_name_and_bad_website">"Please enter a name             and correct the website url!"</string>
-    <string name="missing_name_and_bad_email">"Please enter a name             and correct the e-mail address!"</string>
-    <string name="missing_category_and_description">"Please select a category             and enter a description!"</string>
-    <string name="missing_category_and_bad_website">"Please select a category             and correct the website url!"</string>
-    <string name="missing_category_and_bad_email">"Please select a category             and correct the e-mail address!"</string>
-    <string name="missing_name_and_category_and_description">"Please enter a name,             select a category\nand enter a description!"</string>
-    <string name="missing_name_and_category_and_bad_website">"Please enter a name,             select a category\nand correct the website url!"</string>
-    <string name="missing_name_and_category_and_bad_email">"Please enter a name,             select a category\nand correct the e-mail address!"</string>
-    <string name="failed_server_connection">"Server connection failed, please retry!"</string>
+    <string name="please_try_again">Please try again</string>
+    <string name="login_service_unavailable">Login service currently unavailable</string>
+    <string name="login_create_service_unavailable">User creation service currently unavailable</string>
+    <string name="repo_service_unavailable">Store service currently unavailable</string>
+    <string name="repo_not_associated_with_user">This store is not associated with this user, please correct it!</string>
+    <string name="check_repo_login">Please check your store\'s privacy username and password!</string>
+    <string name="check_login">Please check your username and password!</string>
+    <string name="check_repo">Please check your store!</string>
+    <string name="username_not_email">Username not properly formatted e-mail</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="hmac_problem">HMAC problem</string>
+    <string name="user_agent_problem">User agent problem</string>
+    <string name="username_already_registered">Username already registered</string>
+    <string name="missing_parameter">Missing parameter</string>
+    <string name="unknown_username">Unknown username</string>
+    <string name="repo_requires_authentication">Store requires authentication</string>
+    <string name="repo_already_exists">Store already exists</string>
+    
+    <string name="missing_token">Missing token</string>
+    <string name="missing_apk">Missing apk</string>
+    <string name="select_rating">Please select a rating</string>
+    <string name="enter_apk_name">Please enter an application name!</string>
+    <string name="select_category">Please select a category!</string>
+    <string name="enter_description">Please enter a description!</string>
+    
+    <string name="token_error">Token error</string>
+    <string name="invalid_repo_name">Invalid store name</string>
+    <string name="invalid_apk">Invalid apk</string>
+    <string name="invalid_rating">Invalid rating</string>
+    <string name="invalid_category"></string>
+    <string name="invalid_website">Invalid website url</string>
+    <string name="invalid_email">Invalid e-mail address</string>
+    
+    <string name="failed_apk_upload">Apk upload failed</string>
+    <string name="apk_too_big">Apk too big</string>
+    <string name="apk_duplicate">Apk duplicate</string>
+    <string name="apk_infected">Apk infected with virus</string>
+    <string name="apk_blacklisted">Apk blacklisted</string>
+    
+    <string name="failed_server_connection">Server connection failed, please retry!</string>
+    <string name="server_error_apk">Server Error (Lost Apk)</string>
+    <string name="server_error_screenshots">Server Error (Screenchots)</string>
+    <string name="server_error_md5">Server Error (MD5)</string>
+    <string name="server_error_icon_upload">Server Error (Icon)</string>
+    <string name="server_error_graphic_upload">Server Error (Graphic)</string>
+    <string name="server_error">Server Error</string>
     
     <string name="success">Success</string>
 </resources>

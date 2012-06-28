@@ -384,11 +384,36 @@ public class BazaarLogin extends Activity {
 					success = true;
 				}else{
 					success = false;
-					Toast.makeText(BazaarLogin.this, status.toString(), Toast.LENGTH_SHORT).show();
+					String statusString = "";
+					switch (status) {
+						case BAD_LOGIN:
+							statusString = getString(R.string.check_login);
+							break;
+						case REPO_NOT_FROM_DEVELOPPER:
+							statusString = getString(R.string.repo_not_associated_with_user);
+							break;
+						case REPO_SERVICE_UNAVAILABLE:
+							statusString = getString(R.string.repo_service_unavailable);
+							break;
+						case BAD_REPO_PRIVACY_LOGIN:
+							statusString = getString(R.string.check_repo_login);
+							break;
+						case LOGIN_SERVICE_UNAVAILABLE:
+							statusString = getString(R.string.login_service_unavailable);
+							break;
+						case SUCCESS:
+							statusString = getString(R.string.success);
+							break;
+	
+						default:
+							statusString = getString(R.string.server_error);
+							break;
+					}
+					Toast.makeText(BazaarLogin.this, statusString, Toast.LENGTH_SHORT).show();
 				}
 				
 			}else{
-				Toast.makeText(BazaarLogin.this, context.getString(R.string.service_unavailable), Toast.LENGTH_SHORT).show();
+				Toast.makeText(BazaarLogin.this, getString(R.string.login_service_unavailable), Toast.LENGTH_SHORT).show();
 			}
 			dialogProgress.dismiss();
 	    }

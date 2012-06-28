@@ -512,7 +512,7 @@ public class ManagerUploads {
 	
 	public EnumServerUploadApkStatus uploadApk(ViewApk viewApk){
 		EnumServerUploadApkStatus status = uploadApk(viewApk, true);
-		if(status.equals(EnumServerUploadApkStatus.BAD_MD5) || status.equals(EnumServerUploadApkStatus.NO_MD5) ){
+		if(status.equals(EnumServerUploadApkStatus.SERVER_ERROR_MD5) || status.equals(EnumServerUploadApkStatus.NO_MD5) ){
 			status = uploadApk(viewApk, true);
 			if(status.equals(EnumServerUploadApkStatus.NO_MD5) ){
 				status = uploadApk(viewApk, false);
@@ -522,7 +522,7 @@ public class ManagerUploads {
 	}
 	
 	public EnumServerUploadApkStatus uploadApk(ViewApk viewApk, boolean justMd5){
-		EnumServerUploadApkStatus status = EnumServerUploadApkStatus.NO_ERROR;
+		EnumServerUploadApkStatus status = EnumServerUploadApkStatus.SUCCESS;
 		String apkPath = viewApk.getPath();
 		String token = serviceData.getManagerPreferences().getToken();
 		
