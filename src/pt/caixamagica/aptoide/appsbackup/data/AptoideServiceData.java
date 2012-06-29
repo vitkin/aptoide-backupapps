@@ -2153,7 +2153,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 							}else{
 								throw new AptoideExceptionDatabase("requested repo previously unknown!");
 							}
-						} catch (AptoideExceptionDatabase e) {
+						} catch (Exception e) {
 							AptoideLog.d(AptoideServiceData.this, e.getMessage());
 							ViewRepository repo = new ViewRepository(serverLogin.getRepoUri());
 							if(serverLogin.isRepoPrivate()){
@@ -2179,7 +2179,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 							}else{
 								throw new AptoideExceptionDatabase("requested repo previously unknown!");
 							}
-						} catch (AptoideExceptionDatabase e) {
+						} catch (Exception e) {
 							AptoideLog.d(AptoideServiceData.this, e.getMessage());
 							ViewRepository repo = new ViewRepository(serverLogin.getRepoUri());
 							if(serverLogin.isRepoPrivate()){
@@ -2271,7 +2271,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 							}else{
 								throw new AptoideExceptionDatabase("requested repo previously unknown!");
 							}
-						} catch (AptoideExceptionDatabase e) {
+						} catch (Exception e) {
 							AptoideLog.d(AptoideServiceData.this, e.getMessage());
 							ViewRepository repo = new ViewRepository(serverLogin.getRepoUri());
 							if(serverLogin.isRepoPrivate()){
@@ -2297,7 +2297,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 							}else{
 								throw new AptoideExceptionDatabase("requested repo previously unknown!");
 							}
-						} catch (AptoideExceptionDatabase e) {
+						} catch (Exception e) {
 							AptoideLog.d(AptoideServiceData.this, e.getMessage());
 							ViewRepository repo = new ViewRepository(serverLogin.getRepoUri());
 							if(serverLogin.isRepoPrivate()){

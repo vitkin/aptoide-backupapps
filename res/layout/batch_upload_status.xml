@@ -90,7 +90,8 @@
         android:text="@string/back_to_grid"
         android:visibility="gone" />
 
-</LinearLayout><!--
+</LinearLayout>
+<!--
  * Aptoide Uploader		uploads android apps to your Bazaar repository
  * Copyright (C) 2011  Duarte Silveira
  * duarte.silveira@caixamagica.pt

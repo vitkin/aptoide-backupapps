@@ -1,5 +1,5 @@
 /**
- * SelfUpdate, part of Aptoide
+ * Upload, part of Aptoide
  * Copyright (C) 2011 Duarte Silveira
  * duarte.silveira@caixamagica.pt
  *
@@ -71,7 +71,7 @@ import android.widget.TextView;
 
 
 /**
- * SelfUpdate, handles Aptoide's self-Update interface
+ * Uplaod, handles Aptoide's upload interface
  * 
  * @author dsilveira
  * @since 3.0
@@ -80,6 +80,7 @@ import android.widget.TextView;
 public class Upload extends Activity {
 	
 //	AlertDialog selfUpdate;
+	private AtomicBoolean showingForm;
 	private AtomicInteger apksReadyNumber;
 	private int apksNumber;
 //	private HashMap<Integer, ViewApk> waitingApks;
@@ -123,7 +124,7 @@ public class Upload extends Activity {
 			} catch (RemoteException e) {
 				e.printStackTrace();
 			}
-			
+
 			handleUploads();
 			
 		}
@@ -382,6 +383,7 @@ public class Upload extends Activity {
 	
 	public void showUploadStatus(){
 		setContentView(R.layout.batch_upload_status);
+    	showingForm.set(false);
 		
 		uploading = (LinearLayout) findViewById(R.id.uploading_apps);
 		ListView uploadingList = (ListView) findViewById(R.id.uploading_list);
@@ -409,24 +411,25 @@ public class Upload extends Activity {
 		});
 		notUploaded.setVisibility(View.GONE);
 		
-		backButton = (Button) findViewById(R.id.uploaded_exit);
-		backButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();
-			}
-		  });
+//		backButton = (Button) findViewById(R.id.uploaded_exit);
+//		backButton.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				finish();
+//			}
+//		  });
 //		backButton.setEnabled(false);
 	}
 	
 	private void enableGoingBack(){
 //		backButton.setEnabled(true);
-		backButton.setVisibility(View.VISIBLE);
+//		backButton.setVisibility(View.VISIBLE);
 		goingBackEnabled.set(true);
 	}
 	
 	private void disableGoingBack(){
 //		backButton.setEnabled(false);
+//		backButton.setVisibility(View.INVISIBLE);
 		goingBackEnabled.set(false);
 	}
 	
@@ -438,6 +441,7 @@ public class Upload extends Activity {
     		bindService(new Intent(this, AptoideServiceData.class), serviceDataConnection, Context.BIND_AUTO_CREATE);
     	}
 		
+		showingForm = new AtomicBoolean(false);
 		apksReadyNumber = new AtomicInteger(0);
 		uploadingApks = new HashMap<Integer, ViewApk>();
 //		waitingApks = new HashMap<Integer, ViewApk>();
@@ -461,6 +465,12 @@ public class Upload extends Activity {
 			Log.d("AptoideAppsBackup-Upload", "back press ignored");
 			return true;
 		}
+		if(showingForm.get()){
+			showUploadStatus();
+			refreshUploadedLists();			
+			return true;
+		}
+		
 		return super.onKeyDown(keyCode, event);
 	}
 
@@ -542,6 +552,7 @@ public class Upload extends Activity {
 			this.uploadingApk = uploadingApk;
 			
 	    	setContentView(R.layout.form_submit);
+	    	showingForm.set(true);
 			setAppNameBox();
 			setAppRatingBox(context);
 //			setApkPath();
@@ -558,6 +569,7 @@ public class Upload extends Activity {
 			this.uploadingApk = uploadingApk;
 
 	    	setContentView(R.layout.form_submit);
+	    	showingForm.set(true);
 			setAppNameBox();
 			setAppRatingBox(context);
 //			setApkPath();
@@ -956,9 +968,8 @@ public class Upload extends Activity {
 			}
 			
 			rowViewHolder.failed_name.setText(getItem(position).get("name"));
-			rowViewHolder.failed_name.setMarqueeRepeatLimit(-1);
 			rowViewHolder.failed_status.setText(getItem(position).get("status"));
-			rowViewHolder.failed_status.setMarqueeRepeatLimit(-1);
+			
 			
 			return convertView;
 		}
