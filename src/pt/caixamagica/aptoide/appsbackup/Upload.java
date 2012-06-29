@@ -409,18 +409,19 @@ public class Upload extends Activity {
 		});
 		notUploaded.setVisibility(View.GONE);
 		
-//		backButton = (Button) findViewById(R.id.uploaded_exit);
-//		backButton.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				finish();
-//			}
-//		  });
+		backButton = (Button) findViewById(R.id.uploaded_exit);
+		backButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		  });
 //		backButton.setEnabled(false);
 	}
 	
 	private void enableGoingBack(){
 //		backButton.setEnabled(true);
+		backButton.setVisibility(View.VISIBLE);
 		goingBackEnabled.set(true);
 	}
 	
@@ -955,8 +956,9 @@ public class Upload extends Activity {
 			}
 			
 			rowViewHolder.failed_name.setText(getItem(position).get("name"));
+			rowViewHolder.failed_name.setMarqueeRepeatLimit(-1);
 			rowViewHolder.failed_status.setText(getItem(position).get("status"));
-			
+			rowViewHolder.failed_status.setMarqueeRepeatLimit(-1);
 			
 			return convertView;
 		}

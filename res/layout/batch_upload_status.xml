@@ -82,15 +82,15 @@
             android:background="@drawable/border_background_normal" />
     </LinearLayout>
 
-<!--     <Button -->
-<!--         android:id="@+id/uploaded_exit" -->
-<!--         android:layout_width="fill_parent" -->
-<!--         android:layout_height="wrap_content" -->
-<!--         android:layout_gravity="bottom" -->
-<!--         android:text="@string/back_to_grid" /> -->
+    <Button
+        android:id="@+id/uploaded_exit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="@string/back_to_grid"
+        android:visibility="gone" />
 
-</LinearLayout>
-<!--
+</LinearLayout><!--
  * Aptoide Uploader		uploads android apps to your Bazaar repository
  * Copyright (C) 2011  Duarte Silveira
  * duarte.silveira@caixamagica.pt
