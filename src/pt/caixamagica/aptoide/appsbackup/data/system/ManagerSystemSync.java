@@ -105,7 +105,7 @@ public class ManagerSystemSync {
 			long timestamp = apk.lastModified();
 			long size = apk.length()/1024;//TODO remove the /1024 after fixing the repo to return Bytes instead of Kbytes
 			
-			if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[1].equals("system")  || installedAppInfo.applicationInfo.sourceDir.split("[/]+")[2].equals("app-private") || apk.length() < 20000000){
+			if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[1].equals("system")  || installedAppInfo.applicationInfo.sourceDir.split("[/]+")[2].equals("app-private") || apk.length() > 20000000){
 				continue;
 				//TODO maybe show it but mark as system and private
 			}

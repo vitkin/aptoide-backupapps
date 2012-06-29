@@ -1,5 +1,5 @@
 /**
- * StaticInstalledAppsListAdapter,		part of Aptoide's data model
+ * StaticAvailableAppsListAdapter,		part of Aptoide's data model
  * Copyright (C) 2011  Duarte Silveira
  * duarte.silveira@caixamagica.pt
  *
@@ -50,14 +50,13 @@ import android.widget.TextView;
 import pt.caixamagica.aptoide.appsbackup.data.AIDLAptoideServiceData;
 
  /**
- * StaticInstalledAppsListAdapter, models a static loading, installed apps list adapter
+ * StaticAvailableAppsListAdapter, models a static loading, available apps list adapter
  * 									extends baseAdapter
  * 
  * @author dsilveira
- * @since 3.0
  *
  */
-public class StaticInstalledAppsListAdapter extends BaseAdapter{
+public class StaticAvailableAppsListAdapter extends BaseAdapter{
 
 	private ListView listView;
 	private LayoutInflater layoutInflater;
@@ -65,7 +64,7 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 	private ViewDisplayListApps apps = null;
 	private ViewDisplayListApps freshApps = null;
 	
-	private InstalledAppsManager appsManager;
+	private AvailableAppsManager appsManager;
 	
 	private AIDLAptoideServiceData serviceDataCaller = null;
 	
@@ -78,7 +77,7 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
         	EnumAptoideInterfaceTasks task = EnumAptoideInterfaceTasks.reverseOrdinal(msg.what);
         	switch (task) {
 				
-				case RESET_INSTALLED_LIST_DISPLAY:
+				case RESET_AVAILABLE_LIST_DISPLAY:
 					resetDisplay();
 					break;
 	
@@ -90,27 +89,27 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
     
     
 
-    private class InstalledAppsManager{
-    	private ExecutorService installedColectorsPool;
+    private class AvailableAppsManager{
+    	private ExecutorService availableColectorsPool;
     	
-    	public InstalledAppsManager(){
-    		installedColectorsPool = Executors.newSingleThreadExecutor();
+    	public AvailableAppsManager(){
+    		availableColectorsPool = Executors.newSingleThreadExecutor();
     	}
     	
     	public void reset(){
         	try {
-				installedColectorsPool.execute(new GetInstalledApps());
+				availableColectorsPool.execute(new GetAvailableApps());
 			} catch (Exception e) { }
         }
     	
-    	private class GetInstalledApps implements Runnable{
+    	private class GetAvailableApps implements Runnable{
 
 			@Override
 			public void run() {
-				aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_INSTALLED_TO_PROGRESSBAR.ordinal());
+				aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_PROGRESSBAR.ordinal());
 				try {
-					setFreshInstalledApps(serviceDataCaller.callGetInstalledApps());
-					interfaceTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_INSTALLED_LIST_DISPLAY.ordinal());
+					setFreshAvailableApps(serviceDataCaller.callGetAllAvailableApps());
+					interfaceTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_AVAILABLE_LIST_DISPLAY.ordinal());
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
@@ -122,7 +121,7 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 	
 	
 	
-	public static class InstalledRowViewHolder{
+	public static class AvailableRowViewHolder{
 		ImageView app_icon;
 		
 		TextView app_name;
@@ -142,17 +141,17 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-
-		InstalledRowViewHolder rowViewHolder;
+		
+		AvailableRowViewHolder rowViewHolder;
 		
 		if(convertView == null){
 			convertView = layoutInflater.inflate(R.layout.row_app_backup, null);
 			
-			rowViewHolder = new InstalledRowViewHolder();
+			rowViewHolder = new AvailableRowViewHolder();
 			rowViewHolder.app_icon = (ImageView) convertView.findViewById(R.id.app_icon);
 			rowViewHolder.app_name = (TextView) convertView.findViewById(R.id.app_name);
 			rowViewHolder.version_name = (TextView) convertView.findViewById(R.id.version_name);
-			
+
 			rowViewHolder.timestamp = (TextView) convertView.findViewById(R.id.timestamp);
 			
 			rowViewHolder.status = (TextView) convertView.findViewById(R.id.status);
@@ -162,7 +161,7 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 			
 			convertView.setTag(rowViewHolder);
 		}else{
-			rowViewHolder = (InstalledRowViewHolder) convertView.getTag();
+			rowViewHolder = (AvailableRowViewHolder) convertView.getTag();
 		}
 		
 		File iconCache = new File(apps.get(position).getIconCachePath());
@@ -174,7 +173,7 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 		
 		rowViewHolder.app_name.setText(apps.get(position).getAppName());
 		rowViewHolder.version_name.setText(" "+apps.get(position).getVersionName());
-		
+
 		rowViewHolder.timestamp.setText(((ViewDisplayApplicationBackup) apps.get(position)).getFormatedTimestamp());
 		
 		rowViewHolder.status.setText(((ViewDisplayApplicationBackup) apps.get(position)).getStatus().toString());
@@ -187,19 +186,6 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 				((ViewDisplayApplicationBackup) apps.get(position)).toggleCheck();
 			}
 		});
-		
-//		if(((ViewDisplayApplicationInstalled) apps.get(position)).isDowngradable()){
-//			rowViewHolder.app_downgradable.setVisibility(View.VISIBLE);
-//		}else{
-//			rowViewHolder.app_downgradable.setVisibility(View.INVISIBLE);
-//		}
-//
-//		if(((ViewDisplayApplicationInstalled) apps.get(position)).isUpdatable()){
-//			rowViewHolder.app_upgradable.setVisibility(View.VISIBLE);
-//		}else{
-//			rowViewHolder.app_upgradable.setVisibility(View.INVISIBLE);
-//		}
-		
 		
 		return convertView;
 	}
@@ -263,14 +249,14 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 	 * @param context
 	 * @param textViewResourceId
 	 */
-	public StaticInstalledAppsListAdapter(Context context, ListView listView, AIDLAptoideServiceData serviceDataCaller, Handler aptoideTasksHandler) {
+	public StaticAvailableAppsListAdapter(Context context, ListView listView, AIDLAptoideServiceData serviceDataCaller, Handler aptoideTasksHandler) {
 		
 		this.serviceDataCaller = serviceDataCaller;
 		this.aptoideTasksHandler = aptoideTasksHandler;
 		
 		apps = new ViewDisplayListApps();
 
-		appsManager = new InstalledAppsManager();
+		appsManager = new AvailableAppsManager();
 
 
 		this.listView = listView;
@@ -279,12 +265,12 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 	
 	
 	
-	public void resetDisplayInstalled(){
+	public void resetDisplayAvailable(){
 		appsManager.reset();
-    	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_AVAILABLE_LIST_DISPLAY.ordinal());
+//    	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_INSTALLED_LIST_DISPLAY.ordinal());
 	}
 	
-	public void refreshDisplayInstalled(){
+	public void refreshDisplayAvailable(){
 		notifyDataSetChanged();
 	}
 	
@@ -294,27 +280,27 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 		listView.setAdapter(this);    	
     }
 	
-	private synchronized void setFreshInstalledApps(ViewDisplayListApps freshInstalledApps){
+	private synchronized void setFreshAvailableApps(ViewDisplayListApps freshInstalledApps){
 		this.freshApps = freshInstalledApps;
 	}
 	
 	private void resetDisplay(){
 		if(freshApps == null || freshApps.isEmpty()){
-			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_INSTALLED_TO_NO_APPS.ordinal());
+			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_NO_APPS.ordinal());
 		}else{
-			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_INSTALLED_TO_LIST.ordinal());
+			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_LIST.ordinal());
 		
 	    	this.apps = freshApps;
-			Log.d("Aptoide-StaticInstalledAppsListAdapter", "new Installed List: "+getCount());
+			Log.d("Aptoide-StaticAvailableAppsListAdapter", "new Available List: "+getCount());
 	   		initDisplay();
-	    	refreshDisplayInstalled();
+	    	refreshDisplayAvailable();
 	    	
 //	    	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_UPDATABLE_LIST_DISPLAY.ordinal());
 		}
 	}
 	
 	public void shutdownNow(){
-		appsManager.installedColectorsPool.shutdownNow();
+		appsManager.availableColectorsPool.shutdownNow();
 	}
 	
 }

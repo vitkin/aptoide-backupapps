@@ -44,6 +44,7 @@ import pt.caixamagica.aptoide.appsbackup.ifaceutil.DynamicAvailableAppsListAdapt
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.DynamicAvailableAppsListAdapter.AvailableRowViewHolder;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.EnumAppStatus;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.FixedTabsAdapter;
+import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticAvailableAppsListAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticCategoriesListAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticInstalledAppsListAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticUpdatableAppsListAdapter;
@@ -169,7 +170,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //	private ArrayList<ViewMyapp> handlingMyapps;
 	
 //	private StaticCategoriesListAdapter categoriesAdapter = null;
-	private DynamicAvailableAppsListAdapter availableAdapter = null;
+//	private DynamicAvailableAppsListAdapter availableAdapter = null;
+	private StaticAvailableAppsListAdapter availableAdapter = null;
 	private StaticInstalledAppsListAdapter installedAdapter = null;
 //	private StaticUpdatableAppsListAdapter updatableAdapter = null;
 	
@@ -845,7 +847,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	private void initListsAdapters(){
 //		categoriesAdapter = new StaticCategoriesListAdapter(this, categoriesListView, serviceDataCaller, interfaceTasksHandler);
 //		categoriesAdapter = new StaticCategoriesListAdapter(this, availableAppsListView, serviceDataCaller, interfaceTasksHandler);
-		availableAdapter = new DynamicAvailableAppsListAdapter(this, availableAppsListView, serviceDataCaller, interfaceTasksHandler);
+//		availableAdapter = new DynamicAvailableAppsListAdapter(this, availableAppsListView, serviceDataCaller, interfaceTasksHandler);
+		availableAdapter = new StaticAvailableAppsListAdapter(this, availableAppsListView, serviceDataCaller, interfaceTasksHandler);
 		installedAdapter = new StaticInstalledAppsListAdapter(this, installedAppsListView, serviceDataCaller, interfaceTasksHandler);
 //		updatableAdapter = new StaticUpdatableAppsListAdapter(this, updatableAppsListView, serviceDataCaller, interfaceTasksHandler);
 	}
@@ -855,13 +858,15 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //			categoriesAdapter.resetDisplayCategories();
 //		}else{
 //			availableAdapter.resetDisplay(category);
-			availableAdapter.resetDisplay(null);
+//			availableAdapter.resetDisplay(null);
+			availableAdapter.resetDisplayAvailable();
 //		}
 	}
 	
 	public void reloadDisplayAvailable(){
 //		if(!availableByCategory || categoriesAdapter.getCategory() != null && !categoriesAdapter.getCategory().hasChildren()){
-			availableAdapter.reloadDisplay();
+//			availableAdapter.reloadDisplay();
+			availableAdapter.resetDisplayAvailable();
 //		}
 	}
 	
@@ -1007,8 +1012,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //        appsListFlipper.addView(categoriesListView, EnumAppsLists.Available.ordinal());
 ////		switchFlipperElements(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_CATEGORIES);
 		
-		availableAdapter.setLoadingFooter(false);
-		availableAdapter.setLoadingHeader(false);
+//		availableAdapter.setLoadingFooter(false);
+//		availableAdapter.setLoadingHeader(false);
 		
 		emptyAvailableAppsList.setVisibility(View.GONE);
 		availableAppsListView.setVisibility(View.VISIBLE);
@@ -1578,7 +1583,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 								newSortingPolicy = EnumAppsSorting.SIZE;
 							}
 							if(newSortingPolicy != null && newSortingPolicy != appsSortingPolicy){
-								availableAdapter.sleep();
+//								availableAdapter.sleep();
 								appsSortingPolicy = newSortingPolicy;
 								setAppsSortingPolicy(appsSortingPolicy);
 							}
@@ -1639,7 +1644,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 				return true;
 				
 			case SETTINGS:
-				availableAdapter.sleep();
+//				availableAdapter.sleep();
 				Intent settings = new Intent(this, Settings.class);
 				startActivity(settings);
 				return true;	

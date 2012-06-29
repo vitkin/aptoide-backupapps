@@ -2478,15 +2478,23 @@ public class ManagerDatabase {
 					break;
 			}
 			Log.d("Aptoide-ManagerDatabase", "sorting by: "+sortingPolicy);
-			selectAvailableApps +=	" LIMIT ?"
-									+" OFFSET ?";
+			if(range > 0){
+				selectAvailableApps +=	" LIMIT ?"
+										+" OFFSET ?";
+			}
 		String[] selectAvailableAppsArgs = new String[] {Integer.toString(range), Integer.toString(offset)};
 //		Log.d("Aptoide-ManagerDatabase", "available apps: "+selectAvailableApps);
 		
 		try{
 			db.beginTransaction();
 			
-			Cursor appsCursor = aptoideNonAtomicQuery(selectAvailableApps, selectAvailableAppsArgs);
+			Cursor appsCursor;
+			
+			if(range > 0){
+				appsCursor = aptoideNonAtomicQuery(selectAvailableApps, selectAvailableAppsArgs);
+			}else{
+				appsCursor = aptoideNonAtomicQuery(selectAvailableApps);
+			}
 
 			db.setTransactionSuccessful();
 			db.endTransaction();

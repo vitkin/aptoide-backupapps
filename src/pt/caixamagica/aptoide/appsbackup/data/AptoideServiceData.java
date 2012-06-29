@@ -342,6 +342,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		}
 
 		@Override
+		public ViewDisplayListApps callGetAllAvailableApps() throws RemoteException {
+			return getAllAvailableApps();
+		}
+
+		@Override
 		public ViewDisplayListApps callGetUpdatableApps() throws RemoteException {
 			return getUpdatableApps();
 		}
@@ -2421,6 +2426,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	public ViewDisplayListApps getInstalledApps(){
 		AptoideLog.d(AptoideServiceData.this, "Getting Installed Apps");
 		return managerDatabase.getInstalledAppsDisplayInfo(EnumAppsSorting.reverseOrdinal(managerPreferences.getAppsSortingPolicy()));
+	}
+	
+	public ViewDisplayListApps getAllAvailableApps(){
+		AptoideLog.d(AptoideServiceData.this, "Getting All Available Apps");
+		return managerDatabase.getAvailableAppsDisplayInfo(0, 0, managerPreferences.isHwFilterOn(), managerPreferences.getAgeRating(), EnumAppsSorting.reverseOrdinal(managerPreferences.getAppsSortingPolicy()));
 	}
 	
 	public ViewDisplayListApps getAvailableApps(int offset, int range){

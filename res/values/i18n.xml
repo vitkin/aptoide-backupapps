@@ -277,7 +277,7 @@
     <string name="invalid_repo_name">Invalid store name</string>
     <string name="invalid_apk">Invalid apk</string>
     <string name="invalid_rating">Invalid rating</string>
-    <string name="invalid_category"></string>
+    <string name="invalid_category">Invalid category</string>
     <string name="invalid_website">Invalid website url</string>
     <string name="invalid_email">Invalid e-mail address</string>
     

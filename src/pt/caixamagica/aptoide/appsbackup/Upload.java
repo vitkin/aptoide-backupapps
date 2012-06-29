@@ -409,14 +409,14 @@ public class Upload extends Activity {
 		});
 		notUploaded.setVisibility(View.GONE);
 		
-		backButton = (Button) findViewById(R.id.uploaded_exit);
-		backButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				finish();			
-			}
-		  });
-		backButton.setEnabled(false);
+//		backButton = (Button) findViewById(R.id.uploaded_exit);
+//		backButton.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				finish();
+//			}
+//		  });
+//		backButton.setEnabled(false);
 	}
 	
 	private void enableGoingBack(){
