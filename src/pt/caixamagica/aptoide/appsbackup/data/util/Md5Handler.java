@@ -37,7 +37,7 @@ public class Md5Handler {
 	
 	public String md5Calc(File f){
 		int i;
-		String md5hash = null;		
+		String md5hash = "";		
 		byte[] buffer = new byte[1024];
 		int read = 0;
 		
@@ -49,7 +49,9 @@ public class Md5Handler {
 			byte[] md5sum = digest.digest();
 			BigInteger bigInt = new BigInteger(1, md5sum);
 			md5hash = bigInt.toString(16);
-		}catch(Exception e) {}
+		}catch(Exception e) {
+			return md5hash;
+		}
 		
 		if(md5hash.length() != 33){
 			String tmp = "";

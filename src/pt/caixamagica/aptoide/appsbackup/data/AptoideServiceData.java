@@ -145,9 +145,8 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	Handler delayedExecutionHandler = new Handler();
     
 	private AtomicBoolean syncingInstalledApps;
-	
+	private AtomicBoolean addingRepo;
 	private AtomicBoolean automaticBackupOn;
-	
 	private AtomicBoolean registeredNetworkStateChangeReceiver;
 	
 	/**
@@ -213,6 +212,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		@Override
 		public int callRegisterAvailableAppsObserver(AIDLAptoideInterface availableAppsObserver) throws RemoteException {
 			return registerAvailableDataObserver(availableAppsObserver);
+		}
+		
+		@Override
+		public void callUnregisterAvailableAppsObserver(AIDLAptoideInterface availableAppsObserver) throws RemoteException {
+			unregisterAvailableDataObserver(availableAppsObserver);
 		}
 		
 		@Override
@@ -585,6 +589,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		public void callUploadApk(ViewApk uploadingApk) throws RemoteException {
 			uploadApk(uploadingApk);
 		}
+
 		
 	}; 
 
@@ -619,13 +624,18 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		return checkIfAnyReposInUse();
 	}
 	
+	public void unregisterAvailableDataObserver(AIDLAptoideInterface availableAppsObserver){
+		try {
+			aptoideClients.remove(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST);
+		} catch (Exception e) {	}
+	}
+	
 	public void registerInstalledDataObserver(AIDLAptoideInterface installedAppsObserver){
 		aptoideClients.put(EnumServiceDataCallback.UPDATE_INSTALLED_LIST, installedAppsObserver);
 		if(!syncingInstalledApps.get()){
 			try {
 				installedAppsObserver.newInstalledListDataAvailable();AptoideLog.d(AptoideServiceData.this, "!syncing installed apps");
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -784,7 +794,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 
 			
 			syncingInstalledApps = new AtomicBoolean(false);
-			
+			addingRepo = new AtomicBoolean(false);
 			automaticBackupOn = new AtomicBoolean(false);
 			
 			registerInstalledAppsChangeReceiver();
@@ -807,17 +817,30 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 
 
 	@Override
-	public void onDestroy() {	//TODO make sure to close all child threads
-		managerNotifications.destroy();
-		if(!automaticBackupOn.get()){
-			unregisterReceiver(installedAppsChangeListener);
+	public void onDestroy() {
+		if(!addingRepo.get() && !automaticBackupOn.get()){
+			managerNotifications.destroy();
+			try {
+				unregisterReceiver(installedAppsChangeListener);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	//		unregisterNetworkStateChangeReceiver();
+			cachedThreadPool.shutdownNow();
+	//		Toast.makeText(this, R.string.aptoide_stopped, Toast.LENGTH_LONG).show();
+			stopSelf();
+			Log.d("Aptoide ServiceData", "Service stopped");
+			super.onDestroy();
+		}else{
+			Log.d("Aptoide ServiceData", "Deferring Service stopping");
 		}
-//		unregisterNetworkStateChangeReceiver();
-		cachedThreadPool.shutdownNow();
-//		Toast.makeText(this, R.string.aptoide_stopped, Toast.LENGTH_LONG).show();
-		stopSelf();
-		Log.d("Aptoide ServiceData", "Service stopped");
-		super.onDestroy();
+	}
+	
+	private void shouldIShutDown(){
+		Log.d("Aptoide ServiceData", "Should I stop?");
+		if(aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST) == null){
+			onDestroy();
+		}
 	}
 
 	
@@ -878,7 +901,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 					if(selfUpdateClient != null){
 						try {
 							selfUpdateClient.cancelUpdateActivity();
-						} catch (RemoteException e) {
+						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
@@ -1067,7 +1090,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_INSTALLED_LIST).refreshInstalledDisplay(); 
 //					Looper.prepare();
 //					Toast.makeText(getApplicationContext(), "installed list now available in next -> tab", Toast.LENGTH_LONG).show();
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -1085,7 +1108,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_INSTALLED_LIST).newInstalledListDataAvailable(); 
 //					Looper.prepare();
 //					Toast.makeText(getApplicationContext(), "installed list now available in next -> tab", Toast.LENGTH_LONG).show();
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -1101,7 +1124,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				public void run() {
 					try {
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).refreshAvailableDisplay();
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -1116,7 +1139,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				public void run() {
 					try {
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).newAvailableListDataAvailable();
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -1131,7 +1154,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				public void run() {
 					try {
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).resetAvailableListData();
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -1147,7 +1170,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 					AptoideLog.d(AptoideServiceData.this, "No available apps!");
 					try {
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).noAvailableListDataAvailable();
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}	
 				}
@@ -1163,7 +1186,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 					AptoideLog.d(AptoideServiceData.this, "Loading available apps!");
 					try {
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).loadingAvailableListDataAvailable();
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}	
 				}
@@ -1179,7 +1202,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 					AptoideLog.d(AptoideServiceData.this, "Loading available apps progress completion target: "+progressCompletionTarget);
 					try {
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).loadingAvailableListProgressSetCompletionTarget(progressCompletionTarget);
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}	
 				}
@@ -1195,7 +1218,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 //				AptoideLog.d(AptoideServiceData.this, "Loading available apps progress update: "+currentProgress);
 					try {
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).loadingAvailableListProgressUpdate(currentProgress);
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}	
 				}
@@ -1211,7 +1234,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 					AptoideLog.d(AptoideServiceData.this, "Loading available apps progress indeterminate");
 					try {
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).loadingAvailableListProgressIndeterminate();
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}	
 				}
@@ -1233,7 +1256,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 					AptoideLog.d(AptoideServiceData.this, "Uploading app: "+appHashid+" progress completion target: "+progressCompletionTarget);
 					try {
 						uploadClient.uploadingProgressSetCompletionTarget(appHashid, progressCompletionTarget);
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}	
 				}
@@ -1249,7 +1272,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 //				AptoideLog.d(AptoideServiceData.this, "Loading available apps progress update: "+currentProgress);
 					try {
 						uploadClient.uploadingProgressUpdate(appHashid, currentProgress);
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}	
 				}
@@ -1265,7 +1288,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 					AptoideLog.d(AptoideServiceData.this, "Uploading app: "+appHashid+" progress indeterminate");
 					try {
 						uploadClient.uploadingProgressIndeterminate(appHashid);
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}	
 				}
@@ -1477,6 +1500,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	
 	
 	public void addRepoBare(final ViewRepository originalRepository){
+		addingRepo.set(true);
 		startedLoadingRepos();
 		reposInserting.add(originalRepository.getHashid());
 		cachedThreadPool.execute(new Runnable() {
@@ -1674,6 +1698,8 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		if(downloadStatus.getRepository().getSize() < downloadStatus.getOffset()){
 //			refreshAvailableDisplay();
 //			resetAvailableLists();
+			addingRepo.set(false);
+			shouldIShutDown();
 			return;
 		}else{
 //			if(downloadStatus.getOffset() >  Constants.FIRST_ELEMENT){
@@ -2384,7 +2410,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 					try {
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).finishedLoadingRepos();
 //					searchClients //TODO implement sort blocking in search when loading repo from bare
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -2401,7 +2427,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 					try {
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).startedLoadingRepos();
 //					searchClients //TODO implement sort blocking in search when loading repo from bare
-					} catch (RemoteException e) {
+					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}

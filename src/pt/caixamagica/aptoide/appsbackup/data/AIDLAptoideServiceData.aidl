@@ -78,6 +78,7 @@ interface AIDLAptoideServiceData {
 	
 	void callRegisterInstalledAppsObserver(in AIDLAptoideInterface installedAppsObserver);
 	int callRegisterAvailableAppsObserver(in AIDLAptoideInterface availableAppsObserver);
+	void callUnregisterAvailableAppsObserver(in AIDLAptoideInterface availableAppsObserver);
 	
 	boolean callAreListsByCategory();
 	void callSetListsBy(in boolean byCategory);

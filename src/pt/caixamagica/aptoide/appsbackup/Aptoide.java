@@ -768,7 +768,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 		}
 
     	if(!serviceDataIsBound){
-//    		startService(new Intent(this, AptoideServiceData.class));	//TODO uncomment this to make service independent of Aptoide's lifecycle
+    		startService(new Intent(this, AptoideServiceData.class));	//TODO uncomment this to make service independent of Aptoide's lifecycle
     		bindService(new Intent(this, AptoideServiceData.class), serviceDataConnection, Context.BIND_AUTO_CREATE);
     	}else{
     		handleIncomingIntent(getIntent());
@@ -1715,6 +1715,11 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	@Override
 	protected void onDestroy() {
 		if (serviceDataIsBound) {
+			try {
+				serviceDataCaller.callUnregisterAvailableAppsObserver(serviceDataCallback);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
             unbindService(serviceDataConnection);
             serviceDataIsBound = false;
         }
