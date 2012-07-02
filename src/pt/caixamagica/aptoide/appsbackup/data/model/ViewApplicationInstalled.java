@@ -46,12 +46,13 @@ public class ViewApplicationInstalled {
 	 * @param boolean isTypeInstalled
 	 * 
 	 */
-	public ViewApplicationInstalled(String applicationName, String packageName, String versionName, int versionCode, long timestamp, long size) {
+	public ViewApplicationInstalled(String applicationName, String packageName, String versionName, int versionCode, long timestamp, long size, int type) {
 		this(packageName, versionCode, true);
 		setVersionName(versionName);
 		setApplicationName(applicationName);
 		setTimestamp(timestamp);
 		setSize(size);
+		setType(type);
 	}
 	
 	/**
@@ -160,6 +161,14 @@ public class ViewApplicationInstalled {
 	
 	public long getSize(){
 		return values.getAsInteger(Constants.KEY_APP_INSTALLED_SIZE);
+	}
+	
+	public int getType(){
+		return values.getAsInteger(Constants.KEY_APP_INSTALLED_TYPE);
+	}
+	
+	public void setType(int type){
+		values.put(Constants.KEY_APP_INSTALLED_TYPE, type);		
 	}
 	
 	/**

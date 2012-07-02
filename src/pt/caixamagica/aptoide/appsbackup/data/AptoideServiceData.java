@@ -822,9 +822,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 			managerNotifications.destroy();
 			try {
 				unregisterReceiver(installedAppsChangeListener);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			} catch (Exception e) {	}
 	//		unregisterNetworkStateChangeReceiver();
 			cachedThreadPool.shutdownNow();
 	//		Toast.makeText(this, R.string.aptoide_stopped, Toast.LENGTH_LONG).show();

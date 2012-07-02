@@ -29,21 +29,33 @@ package pt.caixamagica.aptoide.appsbackup.ifaceutil;
  *
  */
 public enum EnumAppStatus {
-	Installed,
-	BackedUp,
-	Other;
+	INSTALLED,
+	SYSTEM,
+	PROTECTED,
+	TOO_BIG,
+	BACKED_UP,
+	OTHER;
 	
 	public static EnumAppStatus reverseOrdinal(int ordinal){
 		return values()[ordinal];
 	}
 	
 	@Override
-	public String toString() {
+	public String toString() {	//TODO receive context for i18n
 		switch (this) {
-			case Installed:
-				return super.toString();
+			case INSTALLED:
+				return "Installed";
 	
-			case BackedUp:
+			case SYSTEM:
+				return "System";
+				
+			case PROTECTED:
+				return "Protected";
+				
+			case TOO_BIG:
+				return "Too big";
+
+			case BACKED_UP:
 				return "Backed up";
 				
 			default:

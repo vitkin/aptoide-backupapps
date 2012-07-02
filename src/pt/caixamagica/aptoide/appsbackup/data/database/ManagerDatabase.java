@@ -2210,8 +2210,9 @@ public class ManagerDatabase {
 		final int INSTALLED_VERSION_CODE = Constants.COLUMN_FOURTH;
 		final int TIMESTAMP = Constants.COLUMN_FIFTH;
 		final int SIZE = Constants.COLUMN_SIXTH;
+		final int TYPE = Constants.COLUMN_SEVENTH;
 //		final int UP_TO_DATE_VERSION_NAME = Constants.COLUMN_FIFTH;
-		final int UP_TO_DATE_VERSION_CODE = Constants.COLUMN_SEVENTH;
+		final int UP_TO_DATE_VERSION_CODE = Constants.COLUMN_EIGTH;
 //		final int DOWNGRADE_VERSION_NAME = Constants.COLUMN_SEVENTH;
 //		final int DOWNGRADE_VERSION_CODE = Constants.COLUMN_SIXTH;
 		
@@ -2221,7 +2222,7 @@ public class ManagerDatabase {
 		String selectInstalledApps = "SELECT I."+Constants.KEY_APP_INSTALLED_NAME+",I."+Constants.KEY_APP_INSTALLED_HASHID
 											+",I."+Constants.KEY_APP_INSTALLED_VERSION_NAME+",I."+Constants.KEY_APP_INSTALLED_VERSION_CODE
 											+",I."+Constants.KEY_APP_INSTALLED_TIMESTAMP+",I."+Constants.KEY_APP_INSTALLED_SIZE
-											+",U."+Constants.DISPLAY_APP_UP_TO_DATE_VERSION_CODE
+											+",I."+Constants.KEY_APP_INSTALLED_TYPE+",U."+Constants.DISPLAY_APP_UP_TO_DATE_VERSION_CODE
 									+" FROM "+Constants.TABLE_APP_INSTALLED+" I"
 									+" NATURAL LEFT JOIN (SELECT "+Constants.KEY_APPLICATION_PACKAGE_NAME
 																+",MAX("+Constants.KEY_APPLICATION_VERSION_CODE+") AS "+Constants.DISPLAY_APP_UP_TO_DATE_VERSION_CODE
@@ -2259,7 +2260,7 @@ public class ManagerDatabase {
 			do{
 				app = new ViewDisplayApplicationBackup(appsCursor.getInt(APP_HASHID), appsCursor.getString(APP_NAME), appsCursor.getString(INSTALLED_VERSION_NAME)
 													,appsCursor.getLong(TIMESTAMP), appsCursor.getInt(SIZE) //Stored value is long (correct this in the future)
-													,(appsCursor.getInt(UP_TO_DATE_VERSION_CODE) == appsCursor.getInt(INSTALLED_VERSION_CODE)?EnumAppStatus.BackedUp:EnumAppStatus.Other)
+													,(appsCursor.getInt(UP_TO_DATE_VERSION_CODE) == appsCursor.getInt(INSTALLED_VERSION_CODE)?EnumAppStatus.BACKED_UP:(EnumAppStatus.reverseOrdinal(appsCursor.getInt(TYPE))))
 													);
 				installedApps.add(app);
 
@@ -2511,7 +2512,7 @@ public class ManagerDatabase {
 			do{									
 //				Log.d("Aptoide-ManagerDatabase", "installed: "+appsCursor.getLong(INSTALLED));										
 				app = new ViewDisplayApplicationBackup(appsCursor.getInt(APP_HASHID), appsCursor.getString(APP_NAME), appsCursor.getString(UP_TO_DATE_VERSION_NAME),
-													appsCursor.getLong(TIMESTAMP), appsCursor.getInt(SIZE), ((!appsCursor.isNull(INSTALLED) && appsCursor.getInt(INSTALLED) == appsCursor.getInt(APP_HASHID))?EnumAppStatus.Installed:EnumAppStatus.Other));
+													appsCursor.getLong(TIMESTAMP), appsCursor.getInt(SIZE), ((!appsCursor.isNull(INSTALLED) && appsCursor.getInt(INSTALLED) == appsCursor.getInt(APP_HASHID))?EnumAppStatus.INSTALLED:EnumAppStatus.OTHER));
 				availableApps.add(app);
 
 			}while(appsCursor.moveToNext());

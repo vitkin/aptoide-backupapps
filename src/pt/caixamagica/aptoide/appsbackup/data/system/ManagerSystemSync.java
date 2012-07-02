@@ -30,6 +30,7 @@ import pt.caixamagica.aptoide.appsbackup.data.AptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewApplication;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewApplicationInstalled;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewUploadInfo;
+import pt.caixamagica.aptoide.appsbackup.ifaceutil.EnumAppStatus;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -105,14 +106,22 @@ public class ManagerSystemSync {
 			long timestamp = apk.lastModified();
 			long size = apk.length()/1024;//TODO remove the /1024 after fixing the repo to return Bytes instead of Kbytes
 			
-			if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[1].equals("system")  || installedAppInfo.applicationInfo.sourceDir.split("[/]+")[2].equals("app-private") || apk.length() > 20000000){
-				continue;
-				//TODO maybe show it but mark as system and private
+//			if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[1].equals("system")  || installedAppInfo.applicationInfo.sourceDir.split("[/]+")[2].equals("app-private") || apk.length() > 20000000){
+//				continue;
+//			}
+			
+			EnumAppStatus type = EnumAppStatus.INSTALLED;
+			if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[1].equals("system")){
+				type = EnumAppStatus.SYSTEM;
+			}else if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[2].equals("app-private")){
+				type = EnumAppStatus.PROTECTED;
+			}else if(apk.length() > 20000000){
+				type = EnumAppStatus.TOO_BIG;
 			}
 			
 			installedApp = new ViewApplicationInstalled((packageManager.getApplicationLabel(installedAppInfo.applicationInfo)).toString(), installedAppInfo.packageName, 
 							((installedAppInfo.versionName==null)?Integer.toBinaryString(installedAppInfo.versionCode):installedAppInfo.versionName), installedAppInfo.versionCode, 
-							timestamp, size);
+							timestamp, size, type.ordinal());
 			installedApps.add(installedApp);
 		}
 		return installedApps;
@@ -126,10 +135,19 @@ public class ManagerSystemSync {
 			File apk = new File(installedAppInfo.applicationInfo.sourceDir);
 			long timestamp = apk.lastModified();
 			long size = apk.length()/1024;//TODO remove the /1024 after fixing the repo to return Bytes instead of Kbytes
+
+			EnumAppStatus type = EnumAppStatus.INSTALLED;
+			if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[1].equals("system")){
+				type = EnumAppStatus.SYSTEM;
+			}else if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[2].equals("app-private")){
+				type = EnumAppStatus.PROTECTED;
+			}else if(apk.length() > 20000000){
+				type = EnumAppStatus.TOO_BIG;
+			}
 			
 			installedApp = new ViewApplicationInstalled((packageManager.getApplicationLabel(installedAppInfo.applicationInfo)).toString(), installedAppInfo.packageName, 
 							((installedAppInfo.versionName==null)?Integer.toBinaryString(installedAppInfo.versionCode):installedAppInfo.versionName), installedAppInfo.versionCode, 
-							timestamp, size);
+							timestamp, size, type.ordinal());
 			
 		} catch (NameNotFoundException e) {
 			// TODO Auto-generated catch block

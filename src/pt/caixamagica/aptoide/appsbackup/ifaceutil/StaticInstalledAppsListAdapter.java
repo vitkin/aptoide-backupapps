@@ -33,6 +33,7 @@ import pt.caixamagica.aptoide.appsbackup.data.display.ViewDisplayListApps;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewListIds;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
@@ -126,6 +127,7 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 		ImageView app_icon;
 		
 		TextView app_name;
+		TextView version_prefix;
 		TextView version_name;
 
 		TextView timestamp;
@@ -151,6 +153,7 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 			rowViewHolder = new InstalledRowViewHolder();
 			rowViewHolder.app_icon = (ImageView) convertView.findViewById(R.id.app_icon);
 			rowViewHolder.app_name = (TextView) convertView.findViewById(R.id.app_name);
+			rowViewHolder.version_prefix = (TextView) convertView.findViewById(R.id.version_prefix);
 			rowViewHolder.version_name = (TextView) convertView.findViewById(R.id.version_name);
 			
 			rowViewHolder.timestamp = (TextView) convertView.findViewById(R.id.timestamp);
@@ -176,8 +179,29 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 		rowViewHolder.version_name.setText(" "+apps.get(position).getVersionName());
 		
 		rowViewHolder.timestamp.setText(((ViewDisplayApplicationBackup) apps.get(position)).getFormatedTimestamp());
+
+		EnumAppStatus status = ((ViewDisplayApplicationBackup) apps.get(position)).getStatus();
+		rowViewHolder.status.setText(status.toString());
+		switch (status) {
+			case SYSTEM:
+			case PROTECTED:
+			case TOO_BIG:
+				rowViewHolder.status.setTextColor(Color.RED);
+				rowViewHolder.app_name.setTextColor(Color.GRAY);
+				rowViewHolder.version_prefix.setTextColor(Color.GRAY);
+				rowViewHolder.version_name.setTextColor(Color.GRAY);
+				rowViewHolder.size.setTextColor(Color.GRAY);
+				break;
+	
+			default:
+				rowViewHolder.status.setTextColor(Color.rgb(Integer.parseInt("CC", 16), Integer.parseInt("66", 16), Integer.parseInt("00", 16)));
+				rowViewHolder.app_name.setTextColor(Color.BLACK);
+				rowViewHolder.version_prefix.setTextColor(Color.BLACK);
+				rowViewHolder.version_name.setTextColor(Color.BLACK);
+				rowViewHolder.size.setTextColor(Color.rgb(Integer.parseInt("4F", 16), Integer.parseInt("4F", 16), Integer.parseInt("4F", 16)));				
+				break;
+		}
 		
-		rowViewHolder.status.setText(((ViewDisplayApplicationBackup) apps.get(position)).getStatus().toString());
 		rowViewHolder.size.setText(((ViewDisplayApplicationBackup) apps.get(position)).getSize());
 		
 		rowViewHolder.check.setChecked(((ViewDisplayApplicationBackup) apps.get(position)).isChecked());

@@ -119,7 +119,7 @@ public class Constants {
 	public static final String SCHEME_MARKET = "market";
 	public static final String SCHEME_HTTPS = "https";
 	public static final String SCHEME_FILE_PREFIX = "file://";
-	public static final String HOST_MARKET = "market.android.com";
+	public static final String HOST_MARKET = "market.android.com";	//TODO support new play schema
 //	public static final String QUERY_PARAMETER_ID = "id";
 //	public static final String PREFIX_PNAME = "pname:";
 //	public static final String PREFIX_PUB = "pub:";
@@ -322,7 +322,9 @@ public class Constants {
 	public static final String KEY_APP_INSTALLED_NAME = "app_name";		//TODO maybe create index, consider changing columns order to increase lookup performance
 	public static final String KEY_APP_INSTALLED_TIMESTAMP = KEY_APPLICATION_TIMESTAMP;
 	public static final String KEY_APP_INSTALLED_SIZE = "upload_size";
-	public static final int NUMBER_OF_COLUMNS_APP_INSTALLED = 5;
+	/** ordinal of EnumAppInstalledType */
+	public static final String KEY_APP_INSTALLED_TYPE = "type";
+	public static final int NUMBER_OF_COLUMNS_APP_INSTALLED = 6;
 	
 	
 	public static final String TABLE_APP_TO_NEVER_UPDATE = "app_to_never_update";
@@ -492,7 +494,8 @@ public class Constants {
 			+ KEY_APP_INSTALLED_VERSION_NAME + " TEXT NOT NULL, "
 			+ KEY_APP_INSTALLED_NAME + " TEXT NOT NULL,"
 			+ KEY_APP_INSTALLED_TIMESTAMP + " INTEGER NOT NULL, "
-			+ KEY_APP_INSTALLED_SIZE + " INTEGER NOT NULL "
+			+ KEY_APP_INSTALLED_SIZE + " INTEGER NOT NULL, "
+			+ KEY_APP_INSTALLED_TYPE + " INTEGER NOT NULL "
 			+"); ";
 //			+ "PRIMARY KEY("+ KEY_APP_INSTALLED_HASHID +") );";	
 
