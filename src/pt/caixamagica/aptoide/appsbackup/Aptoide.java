@@ -680,23 +680,25 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}
-					if(authenticationToken != null){
-						ViewListIds uploads = new ViewListIds();
-						
-						for (int i = 0; i < installedAdapter.getCount(); i++) {
-							if(((ViewDisplayApplicationBackup) installedAdapter.getItem(i)).isChecked()){
-								uploads.add(installedAdapter.getItem(i).getAppHashid());
-							}
+					
+					ViewListIds uploads = new ViewListIds();
+					
+					for (int i = 0; i < installedAdapter.getCount(); i++) {
+						if(((ViewDisplayApplicationBackup) installedAdapter.getItem(i)).isChecked()){
+							uploads.add(installedAdapter.getItem(i).getAppHashid());
 						}
-						if(uploads.size() > 0){
+					}
+					
+					if(uploads.size() > 0){
+						if(authenticationToken != null){
 							Intent upload = new Intent(Aptoide.this, Upload.class);
 							upload.putIntegerArrayListExtra("uploads", uploads);
 							startActivity(upload);
+						}else{
+							AptoideLog.d(Aptoide.this, "can't backup with no server login configured" );
+	//						Toast.makeText(Aptoide.this, R.string.login_required, Toast.LENGTH_SHORT).show();
+							login(uploads, EnumAppsLists.BACKUP);
 						}
-					}else{
-						AptoideLog.d(Aptoide.this, "can't backup with no server login configured" );
-//						Toast.makeText(Aptoide.this, R.string.login_required, Toast.LENGTH_SHORT).show();
-						Login();
 					}
 					
 				}
@@ -714,22 +716,28 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 					} catch (RemoteException e) {
 						e.printStackTrace();
 					}
+					
+					ViewListIds restores = new ViewListIds();
+					ViewDisplayApplicationBackup app;
+					for (int i = 0; i < availableAdapter.getCount(); i++) {
+						app = ((ViewDisplayApplicationBackup) availableAdapter.getItem(i));
+						if(app.isChecked()){
+							restores.add(availableAdapter.getItem(i).getAppHashid());
+						}
+					}
+					
 					if(anyReposInUse){
-						ViewDisplayApplicationBackup app;
-						for (int i = 0; i < availableAdapter.getCount(); i++) {
-							app = ((ViewDisplayApplicationBackup) availableAdapter.getItem(i));
-							if(app.isChecked()){
-								try {
-									serviceDataCaller.callInstallApp(app.getAppHashid());
-								} catch (RemoteException e) {
-									e.printStackTrace();
-								}
+						for (Integer appHashid : restores) {
+							try {
+								serviceDataCaller.callInstallApp(appHashid);
+							} catch (RemoteException e) {
+								e.printStackTrace();
 							}
 						}
 					}else{
 						AptoideLog.d(Aptoide.this, "can't restore with no repo configured" );
 //						Toast.makeText(Aptoide.this, R.string.login_required, Toast.LENGTH_SHORT).show();
-						Login();
+						login(restores, EnumAppsLists.RESTORE);
 					}
 				}
 			});
@@ -817,9 +825,20 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
         }
 	}
 	
-	private void Login(){
+	private void login(){
+		login(null, null);
+	}
+	
+	private void login(ViewListIds uploads, EnumAppsLists action){
 		Intent login = new Intent(Aptoide.this, BazaarLogin.class);
 		login.putExtra("InvoqueType", BazaarLogin.InvoqueType.NO_CREDENTIALS_SET.ordinal());
+		if(uploads != null){
+			if(action.equals(EnumAppsLists.BACKUP)){
+				login.putIntegerArrayListExtra("uploads", uploads);
+			}else{
+				login.putIntegerArrayListExtra("restores", uploads);				
+			}
+		}
 		startActivity(login);
 	}
 	

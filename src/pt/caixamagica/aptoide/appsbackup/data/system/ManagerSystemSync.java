@@ -96,6 +96,16 @@ public class ManagerSystemSync {
 		return packageManager.getApplicationLabel(aptoideInfo.applicationInfo).toString();
 	}
 	
+	public int getAppHashid(String packageName){
+		int versionCode = 0;
+		try {
+			versionCode = packageManager.getPackageInfo(packageName, 0).versionCode;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+		return (packageName+'|'+versionCode).hashCode();
+	}
+	
 	public ArrayList<ViewApplicationInstalled> getInstalledApps(){
 		List<PackageInfo> systemInstalledList = packageManager.getInstalledPackages(0);
 		ArrayList<ViewApplicationInstalled> installedApps = new ArrayList<ViewApplicationInstalled>(systemInstalledList.size());

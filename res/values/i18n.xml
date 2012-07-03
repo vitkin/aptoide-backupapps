@@ -297,6 +297,6 @@
     
     <string name="success">Success</string>
     
-    <string name="app_system_backup_may_fail">%s is protected by the system and Aptoide-AppsBackup might not be able to back it up</string>
+    <string name="app_system_backup_may_fail">%s is protected by the system and Aptoide-AppsBackup might not be able to back it up, or uninstall it</string>
     <string name="app_too_big_backup_may_fail">%s is too big, the server might refuse to receive the upload</string>
 </resources>

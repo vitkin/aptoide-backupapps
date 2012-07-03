@@ -21,6 +21,7 @@ package pt.caixamagica.aptoide.appsbackup;
 
 import pt.caixamagica.aptoide.appsbackup.data.AIDLAptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.AptoideServiceData;
+import pt.caixamagica.aptoide.appsbackup.data.model.ViewListIds;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginCreateStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewServerLogin;
@@ -91,6 +92,10 @@ public class BazaarLogin extends Activity {
 	
 	private ViewServerLogin serverLogin;
 	
+	private boolean afterAction;
+	private ViewListIds actionListIds;
+	private EnumAppsLists actionType;
+	
 	private InvoqueType invoqueType;
 	
 	public static enum LoginState{
@@ -127,7 +132,20 @@ public class BazaarLogin extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.form_login);
     	
-		this.invoqueType = InvoqueType.reverseOrdinal(getIntent().getExtras().getInt("InvoqueType"));	
+		Bundle extras = getIntent().getExtras();
+		if(extras.containsKey("uploads")){
+			afterAction = true;
+			this.actionListIds = (ViewListIds) getIntent().getIntegerArrayListExtra("uploads");
+			this.actionType = EnumAppsLists.BACKUP;
+		}else if(extras.containsKey("restores")){
+			afterAction = true;			
+			this.actionListIds = (ViewListIds) getIntent().getIntegerArrayListExtra("restores");
+			this.actionType = EnumAppsLists.RESTORE;
+		}else{
+			afterAction = false;
+		}
+		
+		this.invoqueType = InvoqueType.reverseOrdinal(extras.getInt("InvoqueType"));	
 		loginState = LoginState.WAITING;
 		success = false;
 		
@@ -224,6 +242,28 @@ public class BazaarLogin extends Activity {
  						public void onDismiss(DialogInterface arg0) {
  								if(success){
  									Log.d("Aptoide-Login", "Logged in");
+ 									if(afterAction){
+ 										switch (actionType) {
+											case BACKUP:
+												Intent upload = new Intent(BazaarLogin.this, Upload.class);
+												upload.putIntegerArrayListExtra("uploads", actionListIds);
+												startActivity(upload);
+												break;
+												
+											case RESTORE:
+												for (Integer appHashid : actionListIds) {
+													try {
+														serviceDataCaller.callInstallApp(appHashid);
+													} catch (RemoteException e) {
+														e.printStackTrace();
+													}
+												}
+												break;
+	
+											default:
+												break;
+										}
+ 									}
  									finish();
  								}else{
  //										switch (Response) {
@@ -308,6 +348,20 @@ public class BazaarLogin extends Activity {
 // 				}
  				
  				Intent signUp = new Intent(BazaarLogin.this, BazaarSignUp.class);
+ 				if(afterAction){
+						switch (actionType) {
+						case BACKUP:
+							signUp.putIntegerArrayListExtra("uploads", actionListIds);
+							break;
+							
+						case RESTORE:
+							signUp.putIntegerArrayListExtra("restores", actionListIds);
+							break;
+
+						default:
+							break;
+					}
+					}
  				startActivity(signUp);
  				finish();
  			}

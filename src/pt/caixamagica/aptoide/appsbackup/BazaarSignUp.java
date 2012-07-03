@@ -21,6 +21,7 @@ package pt.caixamagica.aptoide.appsbackup;
 
 import pt.caixamagica.aptoide.appsbackup.data.AIDLAptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.AptoideServiceData;
+import pt.caixamagica.aptoide.appsbackup.data.model.ViewListIds;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginCreateStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewServerLogin;
@@ -91,7 +92,10 @@ public class BazaarSignUp extends Activity {
 	private LoginState loginState;
 	
 	private ViewServerLogin serverLogin;
-	
+
+	private boolean afterAction;
+	private ViewListIds actionListIds;
+	private EnumAppsLists actionType;
 //	private InvoqueType invoqueType;
 	
 	public static enum LoginState{
@@ -126,7 +130,20 @@ public class BazaarSignUp extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.form_signup);
-    	
+
+		Bundle extras = getIntent().getExtras();
+		if(extras.containsKey("uploads")){
+			afterAction = true;
+			this.actionListIds = (ViewListIds) getIntent().getIntegerArrayListExtra("uploads");
+			this.actionType = EnumAppsLists.BACKUP;
+		}else if(extras.containsKey("restores")){
+			afterAction = true;			
+			this.actionListIds = (ViewListIds) getIntent().getIntegerArrayListExtra("restores");
+			this.actionType = EnumAppsLists.RESTORE;
+		}else{
+			afterAction = false;
+		}
+		
 //		this.invoqueType = ;	//TODO receive as Intent extra integer encoded
 		loginState = LoginState.WAITING;
 		success = false;
@@ -238,8 +255,30 @@ public class BazaarSignUp extends Activity {
  					createAccountProgress.setOnDismissListener(new OnDismissListener(){
  						public void onDismiss(DialogInterface arg0) {
  								if(success){
+ 									Log.d("Aptoide-Login", "New User Created");Log.d("Aptoide-Login", "Logged in");
+ 									if(afterAction){
+ 										switch (actionType) {
+											case BACKUP:
+												Intent upload = new Intent(BazaarSignUp.this, Upload.class);
+												upload.putIntegerArrayListExtra("uploads", actionListIds);
+												startActivity(upload);
+												break;
+												
+											case RESTORE:
+												for (Integer appHashid : actionListIds) {
+													try {
+														serviceDataCaller.callInstallApp(appHashid);
+													} catch (RemoteException e) {
+														e.printStackTrace();
+													}
+												}
+												break;
+	
+											default:
+												break;
+										}
+ 									}
  									finish();
- 									Log.d("Aptoide-Login", "New User Created");
  								}else{
  									
  								}

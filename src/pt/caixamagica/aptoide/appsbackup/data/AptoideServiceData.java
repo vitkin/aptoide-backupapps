@@ -28,11 +28,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import pt.caixamagica.aptoide.appsbackup.AIDLUpload;
 import pt.caixamagica.aptoide.appsbackup.Aptoide;
+import pt.caixamagica.aptoide.appsbackup.BazaarLogin;
 import pt.caixamagica.aptoide.appsbackup.EnumAppsSorting;
 import pt.caixamagica.aptoide.appsbackup.ManageRepos;
 import pt.caixamagica.aptoide.appsbackup.R;
 import pt.caixamagica.aptoide.appsbackup.SelfUpdate;
 import pt.caixamagica.aptoide.appsbackup.Splash;
+import pt.caixamagica.aptoide.appsbackup.Upload;
 import pt.caixamagica.aptoide.appsbackup.data.cache.ManagerCache;
 import pt.caixamagica.aptoide.appsbackup.data.cache.ViewCache;
 import pt.caixamagica.aptoide.appsbackup.data.database.ManagerDatabase;
@@ -666,6 +668,26 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				String packageName = receivedIntent.getData().getEncodedSchemeSpecificPart();
 				Log.d("Aptoide-ServiceData", "installedAppsChangeListener - package added: "+packageName);
 				addInstalledApp(packageName);
+				if(managerPreferences.isAutomaticInstallOn()){
+					Log.d("Aptoide-AppsBackup", "preparing to auto-upload: "+packageName);
+					
+						ViewListIds uploads = new ViewListIds();
+						uploads.add(managerSystemSync.getAppHashid(packageName));
+					if(managerPreferences.getToken() != null){
+						Intent upload = new Intent(AptoideServiceData.this, Upload.class);
+						upload.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+						upload.putIntegerArrayListExtra("uploads", uploads);
+						startActivity(upload);
+					}else{
+						Log.d("Aptoide-ServiceData", "can't backup with no server login configured" );
+//						Toast.makeText(Aptoide.this, R.string.login_required, Toast.LENGTH_SHORT).show();
+						Intent login = new Intent(AptoideServiceData.this, BazaarLogin.class);
+						login.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+						login.putExtra("InvoqueType", BazaarLogin.InvoqueType.NO_CREDENTIALS_SET.ordinal());
+						login.putIntegerArrayListExtra("uploads", uploads);
+						startActivity(login);
+					}
+				}
 				
 			}else if(receivedIntent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)){
 				String packageName = receivedIntent.getData().getEncodedSchemeSpecificPart();
@@ -2766,18 +2788,18 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				ViewApplicationInstalled installedApp = managerSystemSync.getInstalledApp(packageName);
 				if(installedApp != null){
 					managerDatabase.insertInstalledApplication(installedApp);
-					if(automaticBackupOn.get()){
-						ViewUploadInfo uploadInfo = getUploadInfo(installedApp.getHashid());
-						Log.d("Aptoide-AppsBackup", "preparing to auto-upload: "+uploadInfo);
-						int appFullHashid = (uploadInfo.getAppHashid()+"|"+("http://"+uploadInfo.getRepoName()+".bazaarandroid.com/").hashCode()).hashCode();
-						Log.d("Aptoide-AppsBackup", "appFullHashid: "+appFullHashid);
-						if(!managerDatabase.isAppDownloadInfoPresent(appFullHashid)){
-							Log.d("Aptoide-AppsBackup", "auto-uploading: "+uploadInfo.getAppName());
-							ViewApk uploadingApk = new ViewApk(uploadInfo.getAppHashid(), uploadInfo.getAppName(), uploadInfo.getLocalPath());
-							uploadingApk.setRepository(uploadInfo.getRepoName());
-							uploadApk(uploadingApk);
-						}
-					}
+//					if(automaticBackupOn.get()){
+//						ViewUploadInfo uploadInfo = getUploadInfo(installedApp.getHashid());
+//						Log.d("Aptoide-AppsBackup", "preparing to auto-upload: "+uploadInfo);
+//						int appFullHashid = (uploadInfo.getAppHashid()+"|"+("http://"+uploadInfo.getRepoName()+".bazaarandroid.com/").hashCode()).hashCode();
+//						Log.d("Aptoide-AppsBackup", "appFullHashid: "+appFullHashid);
+//						if(!managerDatabase.isAppDownloadInfoPresent(appFullHashid)){
+//							Log.d("Aptoide-AppsBackup", "auto-uploading: "+uploadInfo.getAppName());
+//							ViewApk uploadingApk = new ViewApk(uploadInfo.getAppHashid(), uploadInfo.getAppName(), uploadInfo.getLocalPath());
+//							uploadingApk.setRepository(uploadInfo.getRepoName());
+//							uploadApk(uploadingApk);
+//						}
+//					}
 				}
 			}
 		});
