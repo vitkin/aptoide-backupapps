@@ -1381,15 +1381,22 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	public void onItemClick(AdapterView<?> adapterView, View view, int position, long positionLong) {
     	
     	if(appsListPager.getCurrentItem() == EnumAppsLists.BACKUP.ordinal()){
+    		ViewDisplayApplicationBackup installed = ((ViewDisplayApplicationBackup) installedAdapter.getItem(position));
 	    	InstalledRowViewHolder viewHolder = (InstalledRowViewHolder) view.getTag();
-	    	if(((ViewDisplayApplicationBackup) installedAdapter.getItem(position)).toggleCheck()){
+	    	if(installed.toggleCheck()){
 	    		viewHolder.setChecked(true);
+	    		if(installed.getStatus().equals(EnumAppStatus.SYSTEM) || installed.getStatus().equals(EnumAppStatus.PROTECTED)){
+	    			Toast.makeText(this, getString(R.string.app_system_backup_may_fail, installed.getAppName()), Toast.LENGTH_LONG).show();
+	    		}else if(installed.getStatus().equals(EnumAppStatus.TOO_BIG)){
+	    			Toast.makeText(this, getString(R.string.app_too_big_backup_may_fail, installed.getAppName()), Toast.LENGTH_LONG).show();
+	    		}
 	    	}else{
 	    		viewHolder.setChecked(false);
 	    	}
     	}else{
+    		ViewDisplayApplicationBackup available = ((ViewDisplayApplicationBackup) availableAdapter.getItem(position));
     		AvailableRowViewHolder viewHolder = (AvailableRowViewHolder) view.getTag();
-    		if(((ViewDisplayApplicationBackup) availableAdapter.getItem(position)).toggleCheck()){
+    		if(available.toggleCheck()){
 	    		viewHolder.setChecked(true);
 	    	}else{
 	    		viewHolder.setChecked(false);

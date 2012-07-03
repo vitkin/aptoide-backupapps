@@ -48,6 +48,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import pt.caixamagica.aptoide.appsbackup.data.AIDLAptoideServiceData;
 
  /**
@@ -71,6 +72,9 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 	private AIDLAptoideServiceData serviceDataCaller = null;
 	
 	private Handler aptoideTasksHandler;
+	
+	public Context context;
+	
 
 	
 	private Handler interfaceTasksHandler = new Handler() {
@@ -186,13 +190,15 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 			case SYSTEM:
 			case PROTECTED:
 			case TOO_BIG:
-				rowViewHolder.status.setTextColor(Color.RED);
-				rowViewHolder.app_name.setTextColor(Color.GRAY);
-				rowViewHolder.version_prefix.setTextColor(Color.GRAY);
-				rowViewHolder.version_name.setTextColor(Color.GRAY);
-				rowViewHolder.size.setTextColor(Color.GRAY);
+				rowViewHolder.status.setTextColor(Color.GRAY);
+				rowViewHolder.app_name.setTextColor(Color.LTGRAY);
+				rowViewHolder.version_prefix.setTextColor(Color.LTGRAY);
+				rowViewHolder.version_name.setTextColor(Color.LTGRAY);
+				rowViewHolder.size.setTextColor(Color.LTGRAY);
 				break;
-	
+				
+			case INSTALLED:
+				rowViewHolder.status.setText("");	
 			default:
 				rowViewHolder.status.setTextColor(Color.rgb(Integer.parseInt("CC", 16), Integer.parseInt("66", 16), Integer.parseInt("00", 16)));
 				rowViewHolder.app_name.setTextColor(Color.BLACK);
@@ -201,14 +207,21 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 				rowViewHolder.size.setTextColor(Color.rgb(Integer.parseInt("4F", 16), Integer.parseInt("4F", 16), Integer.parseInt("4F", 16)));				
 				break;
 		}
+
+		final ViewDisplayApplicationBackup installed = ((ViewDisplayApplicationBackup) apps.get(position));
+		rowViewHolder.size.setText(installed.getSize());
 		
-		rowViewHolder.size.setText(((ViewDisplayApplicationBackup) apps.get(position)).getSize());
-		
-		rowViewHolder.check.setChecked(((ViewDisplayApplicationBackup) apps.get(position)).isChecked());
+		rowViewHolder.check.setChecked(installed.isChecked());
 		rowViewHolder.check.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				((ViewDisplayApplicationBackup) apps.get(position)).toggleCheck();
+				if(installed.toggleCheck()){
+		    		if(installed.getStatus().equals(EnumAppStatus.SYSTEM) || installed.getStatus().equals(EnumAppStatus.PROTECTED)){
+		    			Toast.makeText(context, context.getString(R.string.app_system_backup_may_fail, installed.getAppName()), Toast.LENGTH_LONG).show();
+		    		}else if(installed.getStatus().equals(EnumAppStatus.TOO_BIG)){
+		    			Toast.makeText(context, context.getString(R.string.app_too_big_backup_may_fail, installed.getAppName()), Toast.LENGTH_LONG).show();
+		    		}
+				}
 			}
 		});
 		
@@ -289,6 +302,7 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 	 */
 	public StaticInstalledAppsListAdapter(Context context, ListView listView, AIDLAptoideServiceData serviceDataCaller, Handler aptoideTasksHandler) {
 		
+		this.context = context;
 		this.serviceDataCaller = serviceDataCaller;
 		this.aptoideTasksHandler = aptoideTasksHandler;
 		
@@ -296,9 +310,9 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 
 		appsManager = new InstalledAppsManager();
 
-
 		this.listView = listView;
 		layoutInflater = LayoutInflater.from(context);
+		
 	} 
 	
 	

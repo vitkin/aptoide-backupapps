@@ -115,7 +115,7 @@ public class ManagerSystemSync {
 				type = EnumAppStatus.SYSTEM;
 			}else if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[2].equals("app-private")){
 				type = EnumAppStatus.PROTECTED;
-			}else if(apk.length() > 20000000){
+			}else if(size > 150000){
 				type = EnumAppStatus.TOO_BIG;
 			}
 			
@@ -141,7 +141,7 @@ public class ManagerSystemSync {
 				type = EnumAppStatus.SYSTEM;
 			}else if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[2].equals("app-private")){
 				type = EnumAppStatus.PROTECTED;
-			}else if(apk.length() > 20000000){
+			}else if(size > 150000){
 				type = EnumAppStatus.TOO_BIG;
 			}
 			
