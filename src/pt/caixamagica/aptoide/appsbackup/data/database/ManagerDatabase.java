@@ -2228,6 +2228,8 @@ public class ManagerDatabase {
 																+",MAX("+Constants.KEY_APPLICATION_VERSION_CODE+") AS "+Constants.DISPLAY_APP_UP_TO_DATE_VERSION_CODE
 //																	+","+Constants.KEY_APPLICATION_VERSION_NAME+" AS "+Constants.DISPLAY_APP_UP_TO_DATE_VERSION_NAME
 														 +" FROM "+Constants.TABLE_APPLICATION
+														 +" NATURAL INNER JOIN "+Constants.TABLE_REPOSITORY
+														 +" WHERE "+Constants.KEY_REPO_IN_USE+"="+Constants.DB_TRUE
 														 +" GROUP BY "+Constants.KEY_APPLICATION_PACKAGE_NAME+") U";
 		// Sort by:
 		switch (sortingPolicy) {

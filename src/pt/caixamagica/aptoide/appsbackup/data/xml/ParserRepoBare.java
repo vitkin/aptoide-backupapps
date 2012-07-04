@@ -182,7 +182,6 @@ public class ParserRepoBare extends DefaultHandler{
 			
 					} catch(Exception e){
 						/** this should never happen */
-						//TODO handle exception
 						e.printStackTrace();
 					}
 					
@@ -218,6 +217,8 @@ public class ParserRepoBare extends DefaultHandler{
 				
 			case repository:
 				managerXml.getManagerDatabase().insertRepository(parseInfo.getRepository());
+				
+				managerXml.serviceData.repoInserted();
 				break;
 				
 			default:

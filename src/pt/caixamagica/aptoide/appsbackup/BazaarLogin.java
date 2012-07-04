@@ -26,6 +26,7 @@ import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginCreateS
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewServerLogin;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -35,7 +36,9 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -71,6 +74,12 @@ public class BazaarLogin extends Activity {
 			serviceDataIsBound = true;
 			
 			Log.v("Aptoide-Login", "Connected to ServiceData");
+			
+			try {
+				serviceDataCaller.callRegisterLoginObserver(serviceDataCallback);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 	        			
 			handleLogin();
 			
@@ -84,9 +93,32 @@ public class BazaarLogin extends Activity {
 			
 			Log.v("Aptoide-Login", "Disconnected from ServiceData");
 		}
+	};	
+	
+	private AIDLLogin.Stub serviceDataCallback = new AIDLLogin.Stub() {
+
+		@Override
+		public void repoInserted() throws RemoteException {
+			interfaceTasksHandler.sendEmptyMessage(EnumLoginInterfaceTasks.REPO_INSERTED.ordinal());	
+		}
 	};
 	
+	private Handler interfaceTasksHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+        	EnumLoginInterfaceTasks task = EnumLoginInterfaceTasks.reverseOrdinal(msg.what);
+        	switch (task) {
+				case REPO_INSERTED:
+					dialogProgress.dismiss();
+					break;
+					
+				default:
+					break;
+				}
+        }
+	};
 	
+	private ProgressDialog dialogProgress;
 	private boolean success;	
 	private LoginState loginState;
 	
@@ -235,10 +267,10 @@ public class BazaarLogin extends Activity {
 // 				}
  				else{
  						
- 					ProgressDialog loginProgress = ProgressDialog.show(BazaarLogin.this, BazaarLogin.this.getString(R.string.logging_in), BazaarLogin.this.getString(R.string.please_wait),true);
- 					loginProgress.setIcon(android.R.drawable.ic_menu_info_details);
- 					loginProgress.setCancelable(true);
- 					loginProgress.setOnDismissListener(new OnDismissListener(){
+ 					dialogProgress = ProgressDialog.show(BazaarLogin.this, BazaarLogin.this.getString(R.string.logging_in), BazaarLogin.this.getString(R.string.please_wait),true);
+ 					dialogProgress.setIcon(android.R.drawable.ic_menu_info_details);
+ 					dialogProgress.setCancelable(true);
+ 					dialogProgress.setOnDismissListener(new OnDismissListener(){
  						public void onDismiss(DialogInterface arg0) {
  								if(success){
  									Log.d("Aptoide-Login", "Logged in");
@@ -294,7 +326,7 @@ public class BazaarLogin extends Activity {
  					}
  
  					Log.d("Aptoide-Login", "Logging in, login: "+serverLogin);
- 					new LoginTask(BazaarLogin.this, loginProgress, serverLogin).execute();
+ 					new LoginTask(BazaarLogin.this, serverLogin).execute();
  					
  				}
  			}
@@ -407,17 +439,16 @@ public class BazaarLogin extends Activity {
 		}
 		super.finish();
 	}
-
+	
+	
 	
 	public class LoginTask extends AsyncTask<Void, Void, EnumServerLoginStatus>{
 		
 		private Context context;
-		private ProgressDialog dialogProgress;
 		private ViewServerLogin serverLogin;
 		
-		public LoginTask(Context context, ProgressDialog dialogProgress, ViewServerLogin serverLogin) {
+		public LoginTask(Context context, ViewServerLogin serverLogin) {
 			this.context = context;
-			this.dialogProgress = dialogProgress;
 			this.serverLogin = serverLogin;
 		}
 		
@@ -436,6 +467,7 @@ public class BazaarLogin extends Activity {
 
 				if(status.equals(EnumServerLoginStatus.SUCCESS)){
 					success = true;
+					dialogProgress.setCancelable(false);
 				}else{
 					success = false;
 					String statusString = "";
@@ -455,9 +487,6 @@ public class BazaarLogin extends Activity {
 						case LOGIN_SERVICE_UNAVAILABLE:
 							statusString = getString(R.string.login_service_unavailable);
 							break;
-						case SUCCESS:
-							statusString = getString(R.string.success);
-							break;
 	
 						default:
 							statusString = getString(R.string.server_error);
@@ -468,8 +497,8 @@ public class BazaarLogin extends Activity {
 				
 			}else{
 				Toast.makeText(BazaarLogin.this, getString(R.string.login_service_unavailable), Toast.LENGTH_SHORT).show();
+				dialogProgress.dismiss();
 			}
-			dialogProgress.dismiss();
 	    }
 		
 	}

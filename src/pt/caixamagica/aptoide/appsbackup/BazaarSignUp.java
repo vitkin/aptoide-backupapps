@@ -23,7 +23,6 @@ import pt.caixamagica.aptoide.appsbackup.data.AIDLAptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.AptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewListIds;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginCreateStatus;
-import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewServerLogin;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -35,18 +34,15 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -72,6 +68,12 @@ public class BazaarSignUp extends Activity {
 			serviceDataIsBound = true;
 			
 			Log.v("Aptoide-SignUp", "Connected to ServiceData");
+			
+			try {
+				serviceDataCaller.callRegisterLoginObserver(serviceDataCallback);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+			}
 	        			
 			handleSignUp();
 			
@@ -85,9 +87,33 @@ public class BazaarSignUp extends Activity {
 			
 			Log.v("Aptoide-SignUp", "Disconnected from ServiceData");
 		}
+	};	
+	
+	private AIDLLogin.Stub serviceDataCallback = new AIDLLogin.Stub() {
+
+		@Override
+		public void repoInserted() throws RemoteException {
+			interfaceTasksHandler.sendEmptyMessage(EnumLoginInterfaceTasks.REPO_INSERTED.ordinal());	
+		}
+	};
+	
+	private Handler interfaceTasksHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+        	EnumLoginInterfaceTasks task = EnumLoginInterfaceTasks.reverseOrdinal(msg.what);
+        	switch (task) {
+				case REPO_INSERTED:
+					dialogProgress.dismiss();
+					break;
+					
+				default:
+					break;
+				}
+        }
 	};
 	
 	
+	private ProgressDialog dialogProgress;	
 	private boolean success;	
 	private LoginState loginState;
 	
@@ -249,10 +275,10 @@ public class BazaarSignUp extends Activity {
  					
  //					(new DialogName(Login.this)).show();
  					
- 					ProgressDialog createAccountProgress = ProgressDialog.show(BazaarSignUp.this, BazaarSignUp.this.getString(R.string.new_account), BazaarSignUp.this.getString(R.string.please_wait),true);
- 					createAccountProgress.setIcon(android.R.drawable.ic_menu_add);
- 					createAccountProgress.setCancelable(true);
- 					createAccountProgress.setOnDismissListener(new OnDismissListener(){
+ 					dialogProgress = ProgressDialog.show(BazaarSignUp.this, BazaarSignUp.this.getString(R.string.new_account), BazaarSignUp.this.getString(R.string.please_wait),true);
+ 					dialogProgress.setIcon(android.R.drawable.ic_menu_add);
+ 					dialogProgress.setCancelable(true);
+ 					dialogProgress.setOnDismissListener(new OnDismissListener(){
  						public void onDismiss(DialogInterface arg0) {
  								if(success){
  									Log.d("Aptoide-Login", "New User Created");Log.d("Aptoide-Login", "Logged in");
@@ -286,7 +312,7 @@ public class BazaarSignUp extends Activity {
  					});
  					
  					Log.d("Aptoide-Login", "Creating new acocunt with login: "+serverLogin);
- 					new CreateAccountTask(BazaarSignUp.this, createAccountProgress, serverLogin).execute();
+ 					new CreateAccountTask(BazaarSignUp.this, serverLogin).execute();
  				}
  			}
  		});
@@ -336,12 +362,10 @@ public class BazaarSignUp extends Activity {
 	public class CreateAccountTask extends AsyncTask<Void, Void, EnumServerLoginCreateStatus>{
 		
 		private Context context;
-		private ProgressDialog dialogProgress;
 		private ViewServerLogin serverLogin;
 		
-		public CreateAccountTask(Context context, ProgressDialog dialogProgress, ViewServerLogin serverLogin) {
+		public CreateAccountTask(Context context, ViewServerLogin serverLogin) {
 			this.context = context;
-			this.dialogProgress = dialogProgress;
 			this.serverLogin = serverLogin;
 		}
 		
@@ -360,6 +384,7 @@ public class BazaarSignUp extends Activity {
 
 				if(status.equals(EnumServerLoginCreateStatus.SUCCESS)){
 					success = true;
+					dialogProgress.setCancelable(false);
 				}else{
 					success = false;
 					String statusString = "";
@@ -425,8 +450,8 @@ public class BazaarSignUp extends Activity {
 				
 			}else{
 				Toast.makeText(BazaarSignUp.this, getString(R.string.login_create_service_unavailable), Toast.LENGTH_SHORT).show();
+				dialogProgress.dismiss();
 			}
-			dialogProgress.dismiss();
 	    }
 		
 	}

@@ -35,6 +35,7 @@ import pt.caixamagica.aptoide.appsbackup.AIDLAppInfo;
 import pt.caixamagica.aptoide.appsbackup.AIDLReposInfo;
 import pt.caixamagica.aptoide.appsbackup.AIDLSelfUpdate;
 import pt.caixamagica.aptoide.appsbackup.AIDLUpload;
+import pt.caixamagica.aptoide.appsbackup.AIDLLogin;
 import pt.caixamagica.aptoide.appsbackup.data.listeners.ViewMyapp;
 import pt.caixamagica.aptoide.appsbackup.data.preferences.ViewSettings;
 import pt.caixamagica.aptoide.appsbackup.data.system.ViewHwFilters;
@@ -112,6 +113,8 @@ interface AIDLAptoideServiceData {
 	ViewDisplayAppVersionStats callGetAppStats(in int appFullHashid);
 	ViewDisplayAppVersionExtras callGetAppExtras(in int appFullHashid);
 	ViewDisplayListComments callGetVersionComments(in int appHashid);
+	
+	void callRegisterLoginObserver(in AIDLLogin loginObserver);
 	
 	int callServerLoginCreate(in ViewServerLogin serverLogin);
 	String callGetServerToken();
