@@ -79,7 +79,7 @@ import android.widget.TextView;
  */
 public class Upload extends Activity {
 	
-//	AlertDialog selfUpdate;
+	private boolean isRunning = false;
 	private AtomicBoolean showingForm;
 	private AtomicInteger apksReadyNumber;
 	private int apksNumber;
@@ -125,7 +125,7 @@ public class Upload extends Activity {
 				e.printStackTrace();
 			}
 
-			handleUploads();
+			handleUploads(getIntent());
 			
 		}
 
@@ -235,29 +235,31 @@ public class Upload extends Activity {
 	
 	
 	
-	private void handleUploads(){
-		ViewListIds uploads = (ViewListIds) getIntent().getIntegerArrayListExtra("uploads");
+	private void handleUploads(Intent intent){
+		ViewListIds uploads = (ViewListIds) intent.getIntegerArrayListExtra("uploads");
 		Log.d("Aptoide-AppsBackup", "uploads: "+uploads);
-		apksNumber = uploads.size();
-		for (int appHashid : uploads) {
-			try {
-				ViewUploadInfo uploadInfo = serviceDataCaller.callGetUploadInfo(appHashid);
-				Log.d("Aptoide-AppsBackup", "upload: "+uploadInfo);
-				ViewApk uploadingApk = new ViewApk(uploadInfo.getAppHashid(), uploadInfo.getAppName(), uploadInfo.getLocalPath()); //TODO refactor ViewUploadInfo to deprecate ViewApk and to receive repo info from servicedata
-				uploadingApk.setRepository(uploadInfo.getRepoName());
-				uploadingApk.setSize(uploadInfo.getSize());
-				uploadingApks.put(uploadingApk.getAppHashid(), uploadingApk);
-				upload(uploadingApk);
-//				waitingApks.add(uploadingApk);
-				
-			} catch (RemoteException e) {
-				e.printStackTrace();
+		if(uploads != null){
+			apksNumber = uploads.size();
+			for (int appHashid : uploads) {
+				try {
+					ViewUploadInfo uploadInfo = serviceDataCaller.callGetUploadInfo(appHashid);
+					Log.d("Aptoide-AppsBackup", "upload: "+uploadInfo);
+					ViewApk uploadingApk = new ViewApk(uploadInfo.getAppHashid(), uploadInfo.getAppName(), uploadInfo.getLocalPath()); //TODO refactor ViewUploadInfo to deprecate ViewApk and to receive repo info from servicedata
+					uploadingApk.setRepository(uploadInfo.getRepoName());
+					uploadingApk.setSize(uploadInfo.getSize());
+					uploadingApks.put(uploadingApk.getAppHashid(), uploadingApk);
+					upload(uploadingApk);
+//					waitingApks.add(uploadingApk);
+					
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
 			}
+			showUploadStatus();
+//			if(waitingApks.size()>0){
+//				new SubmitFormScreen(this, waitingApks.remove(0));
+//			}
 		}
-		showUploadStatus();
-//		if(waitingApks.size()>0){
-//			new SubmitFormScreen(this, waitingApks.remove(0));
-//		}
 	}
 	
 	public void submit(ViewApk uploadingApk){
@@ -344,28 +346,35 @@ public class Upload extends Activity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-    	
-		if(!serviceDataIsBound){
-    		bindService(new Intent(this, AptoideServiceData.class), serviceDataConnection, Context.BIND_AUTO_CREATE);
-    	}
-		
-		showingForm = new AtomicBoolean(false);
-		apksReadyNumber = new AtomicInteger(0);
-		uploadingApks = new HashMap<Integer, ViewApk>();
-//		waitingApks = new HashMap<Integer, ViewApk>();
-		doneApks = new HashMap<Integer, EnumServerUploadApkStatus>();
-		
-		uploadingProgress = new ArrayList<HashMap<String,Integer>>();
-		uploadedNames = new ArrayList<String>();
-		notUploadedNames = new ArrayList<HashMap<String,String>>();
-		
-		cachedThreadPool = Executors.newCachedThreadPool();
-		
-		goingBackEnabled = new AtomicBoolean(true);
-		
 		super.onCreate(savedInstanceState);
+        if(!isRunning){
+        	isRunning = true;
+        	
+			if(!serviceDataIsBound){
+	    		bindService(new Intent(this, AptoideServiceData.class), serviceDataConnection, Context.BIND_AUTO_CREATE);
+	    	}
+			
+			showingForm = new AtomicBoolean(false);
+			apksReadyNumber = new AtomicInteger(0);
+			uploadingApks = new HashMap<Integer, ViewApk>();
+//			waitingApks = new HashMap<Integer, ViewApk>();
+			doneApks = new HashMap<Integer, EnumServerUploadApkStatus>();
+			
+			uploadingProgress = new ArrayList<HashMap<String,Integer>>();
+			uploadedNames = new ArrayList<String>();
+			notUploadedNames = new ArrayList<HashMap<String,String>>();
+			
+			cachedThreadPool = Executors.newCachedThreadPool();
+			
+			goingBackEnabled = new AtomicBoolean(true);
+        }
 	}
-
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		handleUploads(intent);
+		super.onNewIntent(intent);
+	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -394,6 +403,8 @@ public class Upload extends Activity {
 		if(serviceDataIsBound){
 			unbindService(serviceDataConnection);
 		}
+		
+		isRunning = false;
 		super.finish();
 	}
 	
