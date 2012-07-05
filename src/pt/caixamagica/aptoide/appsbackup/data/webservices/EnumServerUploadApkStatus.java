@@ -20,6 +20,9 @@
 
 package pt.caixamagica.aptoide.appsbackup.data.webservices;
 
+import android.content.Context;
+import pt.caixamagica.aptoide.appsbackup.R;
+
 public enum EnumServerUploadApkStatus {
 	SUCCESS,
 	
@@ -59,4 +62,71 @@ public enum EnumServerUploadApkStatus {
 	public static EnumServerUploadApkStatus reverseOrdinal(int ordinal){
 		return values()[ordinal];
 	}
+	
+	public String toString(Context context) {
+		switch (this) {
+			case APK_DUPLICATE:
+				return  context.getString(R.string.apk_duplicate);
+			case APK_INFECTED_WITH_VIRUS:
+				return  context.getString(R.string.apk_infected);
+			case APK_TOO_BIG:
+				return  context.getString(R.string.apk_too_big);
+			case BAD_APK:
+				return  context.getString(R.string.invalid_apk);
+			case BAD_APK_UPLOAD:
+				return  context.getString(R.string.failed_apk_upload);
+			case BAD_CATEGORY:
+				return  context.getString(R.string.invalid_category);
+			case BAD_EMAIL:
+				return  context.getString(R.string.invalid_email);
+			case BAD_LOGIN:
+				return  context.getString(R.string.check_login);
+			case BAD_RATING:
+				return  context.getString(R.string.invalid_rating);
+			case BAD_REPO:
+				return  context.getString(R.string.invalid_repo_name);
+			case BAD_TOKEN:
+				return  context.getString(R.string.token_error);
+			case BAD_WEBSITE:
+				return  context.getString(R.string.invalid_website);
+			case APK_BLACKLISTED:
+				return  context.getString(R.string.apk_blacklisted);
+			case CONNECTION_ERROR:
+				return  context.getString(R.string.failed_server_connection);
+			case MISSING_APK:
+				return  context.getString(R.string.missing_apk);
+			case MISSING_APK_NAME:
+				return  context.getString(R.string.enter_apk_name);
+			case MISSING_CATEGORY:
+				return  context.getString(R.string.select_category);
+			case MISSING_DESCRIPTION:
+				return  context.getString(R.string.enter_description);
+			case MISSING_RATING:
+				return  context.getString(R.string.select_rating);
+			case MISSING_TOKEN:
+				return  context.getString(R.string.missing_token);
+			case SERVER_ERROR_GRAPHIC_UPLOAD:
+				return  context.getString(R.string.server_error_graphic_upload);
+			case SERVER_ERROR_ICON_UPLOAD:
+				return  context.getString(R.string.server_error_icon_upload);
+			case SERVER_ERROR_MD5:
+				return  context.getString(R.string.server_error_md5);
+			case SERVER_ERROR_MISSING_FILE:
+				return  context.getString(R.string.server_error_apk);
+			case SERVER_ERROR_SCREENSHOTS_UPLOAD:
+			case SERVER_ERROR_SCREENSHOTS:
+				return  context.getString(R.string.server_error_screenshots);
+			case SERVER_ERROR:
+				return  context.getString(R.string.server_error);
+			case TOKEN_INCONSISTENT_WITH_REPO:
+				return  context.getString(R.string.repo_not_associated_with_user);
+			case SUCCESS:
+				return  context.getString(R.string.success);
+	
+			default:
+				return  context.getString(R.string.server_error);
+		}
+	}
+	
+	
 }

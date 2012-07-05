@@ -185,7 +185,7 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 		rowViewHolder.timestamp.setText(((ViewDisplayApplicationBackup) apps.get(position)).getFormatedTimestamp());
 
 		EnumAppStatus status = ((ViewDisplayApplicationBackup) apps.get(position)).getStatus();
-		rowViewHolder.status.setText(status.toString());
+		rowViewHolder.status.setText(status.toString(context));
 		switch (status) {
 			case SYSTEM:
 			case PROTECTED:

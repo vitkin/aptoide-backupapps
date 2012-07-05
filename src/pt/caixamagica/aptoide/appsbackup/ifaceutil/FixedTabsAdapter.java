@@ -12,19 +12,19 @@ import com.astuetz.viewpager.extensions.ViewPagerTabButton;
 
 public class FixedTabsAdapter implements TabsAdapter {
 	
-	private Activity mContext;
+	private Activity context;
 	
-	public FixedTabsAdapter(Activity ctx) {
-		this.mContext = ctx;
+	public FixedTabsAdapter(Activity context) {
+		this.context = context;
 	}
 	
 	@Override
 	public View getView(int position) {
 		ViewPagerTabButton tab;
 		
-		LayoutInflater inflater = mContext.getLayoutInflater();
+		LayoutInflater inflater = context.getLayoutInflater();
 		tab = (ViewPagerTabButton) inflater.inflate(R.layout.tab_fixed, null);
-		tab.setText(EnumAppsLists.reverseOrdinal(position).toString());	//TODO i18n this
+		tab.setText(EnumAppsLists.reverseOrdinal(position).toString(context));
 		
 		return tab;
 	}

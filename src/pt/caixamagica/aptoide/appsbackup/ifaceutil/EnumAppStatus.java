@@ -20,6 +20,9 @@
 
 package pt.caixamagica.aptoide.appsbackup.ifaceutil;
 
+import pt.caixamagica.aptoide.appsbackup.R;
+import android.content.Context;
+
 
 /**
  * EnumAppStatus, typeSafes Aptoide's apps status
@@ -40,23 +43,18 @@ public enum EnumAppStatus {
 		return values()[ordinal];
 	}
 	
-	@Override
-	public String toString() {	//TODO receive context for i18n
+	public String toString(Context context) {
 		switch (this) {
 			case INSTALLED:
-				return "Installed";
-	
+				return context.getString(R.string.installed);
 			case SYSTEM:
-				return "System";
-				
+				return context.getString(R.string.system);
 			case PROTECTED:
-				return "Protected";
-				
+				return context.getString(R.string.protectd);
 			case TOO_BIG:
-				return "Too big";
-
+				return context.getString(R.string.too_big);
 			case BACKED_UP:
-				return "Backed up";
+				return context.getString(R.string.backed_up);
 				
 			default:
 				return "";

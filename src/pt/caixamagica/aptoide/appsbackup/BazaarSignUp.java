@@ -387,65 +387,7 @@ public class BazaarSignUp extends Activity {
 					dialogProgress.setCancelable(false);
 				}else{
 					success = false;
-					String statusString = "";
-					switch (status) {
-						case MISSING_PARAMETER:
-							statusString = getString(R.string.missing_parameter);
-							break;
-						case BAD_HMAC:
-							statusString = getString(R.string.hmac_problem);
-							break;
-						case BAD_LOGIN:
-							statusString = getString(R.string.check_login);
-							break;
-						case BAD_PASSWORD_HASH:
-							statusString = getString(R.string.wrong_password);
-							break;
-						case BAD_REPO_NAME:
-							statusString = getString(R.string.invalid_repo_name);
-							break;
-						case BAD_REPO_PRIVACY_LOGIN:
-							statusString = getString(R.string.check_repo_login);
-							break;
-						case BAD_USER_AGENT:
-							statusString = getString(R.string.user_agent_problem);
-							break;
-						case LOGIN_CREATE_SERVICE_UNAVAILABLE:
-							statusString = getString(R.string.login_create_service_unavailable);
-							break;
-						case REPO_ALREADY_EXISTS:
-							statusString = getString(R.string.repo_already_exists);
-							break;
-						case REPO_NOT_FROM_DEVELOPPER:
-							statusString = getString(R.string.repo_not_associated_with_user);
-							break;
-						case REPO_REQUIRES_AUTHENTICATION:
-							statusString = getString(R.string.repo_requires_authentication);
-							break;
-						case REPO_SERVICE_UNAVAILABLE:
-							statusString = getString(R.string.repo_service_unavailable);
-							break;
-						case UNKNOWN_USERNAME:
-							statusString = getString(R.string.unknown_username);
-							break;
-						case USERNAME_ALREADY_REGISTERED:
-							statusString = getString(R.string.username_already_registered);
-							break;
-						case USERNAME_NOT_PROPER_EMAIL:
-							statusString = getString(R.string.username_not_email);
-							break;
-						case SERVER_ERROR:
-							statusString = getString(R.string.server_error);
-							break;
-						case SUCCESS:
-							statusString = getString(R.string.success);
-							break;
-	
-						default:
-							statusString = getString(R.string.server_error);
-							break;
-					}
-					Toast.makeText(BazaarSignUp.this, statusString, Toast.LENGTH_SHORT).show();
+					Toast.makeText(BazaarSignUp.this, status.toString(BazaarSignUp.this), Toast.LENGTH_SHORT).show();
 				}
 				
 			}else{

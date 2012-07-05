@@ -20,6 +20,9 @@
 
 package pt.caixamagica.aptoide.appsbackup.data.webservices;
 
+import pt.caixamagica.aptoide.appsbackup.R;
+import android.content.Context;
+
 /**
  * EnumServerLoginStatus, typeSafes Server Login's Status in Aptoide
  * 
@@ -37,5 +40,23 @@ public enum EnumServerLoginStatus {
 	
 	public static EnumServerLoginStatus reverseOrdinal(int ordinal){
 		return values()[ordinal];
+	}
+	
+	public String toString(Context context){
+		switch (this) {
+			case BAD_LOGIN:
+				return context.getString(R.string.check_login);
+			case REPO_NOT_FROM_DEVELOPPER:
+				return context.getString(R.string.repo_not_associated_with_user);
+			case REPO_SERVICE_UNAVAILABLE:
+				return  context.getString(R.string.repo_service_unavailable);
+			case BAD_REPO_PRIVACY_LOGIN:
+				return context.getString(R.string.check_repo_login);
+			case LOGIN_SERVICE_UNAVAILABLE:
+				return  context.getString(R.string.login_service_unavailable);
+
+			default:
+				return context.getString(R.string.server_error);
+		}
 	}
 }

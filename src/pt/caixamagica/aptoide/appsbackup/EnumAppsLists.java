@@ -20,6 +20,8 @@
 
 package pt.caixamagica.aptoide.appsbackup;
 
+import android.content.Context;
+
 /**
  * EnumAppsLists, typeSafes Aptoide's apps lists switching
  * 
@@ -53,5 +55,17 @@ public enum EnumAppsLists {
 	
 	public static int getCount(){
 		return values().length-1;
+	}
+	
+	public String toString(Context context){
+		switch (this) {
+			case BACKUP:
+				return context.getString(R.string.backup);
+			case RESTORE:
+				return context.getString(R.string.restore);
+	
+			default:
+				return "";
+		}
 	}
 }

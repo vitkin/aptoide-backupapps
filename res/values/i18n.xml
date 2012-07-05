@@ -112,8 +112,15 @@
     <string name="stars">Rating</string>
     <string name="downloads">Downloads</string>    
     
+    <string name="backup">BACKUP</string>
+    <string name="restore">RESTORE</string>
+    
     <string name="available">Available</string>
     <string name="installed">Installed</string>
+    <string name="system">System</string>
+    <string name="protectd">Protected</string>
+    <string name="too_big">Too big</string>
+    <string name="backed_up">Backed up</string>
     <string name="updates">Updates</string>
     
     <string name="update_all">Update all</string>

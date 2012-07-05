@@ -58,6 +58,7 @@ import pt.caixamagica.aptoide.appsbackup.data.AIDLAptoideServiceData;
  */
 public class StaticAvailableAppsListAdapter extends BaseAdapter{
 
+	private Context context;
 	private ListView listView;
 	private LayoutInflater layoutInflater;
 
@@ -176,7 +177,7 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter{
 
 		rowViewHolder.timestamp.setText(((ViewDisplayApplicationBackup) apps.get(position)).getFormatedTimestamp());
 		
-		rowViewHolder.status.setText(((ViewDisplayApplicationBackup) apps.get(position)).getStatus().toString());
+		rowViewHolder.status.setText(((ViewDisplayApplicationBackup) apps.get(position)).getStatus().toString(context));
 		rowViewHolder.size.setText(((ViewDisplayApplicationBackup) apps.get(position)).getSize());
 		
 		rowViewHolder.check.setChecked(((ViewDisplayApplicationBackup) apps.get(position)).isChecked());
@@ -251,6 +252,7 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter{
 	 */
 	public StaticAvailableAppsListAdapter(Context context, ListView listView, AIDLAptoideServiceData serviceDataCaller, Handler aptoideTasksHandler) {
 		
+		this.context = context;
 		this.serviceDataCaller = serviceDataCaller;
 		this.aptoideTasksHandler = aptoideTasksHandler;
 		
