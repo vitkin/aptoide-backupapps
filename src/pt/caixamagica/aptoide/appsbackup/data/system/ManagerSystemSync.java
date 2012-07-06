@@ -39,10 +39,12 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.content.pm.Signature;
 import android.content.res.Configuration;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.RemoteException;
+import android.util.Log;
 
 /**
  * ManagerSystemSync, manages data synchronization with the underlying android's package database 
@@ -119,6 +121,21 @@ public class ManagerSystemSync {
 //			if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[1].equals("system")  || installedAppInfo.applicationInfo.sourceDir.split("[/]+")[2].equals("app-private") || apk.length() > 20000000){
 //				continue;
 //			}
+			
+			/* ************* Signature check ******************** */
+//			if(installedAppInfo.packageName.equals("pt.caixamagica.aptoide.uploader")){
+//				PackageInfo info;
+//				try {
+//					info = packageManager.getPackageInfo(installedAppInfo.packageName, PackageManager.GET_SIGNATURES);
+//					Signature[] sig = info.signatures; 
+//					String sigstring = new String(sig[0].toChars()); 
+//					Log.d("Aptoide-SystemSync", "pt.caixamagica.aptoide.uploader  versionName: "+installedAppInfo.versionName+"versioncode: "+installedAppInfo.versionCode+"sig: "+sigstring);
+//					
+//				} catch (NameNotFoundException e) {
+//					e.printStackTrace();
+//				} 
+//			}
+			/* *************************************************** */
 			
 			EnumAppStatus type = EnumAppStatus.INSTALLED;
 			if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[1].equals("system")){

@@ -640,6 +640,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	public void unregisterAvailableDataObserver(AIDLAptoideInterface availableAppsObserver){
 		try {
 			aptoideClients.remove(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST);
+			shouldIShutDown();
 		} catch (Exception e) {	}
 	}
 	
