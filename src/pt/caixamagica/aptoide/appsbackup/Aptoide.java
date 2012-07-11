@@ -1659,12 +1659,12 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 				final AlertDialog aboutDialog = aboutCreator.create();
 				aboutDialog.setIcon(R.drawable.icon);
 				aboutDialog.setTitle(R.string.app_name);
-				aboutDialog.setButton(getText(R.string.changelog), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int	whichButton) {
-						Uri uri = Uri.parse(getString(R.string.changelog_url));
-						startActivity(new Intent( Intent.ACTION_VIEW, uri));
-					}
-				});
+//				aboutDialog.setButton(getText(R.string.changelog), new DialogInterface.OnClickListener() {
+//					public void onClick(DialogInterface dialog, int	whichButton) {
+//						Uri uri = Uri.parse(getString(R.string.changelog_url));
+//						startActivity(new Intent( Intent.ACTION_VIEW, uri));
+//					}
+//				});
 				aboutDialog.show();
 				return true;
 				
