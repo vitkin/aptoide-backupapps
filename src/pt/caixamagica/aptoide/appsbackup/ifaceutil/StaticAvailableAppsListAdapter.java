@@ -61,6 +61,8 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter{
 	private Context context;
 	private ListView listView;
 	private LayoutInflater layoutInflater;
+	
+	ImageLoader imageLoader;
 
 	private ViewDisplayListApps apps = null;
 	private ViewDisplayListApps freshApps = null;
@@ -165,12 +167,15 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter{
 			rowViewHolder = (AvailableRowViewHolder) convertView.getTag();
 		}
 		
-		File iconCache = new File(apps.get(position).getIconCachePath());
-		if(iconCache.exists() && iconCache.length() > 0){
-			rowViewHolder.app_icon.setImageURI(Uri.parse(apps.get(position).getIconCachePath()));
-		}else{
-			rowViewHolder.app_icon.setImageResource(android.R.drawable.sym_def_app_icon);
-		}
+//		File iconCache = new File(apps.get(position).getIconCachePath());
+//		if(iconCache.exists() && iconCache.length() > 0){
+//			rowViewHolder.app_icon.setImageURI(Uri.parse(apps.get(position).getIconCachePath()));
+//		}else{
+//			rowViewHolder.app_icon.setImageResource(android.R.drawable.sym_def_app_icon);
+//		}
+		
+		imageLoader.DisplayImage(apps.get(position).getIconCachePath(), rowViewHolder.app_icon, context);
+		
 		
 		rowViewHolder.app_name.setText(apps.get(position).getAppName());
 		rowViewHolder.version_name.setText(" "+apps.get(position).getVersionName());
@@ -259,6 +264,8 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter{
 		apps = new ViewDisplayListApps();
 
 		appsManager = new AvailableAppsManager();
+		
+		imageLoader = new ImageLoader(context);
 
 
 		this.listView = listView;

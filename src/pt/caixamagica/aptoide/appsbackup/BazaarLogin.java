@@ -165,11 +165,11 @@ public class BazaarLogin extends Activity {
 		setContentView(R.layout.form_login);
     	
 		Bundle extras = getIntent().getExtras();
-		if(extras.containsKey("uploads")){
+		if(extras != null && extras.containsKey("uploads")){
 			afterAction = true;
 			this.actionListIds = (ViewListIds) getIntent().getIntegerArrayListExtra("uploads");
 			this.actionType = EnumAppsLists.BACKUP;
-		}else if(extras.containsKey("restores")){
+		}else if(extras != null && extras.containsKey("restores")){
 			afterAction = true;			
 			this.actionListIds = (ViewListIds) getIntent().getIntegerArrayListExtra("restores");
 			this.actionType = EnumAppsLists.RESTORE;
