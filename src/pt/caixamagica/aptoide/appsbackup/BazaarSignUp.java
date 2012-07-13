@@ -280,7 +280,7 @@ public class BazaarSignUp extends Activity {
  					dialogProgress.setCancelable(true);
  					dialogProgress.setOnDismissListener(new OnDismissListener(){
  						public void onDismiss(DialogInterface arg0) {
- 								if(success){
+// 								if(success){
  									Log.d("Aptoide-Login", "New User Created");Log.d("Aptoide-Login", "Logged in");
  									if(afterAction){
  										switch (actionType) {
@@ -305,9 +305,9 @@ public class BazaarSignUp extends Activity {
 										}
  									}
  									finish();
- 								}else{
+// 								}else{
  									
- 								}
+// 								}
  						}
  					});
  					
@@ -388,6 +388,7 @@ public class BazaarSignUp extends Activity {
 				}else{
 					success = false;
 					Toast.makeText(BazaarSignUp.this, status.toString(BazaarSignUp.this), Toast.LENGTH_SHORT).show();
+					dialogProgress.dismiss();
 				}
 				
 			}else{

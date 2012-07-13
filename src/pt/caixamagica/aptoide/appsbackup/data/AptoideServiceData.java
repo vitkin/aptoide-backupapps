@@ -2221,6 +2221,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 									&& dormentRepo.getLogin().getPassword().equals(serverLogin.getPrivPassword()) ){
 								AptoideLog.d(AptoideServiceData.this, "reactivating repo: "+dormentRepo.getUri());
 								managerDatabase.toggleRepositoryInUse(dormentRepo.getHashid(), true);
+								repoInserted();
 								resetAvailableLists();
 								resetInstalledLists();
 								getDelta(dormentRepo.getHashid());
@@ -2249,6 +2250,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 									&& dormentRepo.getLogin().getPassword().equals(serverLogin.getPrivPassword()) )){
 								AptoideLog.d(AptoideServiceData.this, "reactivating repo: "+dormentRepo.getUri());
 								managerDatabase.toggleRepositoryInUse(dormentRepo.getHashid(), true);
+								repoInserted();
 								resetAvailableLists();
 								resetInstalledLists();
 								getDelta(dormentRepo.getHashid());
@@ -2271,6 +2273,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 						repoInUse.setLogin(new ViewLogin(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
 						AptoideLog.d(AptoideServiceData.this, "updating repo's login: "+repoInUse);
 						managerDatabase.updateLogin(repoInUse);
+						repoInserted();
 					}
 				}else{
 					managerPreferences.clearServerLogin();
@@ -2343,6 +2346,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 									&& dormentRepo.getLogin().getPassword().equals(serverLogin.getPrivPassword()) ){
 								AptoideLog.d(AptoideServiceData.this, "reactivating repo: "+dormentRepo.getUri());
 								managerDatabase.toggleRepositoryInUse(dormentRepo.getHashid(), true);
+								repoInserted();
 								resetAvailableLists();
 								resetInstalledLists();
 								getDelta(dormentRepo.getHashid());
@@ -2371,6 +2375,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 									&& dormentRepo.getLogin().getPassword().equals(serverLogin.getPrivPassword()) )){
 								AptoideLog.d(AptoideServiceData.this, "reactivating repo: "+dormentRepo.getUri());
 								managerDatabase.toggleRepositoryInUse(dormentRepo.getHashid(), true);
+								repoInserted();
 								resetAvailableLists();
 								resetInstalledLists();
 								getDelta(dormentRepo.getHashid());
@@ -2393,6 +2398,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 						repoInUse.setLogin(new ViewLogin(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
 						AptoideLog.d(AptoideServiceData.this, "updating repo's login: "+repoInUse);
 						managerDatabase.updateLogin(repoInUse);
+						repoInserted();
 					}
 				}else{
 					managerPreferences.clearServerLogin();

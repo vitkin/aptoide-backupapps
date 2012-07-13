@@ -299,7 +299,7 @@ public class ManagerUploads {
 	
 	public EnumServerLoginStatus login(ViewServerLogin serverLogin){
 		EnumServerLoginStatus status = EnumServerLoginStatus.LOGIN_SERVICE_UNAVAILABLE;
-		String endpointString = String.format(Constants.URI_FORMAT_LOGIN_WS, URLEncoder.encode(serverLogin.getUsername()), URLEncoder.encode(serverLogin.getPasshash()));
+		String endpointString = String.format(Constants.URI_FORMAT_LOGIN_WS, URLEncoder.encode(serverLogin.getUsername()), URLEncoder.encode(serverLogin.getPasshash()), URLEncoder.encode(serverLogin.getRepoName()));
 
 //    	Log.d("Aptoide-ManagerUploads login", endpointString);
 
