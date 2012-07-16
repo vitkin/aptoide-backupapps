@@ -2809,15 +2809,16 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 			
 			@Override
 			public void run() {
+				Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 				EnumServerUploadApkStatus status = managerUploads.uploadApk(uploadingApk);
 				AptoideLog.d(AptoideServiceData.this, "upload done: "+uploadingApk.getName()+"  status: "+status);
-				if(status.equals(EnumServerUploadApkStatus.SUCCESS)){
-					delayedExecutionHandler.postDelayed(new Runnable() {
-			            public void run() {
-			            	getDeltas(true);
-			            }
-			        }, 5000);
-				}
+//				if(status.equals(EnumServerUploadApkStatus.SUCCESS)){
+//					delayedExecutionHandler.postDelayed(new Runnable() {
+//			            public void run() {
+//			            	getDeltas(true);
+//			            }
+//			        }, 5000);
+//				}
 				try {
 					uploadClient.uploadDone(uploadingApk.getAppHashid(), status.ordinal());
 				} catch (Exception e) {

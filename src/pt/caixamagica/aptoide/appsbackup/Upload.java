@@ -188,7 +188,7 @@ public class Upload extends Activity {
 	};
 	
 	
-	private void refreshUploadedLists(){
+	private synchronized void refreshUploadedLists(){
 		uploadedNames.clear();
 		uploadedAdapter.notifyDataSetChanged();
 		notUploadedNames.clear();
@@ -212,7 +212,7 @@ public class Upload extends Activity {
 		refreshUploadingList();
 	}
 
-	private void refreshUploadingList(){
+	private synchronized void refreshUploadingList(){
 		uploading.setVisibility(View.VISIBLE);
 		uploadingProgress.clear();
 		uploadingAdapter.notifyDataSetChanged();
@@ -248,17 +248,22 @@ public class Upload extends Activity {
 					uploadingApk.setRepository(uploadInfo.getRepoName());
 					uploadingApk.setSize(uploadInfo.getSize());
 					uploadingApks.put(uploadingApk.getAppHashid(), uploadingApk);
-					upload(uploadingApk);
 //					waitingApks.add(uploadingApk);
 					
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
 			}
+			
 			showUploadStatus();
 //			if(waitingApks.size()>0){
 //				new SubmitFormScreen(this, waitingApks.remove(0));
 //			}
+			
+			for(ViewApk uploadingApk : uploadingApks.values()){
+				upload(uploadingApk);
+			}
+			
 		}
 	}
 	
