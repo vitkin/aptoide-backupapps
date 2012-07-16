@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="pt.caixamagica.aptoide.appsbackup" android:versionCode="9917" android:versionName="0.99.7">
+      package="pt.caixamagica.aptoide.appsbackup" android:versionCode="9918" android:versionName="0.99.8">
     <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="7"/>
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
