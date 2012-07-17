@@ -265,11 +265,16 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 
 		@Override
 		public void callUpdateRepos() throws RemoteException {
+			getDeltas(true);
+		}
+
+		@Override
+		public void callDelayedUpdateRepos() throws RemoteException {
 			delayedExecutionHandler.postDelayed(new Runnable() {
 	            public void run() {
 	            	getDeltas(true);
 	            }
-	        }, 10000);
+	        }, 15000);
 		}
 
 		@Override

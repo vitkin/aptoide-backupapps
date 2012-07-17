@@ -144,6 +144,10 @@ public class ViewApk implements Parcelable{
 	public int getProgress() {
 		return progress;
 	}
+	
+	public void resetProgress(){
+		this.progress = 0;
+	}
 
 	public void setProgress(int progress) {
 		this.progress = progress;

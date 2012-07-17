@@ -269,8 +269,9 @@ public class Upload extends Activity {
 	
 	public void submit(ViewApk uploadingApk){
 //		uploadingApks.put(uploadingApk.getAppHashid(), uploadingApk);
-		showUploadStatus();
 		doneApks.remove(uploadingApk.getAppHashid());
+		uploadingApk.resetProgress();
+		showUploadStatus();
 		refreshUploadedLists();
 		upload(uploadingApk);
 //		if(waitingApks.size()>0){
@@ -401,6 +402,7 @@ public class Upload extends Activity {
 	public void finish() {
 		try {
 			serviceDataCaller.callUpdateRepos();
+			serviceDataCaller.callDelayedUpdateRepos();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -590,7 +592,21 @@ public class Upload extends Activity {
 		}
 		
 		
-		
+		public void setAppCategorySelectionBox(){
+			ArrayAdapter<CharSequence> newCategoryAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.category_array, android.R.layout.simple_spinner_item);
+			newCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		    appCategory.setAdapter(newCategoryAdapter);
+		    appCategory.setOnItemSelectedListener(new OnItemSelectedListener() {
+				@Override
+				public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+					Log.d("AptoideUploader-form", "App category: " + (appCategory.getSelectedItemPosition()+1) + " - " + appCategory.getSelectedItem());
+				}
+				@Override
+				public void onNothingSelected(AdapterView<?> arg0) {				
+				} 
+			});			
+		}
+				
 		public void setAppCategoryBox(Context context) {
 			String categoryPrompt[] = {"Optional App category"};
 			appCategory = (Spinner)findViewById(R.id.form_category);
@@ -598,24 +614,14 @@ public class Upload extends Activity {
 			categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			appCategory.setAdapter(categoryAdapter);
 			if(uploadingApk.getCategory() !=  null){
+				setAppCategorySelectionBox();
 				appCategory.setSelection(Integer.parseInt(uploadingApk.getCategory())-1);
 			}
 			appCategory.setOnTouchListener(new OnTouchListener() {
 				
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
-					ArrayAdapter<CharSequence> newCategoryAdapter = ArrayAdapter.createFromResource(getApplicationContext(), R.array.category_array, android.R.layout.simple_spinner_item);
-					newCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				    appCategory.setAdapter(newCategoryAdapter);
-				    appCategory.setOnItemSelectedListener(new OnItemSelectedListener() {
-						@Override
-						public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-							Log.d("AptoideUploader-form", "App category: " + (appCategory.getSelectedItemPosition()+1) + " - " + appCategory.getSelectedItem());
-						}
-						@Override
-						public void onNothingSelected(AdapterView<?> arg0) {				
-						} 
-					});
+					setAppCategorySelectionBox();
 				    return false;
 				}
 			});
