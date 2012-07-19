@@ -121,7 +121,7 @@ public class ManagerUploads {
 		String userAgent = String.format(Constants.USER_AGENT_FORMAT
 				, clientStatistics.getAptoideVersionNameInUse(), clientStatistics.getScreenDimensions().getFormattedString()
 				, clientStatistics.getAptoideClientUUID(), getServerUsername());
-		Log.d("AptoideAppsBackup-ManagerUploads", "userAgent: "+userAgent);
+//		Log.d("AptoideAppsBackup-ManagerUploads", "userAgent: "+userAgent);
 		return userAgent;
 	}
 	
@@ -547,8 +547,10 @@ public class ManagerUploads {
 		if(justMd5){
 			ViewCache apk = serviceData.getManagerCache().getNewViewCache(viewApk.getPath());
 			serviceData.getManagerCache().calculateMd5Hash(apk);
-			Log.d("Aptoide-ManagerUploads", "UploadApk - using just md5: "+apk.getMd5sum());
+			Log.d("Aptoide-ManagerUploads", "UploadApk "+viewApk.getPath()+" - using just md5: "+apk.getMd5sum());
 			body += formPart("apk_md5sum",  apk.getMd5sum());
+		}else{
+			Log.d("Aptoide-ManagerUploads", "UploadApk "+viewApk.getPath());
 		}
 		
 		body += formPart("token", token )

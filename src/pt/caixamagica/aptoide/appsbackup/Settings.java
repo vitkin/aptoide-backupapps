@@ -66,6 +66,7 @@ public class Settings extends PreferenceActivity {
 	ViewHwFilters hwFilters;
 	ViewIconDownloadPermissions iconDownloadPermissions;
 	
+	Preference clearServerLogin;
 	CheckBoxPreference hwFilter;
 	ListPreference ageRating;
 	
@@ -106,7 +107,19 @@ public class Settings extends PreferenceActivity {
 		}
 	};
 	
+
 	
+	private void isLoginSet(){
+		String token = null;
+		try {
+			token = serviceDataCaller.callGetServerToken();
+		} catch (RemoteException e2) {
+			e2.printStackTrace();
+		}
+//		if(token != null){ //TODO uncomment and add a returnfromactivity to trigger this method call
+			clearServerLogin.setEnabled(true);
+//		}
+	}
 	private void showSettings(){
 		addPreferencesFromResource(R.xml.settings);
 //		setContentView(R.layout.settings);
@@ -190,22 +203,31 @@ public class Settings extends PreferenceActivity {
 			}
 		});
 		
-		
-		Preference clearServerLogin = (Preference) findPreference("clear_server_login");
-		clearServerLogin.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				Log.d("Aptoide-Settings", "clicked clear server login");
-				try {
-					serviceDataCaller.callClearServerLogin();
-					Toast.makeText(Settings.this, "Login cleared", Toast.LENGTH_SHORT).show();
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		clearServerLogin = (Preference) findPreference("clear_server_login");
+		String token = null;
+		try {
+			token = serviceDataCaller.callGetServerToken();
+		} catch (RemoteException e2) {
+			e2.printStackTrace();
+		}
+		if(token != null){
+			clearServerLogin.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				@Override
+				public boolean onPreferenceClick(Preference preference) {
+					Log.d("Aptoide-Settings", "clicked clear server login");
+					try {
+						serviceDataCaller.callClearServerLogin();
+						Toast.makeText(Settings.this, "Login cleared", Toast.LENGTH_SHORT).show();
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					return true;
 				}
-				return true;
-			}
-		});
+			});
+		}else{
+			clearServerLogin.setEnabled(false);
+		}
 		
 		
 		Preference setServerLogin = (Preference) findPreference("set_server_login");
@@ -242,6 +264,7 @@ public class Settings extends PreferenceActivity {
 //					Toast.makeText(Settings.this, "Login already set", Toast.LENGTH_SHORT).show();
 //					dialogLogin.show();
 				}
+				isLoginSet();
 				return true;
 			}
 		});

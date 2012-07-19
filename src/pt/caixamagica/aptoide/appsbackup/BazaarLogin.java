@@ -272,7 +272,7 @@ public class BazaarLogin extends Activity {
  					dialogProgress.setCancelable(true);
  					dialogProgress.setOnDismissListener(new OnDismissListener(){
  						public void onDismiss(DialogInterface arg0) {
-// 								if(success){
+ 								if(success){
  									Log.d("Aptoide-Login", "Logged in");
  									if(afterAction){
  										switch (actionType) {
@@ -297,7 +297,7 @@ public class BazaarLogin extends Activity {
 										}
  									}
  									finish();
-// 								}else{
+ 								}else{
  //										switch (Response) {
  //										case bad_login:
  //										Toast.makeText(Login.this, Login.this.getString(R.string.bad_login), Toast.LENGTH_LONG).show();
@@ -311,7 +311,7 @@ public class BazaarLogin extends Activity {
  								
  //								}else{
  //									Toast.makeText(Login.this, LoginDialog.this.getString(R.string.unabletoexecute), Toast.LENGTH_LONG).show();
- //								}
+ 								}
  						}
  					});
  					

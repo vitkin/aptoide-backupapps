@@ -2183,116 +2183,6 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	public ViewDisplayListComments getAppComments(int appFullHashid){
 		return appInfoComments.remove(Integer.valueOf(appFullHashid));
 	}
-	
-	public int serverLoginCreate(ViewServerLogin serverLogin) { //TODO refactor enums
-		EnumServerLoginCreateStatus loginCreateStatus;
-		ViewLogin storedLogin = managerPreferences.getServerLogin();
-		AptoideLog.d(AptoideServiceData.this, "serverLoginCreate stored: "+storedLogin);
-		AptoideLog.d(AptoideServiceData.this, "serverLoginCreate received: "+serverLogin);
-		if(serverLogin.getUsername().equals(storedLogin.getUsername()) && serverLogin.getPasshash().equals(storedLogin.getPassword())){
-			loginCreateStatus = EnumServerLoginCreateStatus.SUCCESS;
-		}else{
-			loginCreateStatus = getManagerUploads().loginCreate(serverLogin);
-		}
-		AptoideLog.d(AptoideServiceData.this, "serverLoginCreate status: "+loginCreateStatus);
-		if(loginCreateStatus != EnumServerLoginCreateStatus.SUCCESS){
-			return loginCreateStatus.ordinal();
-		}else{
-			EnumServerLoginStatus repoConnectionStatus;
-			ViewRepository repoInUse = null;
-			if(managerDatabase.anyReposInUse()){
-				try {
-					repoInUse = managerDatabase.getRepoInUse();
-				} catch (AptoideExceptionDatabase e) {
-					Log.d("AptoideAppsBakup-ServiceData", e.getMessage());
-					repoInUse = null;
-				}
-			}
-			if(repoInUse != null && (repoInUse.getUri().equals(serverLogin.getRepoUri()) 
-									&& repoInUse.getLogin().getUsername().equals(serverLogin.getPrivUsername())
-									&& repoInUse.getLogin().getPassword().equals(serverLogin.getPrivPassword()) )){
-				repoConnectionStatus = EnumServerLoginStatus.SUCCESS;
-			}else{
-				repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
-				if(repoConnectionStatus == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
-					repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
-				}
-				if(repoConnectionStatus == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
-					repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
-				}
-				AptoideLog.d(AptoideServiceData.this, "repoConnection status: "+repoConnectionStatus);
-				if(repoConnectionStatus == EnumServerLoginStatus.SUCCESS){
-					if( repoInUse == null ){
-						ViewRepository dormentRepo;
-						try {
-							dormentRepo = managerDatabase.getRepository(serverLogin.getRepoUri().hashCode());
-							if(dormentRepo.getUri().equals(serverLogin.getRepoUri()) 
-									&& dormentRepo.getLogin().getUsername().equals(serverLogin.getPrivUsername())
-									&& dormentRepo.getLogin().getPassword().equals(serverLogin.getPrivPassword()) ){
-								AptoideLog.d(AptoideServiceData.this, "reactivating repo: "+dormentRepo.getUri());
-								managerDatabase.toggleRepositoryInUse(dormentRepo.getHashid(), true);
-								repoInserted();
-								resetAvailableLists();
-								resetInstalledLists();
-								getDelta(dormentRepo.getHashid());
-							}else{
-								throw new AptoideExceptionDatabase("requested repo previously unknown!");
-							}
-						} catch (Exception e) {
-							try {
-								AptoideLog.d(AptoideServiceData.this, e.getMessage());
-							} catch (Exception e1) { }
-							ViewRepository repo = new ViewRepository(serverLogin.getRepoUri());
-							if(serverLogin.isRepoPrivate()){
-								repo.setLogin(new ViewLogin(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
-							}
-							AptoideLog.d(AptoideServiceData.this, "inserting repo: "+repo);
-							addRepoBare(repo);
-						}
-					}else if( !repoInUse.getUri().equals(serverLogin.getRepoUri()) ){
-						AptoideLog.d(AptoideServiceData.this, "deactivating repo: "+serverLogin.getRepoName());
-						managerDatabase.toggleRepositoryInUse(repoInUse.getHashid(), false);
-						
-						ViewRepository dormentRepo = managerDatabase.getRepository(serverLogin.getRepoUri().hashCode());
-						try {
-							if(dormentRepo != null && (dormentRepo.getUri().equals(serverLogin.getRepoUri()) 
-									&& dormentRepo.getLogin().getUsername().equals(serverLogin.getPrivUsername())
-									&& dormentRepo.getLogin().getPassword().equals(serverLogin.getPrivPassword()) )){
-								AptoideLog.d(AptoideServiceData.this, "reactivating repo: "+dormentRepo.getUri());
-								managerDatabase.toggleRepositoryInUse(dormentRepo.getHashid(), true);
-								repoInserted();
-								resetAvailableLists();
-								resetInstalledLists();
-								getDelta(dormentRepo.getHashid());
-							}else{
-								throw new AptoideExceptionDatabase("requested repo previously unknown!");
-							}
-						} catch (Exception e) {
-							try {
-								AptoideLog.d(AptoideServiceData.this, e.getMessage());
-							} catch (Exception e1) { }
-							ViewRepository repo = new ViewRepository(serverLogin.getRepoUri());
-							if(serverLogin.isRepoPrivate()){
-								repo.setLogin(new ViewLogin(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
-							}
-							AptoideLog.d(AptoideServiceData.this, "inserting repo: "+repo);
-							addRepoBare(repo);
-						}
-					}else if( !repoInUse.getLogin().getUsername().equals(serverLogin.getPrivUsername())
-							|| !repoInUse.getLogin().getPassword().equals(serverLogin.getPrivPassword()) ){
-						repoInUse.setLogin(new ViewLogin(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
-						AptoideLog.d(AptoideServiceData.this, "updating repo's login: "+repoInUse);
-						managerDatabase.updateLogin(repoInUse);
-						repoInserted();
-					}
-				}else{
-					managerPreferences.clearServerLogin();
-				}
-			}
-			return repoConnectionStatus.ordinal();
-		}
-	}
-	
 
 	public String getServerToken() {
 		return managerPreferences.getToken();	
@@ -2309,6 +2199,117 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		return serverLogin;
 	}
 
+	public int serverLoginInsertRepo(ViewServerLogin serverLogin){
+		EnumServerLoginStatus repoConnectionStatus;
+		ViewRepository repoInUse = null;
+		if(managerDatabase.anyReposInUse()){
+			try {
+				repoInUse = managerDatabase.getRepoInUse();
+			} catch (AptoideExceptionDatabase e) {
+				Log.d("AptoideAppsBakup-ServiceData", e.getMessage());
+				repoInUse = null;
+			}
+		}
+		if(repoInUse != null && (repoInUse.getUri().equals(serverLogin.getRepoUri()) 
+				&& repoInUse.getLogin().getUsername().equals(serverLogin.getPrivUsername())
+				&& repoInUse.getLogin().getPassword().equals(serverLogin.getPrivPassword()) )){
+			repoConnectionStatus = EnumServerLoginStatus.SUCCESS;
+		}else{
+
+			repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
+			if(repoConnectionStatus == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
+				repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
+			}
+			if(repoConnectionStatus == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
+				repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
+			}
+			AptoideLog.d(AptoideServiceData.this, "repoConnection status: "+repoConnectionStatus);
+			if(repoConnectionStatus == EnumServerLoginStatus.SUCCESS){
+				if( repoInUse == null ){
+					ViewRepository dormentRepo;
+					try {
+						dormentRepo = managerDatabase.getRepository(serverLogin.getRepoUri().hashCode());
+						if(dormentRepo.getUri().equals(serverLogin.getRepoUri()) 
+								&& dormentRepo.getLogin().getUsername().equals(serverLogin.getPrivUsername())
+								&& dormentRepo.getLogin().getPassword().equals(serverLogin.getPrivPassword()) ){
+							AptoideLog.d(AptoideServiceData.this, "reactivating repo: "+dormentRepo.getUri());
+							managerDatabase.toggleRepositoryInUse(dormentRepo.getHashid(), true);
+							repoInserted();
+							resetAvailableLists();
+							resetInstalledLists();
+							getDelta(dormentRepo.getHashid());
+						}else{
+							throw new AptoideExceptionDatabase("requested repo previously unknown!");
+						}
+					} catch (Exception e) {
+						try {
+							AptoideLog.d(AptoideServiceData.this, e.getMessage());
+						} catch (Exception e1) { }
+						ViewRepository repo = new ViewRepository(serverLogin.getRepoUri());
+						if(serverLogin.isRepoPrivate()){
+							repo.setLogin(new ViewLogin(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
+						}
+						AptoideLog.d(AptoideServiceData.this, "inserting repo: "+repo);
+						addRepoBare(repo);
+					}
+				}else if( !repoInUse.getUri().equals(serverLogin.getRepoUri()) ){
+					AptoideLog.d(AptoideServiceData.this, "deactivating repo: "+serverLogin.getRepoName());
+					managerDatabase.toggleRepositoryInUse(repoInUse.getHashid(), false);
+
+					ViewRepository dormentRepo = managerDatabase.getRepository(serverLogin.getRepoUri().hashCode());
+					try {
+						if(dormentRepo != null && (dormentRepo.getUri().equals(serverLogin.getRepoUri()) 
+								&& dormentRepo.getLogin().getUsername().equals(serverLogin.getPrivUsername())
+								&& dormentRepo.getLogin().getPassword().equals(serverLogin.getPrivPassword()) )){
+							AptoideLog.d(AptoideServiceData.this, "reactivating repo: "+dormentRepo.getUri());
+							managerDatabase.toggleRepositoryInUse(dormentRepo.getHashid(), true);
+							repoInserted();
+							resetAvailableLists();
+							resetInstalledLists();
+							getDelta(dormentRepo.getHashid());
+						}else{
+							throw new AptoideExceptionDatabase("requested repo previously unknown!");
+						}
+					} catch (Exception e) {
+						try {
+							AptoideLog.d(AptoideServiceData.this, e.getMessage());
+						} catch (Exception e1) { }
+						ViewRepository repo = new ViewRepository(serverLogin.getRepoUri());
+						if(serverLogin.isRepoPrivate()){
+							repo.setLogin(new ViewLogin(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
+						}
+						AptoideLog.d(AptoideServiceData.this, "inserting repo: "+repo);
+						addRepoBare(repo);
+					}
+				}else if( !repoInUse.getLogin().getUsername().equals(serverLogin.getPrivUsername())
+						|| !repoInUse.getLogin().getPassword().equals(serverLogin.getPrivPassword()) ){
+					repoInUse.setLogin(new ViewLogin(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
+					AptoideLog.d(AptoideServiceData.this, "updating repo's login: "+repoInUse);
+					managerDatabase.updateLogin(repoInUse);
+					repoInserted();
+				}
+			}else{
+				managerPreferences.clearServerLogin();
+			}
+
+		}
+		return repoConnectionStatus.ordinal();
+	}
+	
+	public int serverLoginCreate(ViewServerLogin serverLogin) { //TODO refactor enums
+		EnumServerLoginCreateStatus loginCreateStatus;
+		ViewLogin storedLogin = managerPreferences.getServerLogin();
+		AptoideLog.d(AptoideServiceData.this, "serverLoginCreate stored: "+storedLogin);
+		AptoideLog.d(AptoideServiceData.this, "serverLoginCreate received: "+serverLogin);
+		if(serverLogin.getUsername().equals(storedLogin.getUsername()) && serverLogin.getPasshash().equals(storedLogin.getPassword())){
+			loginCreateStatus = EnumServerLoginCreateStatus.SUCCESS;
+		}else{
+			loginCreateStatus = getManagerUploads().loginCreate(serverLogin);
+		}
+		AptoideLog.d(AptoideServiceData.this, "serverLoginCreate status: "+loginCreateStatus);
+		return loginCreateStatus.ordinal();
+	}
+
 	public int serverLogin(ViewServerLogin serverLogin) {
 		EnumServerLoginStatus loginStatus;
 		ViewLogin storedLogin = managerPreferences.getServerLogin();
@@ -2323,98 +2324,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		if(loginStatus != EnumServerLoginStatus.SUCCESS){
 			return loginStatus.ordinal();
 		}else{
-			EnumServerLoginStatus repoConnectionStatus;
-			ViewRepository repoInUse = null;
-			if(managerDatabase.anyReposInUse()){
-				try {
-					repoInUse = managerDatabase.getRepoInUse();
-				} catch (AptoideExceptionDatabase e) {
-					Log.d("AptoideAppsBakup-ServiceData", e.getMessage());
-					repoInUse = null;
-				}
-			}
-			if(repoInUse != null && (repoInUse.getUri().equals(serverLogin.getRepoUri()) 
-									&& repoInUse.getLogin().getUsername().equals(serverLogin.getPrivUsername())
-									&& repoInUse.getLogin().getPassword().equals(serverLogin.getPrivPassword()) )){
-				repoConnectionStatus = EnumServerLoginStatus.SUCCESS;
-			}else{
-				repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
-				if(repoConnectionStatus == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
-					repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
-				}
-				if(repoConnectionStatus == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
-					repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
-				}
-				AptoideLog.d(AptoideServiceData.this, "repoConnection status: "+repoConnectionStatus);
-				if(repoConnectionStatus == EnumServerLoginStatus.SUCCESS){
-					if( repoInUse == null ){
-						ViewRepository dormentRepo;
-						try {
-							dormentRepo = managerDatabase.getRepository(serverLogin.getRepoUri().hashCode());
-							if(dormentRepo.getUri().equals(serverLogin.getRepoUri()) 
-									&& dormentRepo.getLogin().getUsername().equals(serverLogin.getPrivUsername())
-									&& dormentRepo.getLogin().getPassword().equals(serverLogin.getPrivPassword()) ){
-								AptoideLog.d(AptoideServiceData.this, "reactivating repo: "+dormentRepo.getUri());
-								managerDatabase.toggleRepositoryInUse(dormentRepo.getHashid(), true);
-								repoInserted();
-								resetAvailableLists();
-								resetInstalledLists();
-								getDelta(dormentRepo.getHashid());
-							}else{
-								throw new AptoideExceptionDatabase("requested repo previously unknown!");
-							}
-						} catch (Exception e) {
-							try {
-								AptoideLog.d(AptoideServiceData.this, e.getMessage());
-							} catch (Exception e1) { }
-							ViewRepository repo = new ViewRepository(serverLogin.getRepoUri());
-							if(serverLogin.isRepoPrivate()){
-								repo.setLogin(new ViewLogin(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
-							}
-							AptoideLog.d(AptoideServiceData.this, "inserting repo: "+repo);
-							addRepoBare(repo);
-						}
-					}else if( !repoInUse.getUri().equals(serverLogin.getRepoUri()) ){
-						AptoideLog.d(AptoideServiceData.this, "deactivating repo: "+serverLogin.getRepoName());
-						managerDatabase.toggleRepositoryInUse(repoInUse.getHashid(), false);
-						
-						ViewRepository dormentRepo = managerDatabase.getRepository(serverLogin.getRepoUri().hashCode());
-						try {
-							if(dormentRepo != null && (dormentRepo.getUri().equals(serverLogin.getRepoUri()) 
-									&& dormentRepo.getLogin().getUsername().equals(serverLogin.getPrivUsername())
-									&& dormentRepo.getLogin().getPassword().equals(serverLogin.getPrivPassword()) )){
-								AptoideLog.d(AptoideServiceData.this, "reactivating repo: "+dormentRepo.getUri());
-								managerDatabase.toggleRepositoryInUse(dormentRepo.getHashid(), true);
-								repoInserted();
-								resetAvailableLists();
-								resetInstalledLists();
-								getDelta(dormentRepo.getHashid());
-							}else{
-								throw new AptoideExceptionDatabase("requested repo previously unknown!");
-							}
-						} catch (Exception e) {
-							try {
-								AptoideLog.d(AptoideServiceData.this, e.getMessage());
-							} catch (Exception e1) { }
-							ViewRepository repo = new ViewRepository(serverLogin.getRepoUri());
-							if(serverLogin.isRepoPrivate()){
-								repo.setLogin(new ViewLogin(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
-							}
-							AptoideLog.d(AptoideServiceData.this, "inserting repo: "+repo);
-							addRepoBare(repo);
-						}
-					}else if( !repoInUse.getLogin().getUsername().equals(serverLogin.getPrivUsername())
-							|| !repoInUse.getLogin().getPassword().equals(serverLogin.getPrivPassword()) ){
-						repoInUse.setLogin(new ViewLogin(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
-						AptoideLog.d(AptoideServiceData.this, "updating repo's login: "+repoInUse);
-						managerDatabase.updateLogin(repoInUse);
-						repoInserted();
-					}
-				}else{
-					managerPreferences.clearServerLogin();
-				}
-			}
-			return repoConnectionStatus.ordinal();
+			return serverLoginInsertRepo(serverLogin);
 		}
 		
 	}

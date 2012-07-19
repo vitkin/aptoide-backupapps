@@ -60,7 +60,7 @@ public class ImageLoader {
     private void queuePhoto(String url, ImageView imageView)
     {
         PhotoToLoad p=new PhotoToLoad(url, imageView);
-        executorService.submit(new PhotosLoader(p));
+        executorService.execute(new PhotosLoader(p));
     }
     
     private Bitmap getBitmap(String url) 
@@ -136,7 +136,9 @@ public class ImageLoader {
             imageView=i;
         }
     }
+    
     BitmapDisplayer bd;
+    
     class PhotosLoader implements Runnable {
         PhotoToLoad photoToLoad;
         PhotosLoader(PhotoToLoad photoToLoad){

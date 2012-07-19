@@ -23,6 +23,7 @@ import pt.caixamagica.aptoide.appsbackup.data.AIDLAptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.AptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewListIds;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginCreateStatus;
+import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerLoginStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewServerLogin;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -111,6 +112,9 @@ public class BazaarSignUp extends Activity {
 				}
         }
 	};
+	
+	
+	private Handler delayedExecutionHandler = new Handler();
 	
 	
 	private ProgressDialog dialogProgress;	
@@ -280,7 +284,7 @@ public class BazaarSignUp extends Activity {
  					dialogProgress.setCancelable(true);
  					dialogProgress.setOnDismissListener(new OnDismissListener(){
  						public void onDismiss(DialogInterface arg0) {
-// 								if(success){
+ 								if(success){
  									Log.d("Aptoide-Login", "New User Created");Log.d("Aptoide-Login", "Logged in");
  									if(afterAction){
  										switch (actionType) {
@@ -305,9 +309,9 @@ public class BazaarSignUp extends Activity {
 										}
  									}
  									finish();
-// 								}else{
+ 								}else{
  									
-// 								}
+ 								}
  						}
  					});
  					
@@ -383,8 +387,10 @@ public class BazaarSignUp extends Activity {
 			if(status!=null){
 
 				if(status.equals(EnumServerLoginCreateStatus.SUCCESS)){
-					success = true;
-					dialogProgress.setCancelable(false);
+//					success = true;
+//					dialogProgress.setCancelable(false);
+	            	Log.d("Aptoide-Login", "Created new acocunt with login: "+serverLogin);
+ 					new LoginTask(BazaarSignUp.this, serverLogin).execute();
 				}else{
 					success = false;
 					Toast.makeText(BazaarSignUp.this, status.toString(BazaarSignUp.this), Toast.LENGTH_SHORT).show();
@@ -393,6 +399,56 @@ public class BazaarSignUp extends Activity {
 				
 			}else{
 				Toast.makeText(BazaarSignUp.this, getString(R.string.login_create_service_unavailable), Toast.LENGTH_SHORT).show();
+				dialogProgress.dismiss();
+			}
+	    }
+		
+	}
+	
+	
+	public class LoginTask extends AsyncTask<Void, Void, EnumServerLoginStatus>{
+		
+		private Context context;
+		private ViewServerLogin serverLogin;
+		
+		public LoginTask(Context context, ViewServerLogin serverLogin) {
+			this.context = context;
+			this.serverLogin = serverLogin;
+		}
+		
+		@Override
+		protected EnumServerLoginStatus doInBackground(Void... args) {
+			try {
+				return EnumServerLoginStatus.reverseOrdinal(serviceDataCaller.callServerLogin(serverLogin));
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		
+		protected void onPostExecute(EnumServerLoginStatus status) {
+			if(status!=null){
+
+				if(status.equals(EnumServerLoginStatus.SUCCESS)){
+					success = true;
+					dialogProgress.setCancelable(false);
+				}else{
+					success = false;
+					Toast.makeText(BazaarSignUp.this, status.toString(BazaarSignUp.this), Toast.LENGTH_SHORT).show();
+					if(status == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
+						delayedExecutionHandler.postDelayed(new Runnable() {
+				            public void run() {
+				            	Log.d("Aptoide-Login", "Loging in with: "+serverLogin);
+			 					new LoginTask(BazaarSignUp.this, serverLogin).execute();
+				            }
+				        }, 15000);
+					}else{
+						dialogProgress.dismiss();
+					}
+				}
+				
+			}else{
+				Toast.makeText(BazaarSignUp.this, getString(R.string.login_service_unavailable), Toast.LENGTH_SHORT).show();
 				dialogProgress.dismiss();
 			}
 	    }
