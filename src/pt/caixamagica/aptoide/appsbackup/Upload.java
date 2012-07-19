@@ -30,6 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import pt.caixamagica.aptoide.appsbackup.data.AIDLAptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.AptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewListIds;
+import pt.caixamagica.aptoide.appsbackup.data.util.Constants;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerUploadApkStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewApk;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewUploadInfo;
@@ -102,7 +103,7 @@ public class Upload extends Activity {
 	Button backButton;
 	AtomicBoolean goingBackEnabled;
 	
-	private ExecutorService cachedThreadPool;
+	private ExecutorService uploadsThreadPool;
 	
 	private AIDLAptoideServiceData serviceDataCaller = null;
 
@@ -194,6 +195,7 @@ public class Upload extends Activity {
 		notUploadedNames.clear();
 		notUploadedAdapter.notifyDataSetChanged();
 		for (Entry<Integer, EnumServerUploadApkStatus> done : doneApks.entrySet()) {
+			uploadingApks.get(done.getKey()).setUploading(false);
 			uploadingApks.get(done.getKey()).setProgress(100);
 			if(done.getValue().equals(EnumServerUploadApkStatus.SUCCESS)){
 				uploaded.setVisibility(View.VISIBLE);
@@ -261,7 +263,9 @@ public class Upload extends Activity {
 //			}
 			
 			for(ViewApk uploadingApk : uploadingApks.values()){
-				upload(uploadingApk);
+				if(!uploadingApk.isUploading()){
+					upload(uploadingApk);
+				}
 			}
 			
 		}
@@ -273,7 +277,9 @@ public class Upload extends Activity {
 		uploadingApk.resetProgress();
 		showUploadStatus();
 		refreshUploadedLists();
-		upload(uploadingApk);
+		if(!uploadingApk.isUploading()){
+			upload(uploadingApk);
+		}
 //		if(waitingApks.size()>0){
 //			new SubmitFormScreen(this, waitingApks.remove(0));
 //		}else{
@@ -283,7 +289,8 @@ public class Upload extends Activity {
 	
 	public void upload(final ViewApk uploadingApk){
 		disableGoingBack();
-		cachedThreadPool.execute(new Runnable() {
+		uploadingApk.setUploading(true);
+		uploadsThreadPool.execute(new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -370,7 +377,7 @@ public class Upload extends Activity {
 			uploadedNames = new ArrayList<String>();
 			notUploadedNames = new ArrayList<HashMap<String,String>>();
 			
-			cachedThreadPool = Executors.newCachedThreadPool();
+			uploadsThreadPool = Executors.newFixedThreadPool(Constants.MAX_PARALLEL_UPOADS);
 			
 			goingBackEnabled = new AtomicBoolean(true);
         }

@@ -69,6 +69,7 @@ public class Constants {
 	
 	public static final int APPLICATIONS_IN_EACH_INSERT = 500;
 	public static final int MAX_PARALLEL_DOWNLOADS = 1;
+	public static final int MAX_PARALLEL_UPOADS = 4;
 	public static final int MAX_PARALLEL_SERVICE_REQUESTS = 4;
 	
 	public static final int NUMBER_OF_STARS = 5;

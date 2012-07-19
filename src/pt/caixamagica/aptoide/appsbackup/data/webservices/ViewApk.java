@@ -21,6 +21,7 @@
 package pt.caixamagica.aptoide.appsbackup.data.webservices;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -43,6 +44,7 @@ public class ViewApk implements Parcelable{
 	private String webURL = null;
 	
 	private long size = 0;
+	private AtomicBoolean isUploading;
 	private int progress = 0;
 	
 //	private ArrayList<String> screenShotsPaths = new ArrayList<String>(5);
@@ -140,6 +142,14 @@ public class ViewApk implements Parcelable{
 	public void setSize(long size) {
 		this.size = size;
 	}
+	
+	public boolean isUploading(){
+		return isUploading.get();
+	}
+	
+	public void setUploading(boolean uploading){
+		this.isUploading.set(uploading);
+	}
 
 	public int getProgress() {
 		return progress;
@@ -159,6 +169,7 @@ public class ViewApk implements Parcelable{
 		this.appHashid = appHashid;
 		this.path = path;
 		this.name = name;
+		this.isUploading = new AtomicBoolean(false);
 	}
 	
 	@Override
