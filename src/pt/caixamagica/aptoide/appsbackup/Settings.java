@@ -222,6 +222,7 @@ public class Settings extends PreferenceActivity {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					clearServerLogin.setEnabled(false);
 					return true;
 				}
 			});
