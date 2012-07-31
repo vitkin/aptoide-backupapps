@@ -33,6 +33,7 @@ public enum EnumOptionsMenu {
 	DELETE,
 	ABOUT,
 	SETTINGS,
+	LOGIN,
 	ADD_REPO,
 	EDIT_REPO,
 	REMOVE_REPO,

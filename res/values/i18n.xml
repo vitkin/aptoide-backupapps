@@ -106,8 +106,8 @@
     <string name="category">Category</string>
     <string name="all_applications">All applications</string>  
     <string name="sort_applications_by">Sort applications by: </string>
-    <string name="freshness">Freshness</string>
-    <string name="alphabetic">Alphabetic</string>
+    <string name="freshness">Most Recent</string>
+    <string name="alphabetic">Alphabetically</string>
     <string name="size">Size</string>
     <string name="stars">Rating</string>
     <string name="downloads">Downloads</string>    

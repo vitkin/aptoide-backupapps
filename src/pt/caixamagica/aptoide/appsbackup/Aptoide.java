@@ -1502,6 +1502,9 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 		menu.add(Menu.NONE, EnumOptionsMenu.SETTINGS.ordinal(), EnumOptionsMenu.SETTINGS.ordinal(), R.string.settings)
 			.setIcon(android.R.drawable.ic_menu_preferences);
 		
+		menu.add(Menu.NONE, EnumOptionsMenu.LOGIN.ordinal(), EnumOptionsMenu.LOGIN.ordinal(), R.string.login)
+			.setIcon(android.R.drawable.ic_menu_edit);
+		
 		
 		return true;
 	}
@@ -1673,6 +1676,39 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 				Intent settings = new Intent(this, Settings.class);
 				startActivity(settings);
 				return true;	
+				
+			case LOGIN:
+				Log.d("Aptoide-Settings", "clicked set server login");
+				String token = null;
+				try {
+					token = serviceDataCaller.callGetServerToken();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(token == null){
+					Log.d("Aptoide-Settings", "No login set");
+					Intent login = new Intent(Aptoide.this, BazaarLogin.class);
+					login.putExtra("InvoqueType", BazaarLogin.InvoqueType.NO_CREDENTIALS_SET.ordinal());
+					startActivity(login);
+//					DialogLogin dialogLogin = new DialogLogin(Settings.this, serviceDataCaller, DialogLogin.InvoqueType.NO_CREDENTIALS_SET);
+//					loginComments.setOnDismissListener(new OnDismissListener() {
+//						@Override
+//						public void onDismiss(DialogInterface dialog) {
+//							addAppVersionComment();
+//						}
+//					});
+//					dialogLogin.show();
+				}else{
+					Log.d("Aptoide-Settings", "Login edit");
+					Intent login = new Intent(Aptoide.this, BazaarLogin.class);
+					login.putExtra("InvoqueType", BazaarLogin.InvoqueType.OVERRIDE_CREDENTIALS.ordinal());
+					startActivity(login);
+//					DialogLogin dialogLogin = new DialogLogin(Settings.this, serviceDataCaller, DialogLogin.InvoqueType.OVERRIDE_CREDENTIALS);
+//					Toast.makeText(Settings.this, "Login already set", Toast.LENGTH_SHORT).show();
+//					dialogLogin.show();
+				}
+				return true;
 				
 //			case SCHEDULED_DOWNLOADS:
 //				availableAdapter.sleep();
