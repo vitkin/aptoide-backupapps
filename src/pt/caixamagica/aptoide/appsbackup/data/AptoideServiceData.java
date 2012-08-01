@@ -1112,11 +1112,12 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		cachedThreadPool.execute(new Runnable() {
 			@Override
 			public void run() {
-				Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+//				Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 				managerDatabase.insertInstalledApplications(managerSystemSync.getInstalledApps());
 				AptoideLog.d(AptoideServiceData.this, "Sync'ed Installed Apps");
 				
 				syncingInstalledApps.set(false);
+				resetInstalledLists();
 				managerSystemSync.cacheInstalledIcons();
 			}
 		});
