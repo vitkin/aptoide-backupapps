@@ -2202,7 +2202,7 @@ public class ManagerDatabase {
 	 * @since 3.0
 	 * 
 	 */
-	public ViewDisplayListApps getInstalledAppsDisplayInfo(EnumAppsSorting sortingPolicy){
+	public ViewDisplayListApps getInstalledAppsDisplayInfo(EnumAppsSorting sortingPolicy, boolean showSystemApps){
 		
 		final int APP_NAME = Constants.COLUMN_FIRST;
 		final int APP_HASHID = Constants.COLUMN_SECOND;
@@ -2231,6 +2231,12 @@ public class ManagerDatabase {
 														 +" NATURAL INNER JOIN "+Constants.TABLE_REPOSITORY
 														 +" WHERE "+Constants.KEY_REPO_IN_USE+"="+Constants.DB_TRUE
 														 +" GROUP BY "+Constants.KEY_APPLICATION_PACKAGE_NAME+") U";
+		
+		// not show System Apps
+		if(!showSystemApps){
+			selectInstalledApps		+=" WHERE "+"I."+Constants.KEY_APP_INSTALLED_TYPE+"!="+EnumAppStatus.SYSTEM.ordinal();
+		}
+		
 		// Sort by:
 		switch (sortingPolicy) {
 			case ALPHABETIC:

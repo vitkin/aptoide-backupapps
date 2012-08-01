@@ -91,6 +91,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -862,6 +863,16 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 		}
 	}
 	
+	public void setShowSystemApps(Boolean state){
+		AptoideLog.d(Aptoide.this, "setShowSystemAppsn to: "+state);
+		try {
+			serviceDataCaller.callSetShowSystemApps(state);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private void initListsAdapters(){
 //		categoriesAdapter = new StaticCategoriesListAdapter(this, categoriesListView, serviceDataCaller, interfaceTasksHandler);
 //		categoriesAdapter = new StaticCategoriesListAdapter(this, availableAppsListView, serviceDataCaller, interfaceTasksHandler);
@@ -1590,6 +1601,16 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 
 					// ***********************************************************
 
+					final CheckBox showSystemApps = (CheckBox) displayOptions.findViewById(R.id.show_system_apps);
+					boolean showSystemAppsState = false;
+					try {
+						showSystemAppsState = serviceDataCaller.callGetShowSystemApps();
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					showSystemApps.setChecked(showSystemAppsState);
+					final boolean storedShowSystemAppsState = showSystemAppsState;
 					
 					sortDialog.setButton(getString(R.string.done), new DialogInterface.OnClickListener() {
 						
@@ -1602,6 +1623,10 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //								availableByCategory = byCategory.isChecked();
 //								setAvailableListBy(availableByCategory);
 //							}
+							
+							if(showSystemApps.isChecked() != storedShowSystemAppsState){
+								setShowSystemApps(showSystemApps.isChecked());
+							}
 							
 							if(byAlphabetic.isChecked()){
 								newSortingPolicy = EnumAppsSorting.ALPHABETIC;

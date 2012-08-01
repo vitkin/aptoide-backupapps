@@ -335,6 +335,16 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		}
 
 		@Override
+		public boolean callGetShowSystemApps() throws RemoteException {
+			return getShowSystemApps();
+		}
+
+		@Override
+		public void callSetShowSystemApps(boolean show) throws RemoteException {
+			setShowSystemApps(show);
+		}
+
+		@Override
 		public int callGetTotalAvailableApps() throws RemoteException {
 			return getTotalAvailableApps();
 		}
@@ -2366,6 +2376,24 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		});
 	}
 	
+	
+	
+	public boolean getShowSystemApps(){
+		return managerPreferences.getShowSystemApplications();
+	}
+	
+	public void setShowSystemApps(final boolean show){
+		cachedThreadPool.execute(new Runnable() {
+			@Override
+			public void run() {
+				managerPreferences.setShowSystemApplications(show);
+				resetInstalledLists();
+			}
+		});
+	}
+	
+	
+	
 	public int getTotalAvailableApps(){
 		AptoideLog.d(AptoideServiceData.this, "Getting Total Available Apps");
 		return managerDatabase.getTotalAvailableApps(managerPreferences.isHwFilterOn(), managerPreferences.getAgeRating());
@@ -2434,7 +2462,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	
 	public ViewDisplayListApps getInstalledApps(){
 		AptoideLog.d(AptoideServiceData.this, "Getting Installed Apps");
-		return managerDatabase.getInstalledAppsDisplayInfo(EnumAppsSorting.reverseOrdinal(managerPreferences.getAppsSortingPolicy()));
+		return managerDatabase.getInstalledAppsDisplayInfo(EnumAppsSorting.reverseOrdinal(managerPreferences.getAppsSortingPolicy()), managerPreferences.getShowSystemApplications());
 	}
 	
 	public ViewDisplayListApps getAllAvailableApps(){

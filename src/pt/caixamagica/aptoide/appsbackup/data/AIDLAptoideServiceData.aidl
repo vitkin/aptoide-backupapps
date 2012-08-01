@@ -93,6 +93,9 @@ interface AIDLAptoideServiceData {
 	int callGetAppsSortingPolicy();
 	void callSetAppsSortingPolicy(in int sortingPolicy);
 	
+	boolean callGetShowSystemApps();
+	void callSetShowSystemApps(in boolean show);
+	
 	ViewDisplayListApps callGetInstalledApps();
 	ViewDisplayListApps callGetAllAvailableApps();
 	ViewDisplayListApps callGetAvailableApps(in int offset, in int range);

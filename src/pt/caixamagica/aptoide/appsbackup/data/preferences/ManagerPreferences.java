@@ -121,6 +121,15 @@ public class ManagerPreferences implements InterfaceAptoideLog{
 		setPreferences.commit();
 	}
 	
+	public boolean getShowSystemApplications(){
+		return getPreferences.getBoolean(EnumPreferences.SHOW_SYSTEM_APPS.name(), false);
+	}
+	
+	public void setShowSystemApplications(boolean show){
+		setPreferences.putBoolean(EnumPreferences.SHOW_SYSTEM_APPS.name(), show);
+		setPreferences.commit();
+	}
+	
 	public int getAppsSortingPolicy(){
 		return getPreferences.getInt(EnumPreferences.SORT_APPLICATIONS_BY.name(), EnumAppsSorting.ALPHABETIC.ordinal());
 	}

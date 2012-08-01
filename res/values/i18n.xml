@@ -111,6 +111,7 @@
     <string name="size">Size</string>
     <string name="stars">Rating</string>
     <string name="downloads">Downloads</string>    
+    <string name="show_system_apps">Show system applications</string>
     
     <string name="backup">BACKUP</string>
     <string name="restore">RESTORE</string>
