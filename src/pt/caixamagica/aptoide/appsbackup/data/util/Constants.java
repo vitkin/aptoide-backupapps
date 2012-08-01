@@ -95,6 +95,8 @@ public class Constants {
 	public static final String PATH_REPO_EXTRAS_XML = "v2/extras.xml?";
 	public static final String PATH_REPO_STATS_XML = "v2/stats.xml?";
 	
+	public static final String DOMAIN_APTOIDE_STORE = ".store.aptoide.com/";
+	
 	public static final String URI_SEARCH_BAZAAR = "http://m.aptoide.com/searchview.php?search=";
 	public static final String URI_FORMAT_LOGIN_WS = "http://www.aptoide.com/webservices/checkUserCredentials/%1$s/%2$s/repo/%3$s/xml";		//TODO adapt to multiple servers
 	public static final String URI_FORMAT_ADD_LIKE_WS = "http://www.aptoide.com/webservices/addApkLike/%1$s/%2$s/apphashid/%3$s/like/xml";
@@ -119,6 +121,7 @@ public class Constants {
 	public static final String SCHEME_PACKAGE = "package";
 	public static final String SCHEME_MARKET = "market";
 	public static final String SCHEME_HTTPS = "https";
+	public static final String SCHEME_HTTP_PREFIX = "http://";
 	public static final String SCHEME_FILE_PREFIX = "file://";
 	public static final String HOST_MARKET = "market.android.com";	//TODO support new play schema
 //	public static final String QUERY_PARAMETER_ID = "id";
@@ -175,7 +178,7 @@ public class Constants {
 	public static final int CATEGORY_HASHID_OTHERS = (CATEGORY_OTHERS).hashCode();
 	
 	
-	public static final String APPS_REPO = "http://apps.bazaarandroid.com/";
+	public static final String APPS_REPO = SCHEME_HTTP_PREFIX+"apps"+DOMAIN_APTOIDE_STORE;
 	public static final int APPS_REPO_HASHID = (APPS_REPO).hashCode();
 	
 	/** stupid sqlite doesn't know booleans */

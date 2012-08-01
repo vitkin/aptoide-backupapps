@@ -23,6 +23,7 @@ package pt.caixamagica.aptoide.appsbackup.data.webservices;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import pt.caixamagica.aptoide.appsbackup.data.util.Constants;
 import pt.caixamagica.aptoide.appsbackup.data.util.Security;
 
 import android.os.Parcel;
@@ -83,7 +84,7 @@ public class ViewServerLogin implements Parcelable{
 	}
 	
 	public String getRepoUri(){
-		return "http://"+this.repoName+".bazaarandroid.com/";
+		return Constants.SCHEME_HTTP_PREFIX+this.repoName+Constants.DOMAIN_APTOIDE_STORE;
 	}
 	
 	public void setRepoPrivate(String priv_username, String priv_password){
