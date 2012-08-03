@@ -88,7 +88,7 @@ public class DialogLogin extends Dialog{
 		((Button)this.findViewById(R.id.new_account)).setOnClickListener(new View.OnClickListener(){
 			
 			public void onClick(View v) {
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.bazaarandroid.com/account/new-user"));
+				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.aptoide.com/account/new-user"));
 				getContext().startActivity(browserIntent);
 			}
 			

@@ -606,13 +606,13 @@ public class ManageRepos extends ListActivity{
 						return true;
 					}
 				}else{
-					uri = uri+".bazaarandroid.com/";
+					uri = uri+Constants.DOMAIN_APTOIDE_STORE;
 					if(uri.equals(existingUri.substring(7, existingUri.length()))){
-						Log.d("Aptoide-ManageRepo", "Repo equal to existant one but without initial http:// and without .bazaarandroid.com extension");
+						Log.d("Aptoide-ManageRepo", "Repo equal to existant one but without initial http:// and without "+Constants.DOMAIN_APTOIDE_STORE+" extension");
 						return true;
 					}
 					if(uri.equals(existingUri.substring(7, existingUri.length()-1))){
-						Log.d("Aptoide-ManageRepo", "Repo equal to existant one but without initial http:// , without .bazaarandroid.com extension, and the final forward slash");
+						Log.d("Aptoide-ManageRepo", "Repo equal to existant one but without initial http:// , without "+Constants.DOMAIN_APTOIDE_STORE+", and the final forward slash");
 						return true;
 					}
 				}
@@ -834,14 +834,14 @@ public class ManageRepos extends ListActivity{
 						
 					case FAIL:
 						Log.d("Aptoide-ManageRepo", "return fail");
-						uriString = uriString.substring(0, uriString.length()-1)+".bazaarandroid.com/";
+						uriString = uriString.substring(0, uriString.length()-1)+Constants.DOMAIN_APTOIDE_STORE;
 						Log.d("Aptoide-ManageRepo", "repo uri: "+uriString);
 						msg.obj = 1;
 						break;
 
 					default:
 						Log.d("Aptoide-ManageRepo", "return exception");
-						uriString = uriString.substring(0, uriString.length()-1)+".bazaarandroid.com/";
+						uriString = uriString.substring(0, uriString.length()-1)+Constants.DOMAIN_APTOIDE_STORE;
 						Log.d("Aptoide-ManageRepo", "repo uri: "+uriString);
 						msg.obj = 1;
 						break;

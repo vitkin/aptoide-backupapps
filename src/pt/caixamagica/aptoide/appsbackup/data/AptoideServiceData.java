@@ -661,13 +661,13 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	
 	public void registerInstalledDataObserver(AIDLAptoideInterface installedAppsObserver){
 		aptoideClients.put(EnumServiceDataCallback.UPDATE_INSTALLED_LIST, installedAppsObserver);
-		if(!syncingInstalledApps.get()){
-			try {
-				installedAppsObserver.newInstalledListDataAvailable();AptoideLog.d(AptoideServiceData.this, "!syncing installed apps");
-			} catch (RemoteException e) {
-				e.printStackTrace();
-			}
-		}
+//		if(!syncingInstalledApps.get()){
+//			try {
+//				installedAppsObserver.newInstalledListDataAvailable();AptoideLog.d(AptoideServiceData.this, "!syncing installed apps");
+//			} catch (RemoteException e) {
+//				e.printStackTrace();
+//			}
+//		}
     	AptoideLog.d(AptoideServiceData.this, "Registered Installed Data Observer");
 	}
 	
@@ -1127,7 +1127,6 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				AptoideLog.d(AptoideServiceData.this, "Sync'ed Installed Apps");
 				
 				syncingInstalledApps.set(false);
-				resetInstalledLists();
 				managerSystemSync.cacheInstalledIcons();
 			}
 		});

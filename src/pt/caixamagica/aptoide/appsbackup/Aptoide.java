@@ -191,7 +191,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 			serviceDataCaller = AIDLAptoideServiceData.Stub.asInterface(service);
 			serviceDataIsBound = true;
 			
-			AptoideLog.v(Aptoide.this, "Connected to ServiceData");
+			AptoideLog.v(Aptoide.this, "Connected to ServiceData");	
+			interfaceTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.ZERO_RESET_INSTALLED_LIST_DISPLAY.ordinal());
 			
 			if(!serviceDataSeenRunning){
 				synchronizingInstalledApps.set(true);
@@ -424,6 +425,11 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
         	
 	        	case REFRESH_INSTALLED_DISPLAY:
 	        		installedAdapter.refreshDisplayInstalled();
+					break;
+        	
+	        	case ZERO_RESET_INSTALLED_LIST_DISPLAY:
+	    			installedAdapter.zeroResetDisplayInstalled();
+	        		installedAppsListView.setAdapter(installedAdapter);
 					break;
         	
 	        	case RESET_INSTALLED_LIST_DISPLAY:

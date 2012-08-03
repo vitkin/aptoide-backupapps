@@ -362,7 +362,7 @@ public class ManagerDownloads {
 	public EnumServerLoginStatus checkServerConnection(ViewServerLogin serverLogin){
 		Log.d("Aptoide-ManagerDownloads", "checking connection for: "+serverLogin);
 		
-		String uri = "http://"+serverLogin.getRepoName()+".bazaarandroid.com/";
+		String uri = Constants.SCHEME_HTTP_PREFIX+serverLogin.getRepoName()+Constants.DOMAIN_APTOIDE_STORE;
 		Log.d("Aptoide-ManagerDownloads", "uri: "+uri);
 		
 		HttpParams httpParameters = new BasicHttpParams();

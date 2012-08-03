@@ -23,6 +23,7 @@ package pt.caixamagica.aptoide.appsbackup.ifaceutil;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import pt.caixamagica.aptoide.appsbackup.EnumAppsLists;
 import pt.caixamagica.aptoide.appsbackup.EnumAptoideInterfaceTasks;
@@ -64,6 +65,8 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 	private ListView listView;
 	private LayoutInflater layoutInflater;
 
+	private AtomicBoolean zeroReset;
+	
 	ImageLoader imageLoader;
 
 	private ViewDisplayListApps apps = null;
@@ -311,6 +314,8 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 		this.serviceDataCaller = serviceDataCaller;
 		this.aptoideTasksHandler = aptoideTasksHandler;
 		
+		zeroReset = new AtomicBoolean(false);
+		
 		apps = new ViewDisplayListApps();
 
 		appsManager = new InstalledAppsManager();
@@ -322,14 +327,20 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 		
 	} 
 	
-	
+	public void zeroResetDisplayInstalled(){
+		zeroReset.set(true);
+		appsManager.reset();
+    	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_AVAILABLE_LIST_DISPLAY.ordinal());
+	}
 	
 	public void resetDisplayInstalled(){
+		zeroReset.set(false);
 		appsManager.reset();
     	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_AVAILABLE_LIST_DISPLAY.ordinal());
 	}
 	
 	public void refreshDisplayInstalled(){
+		zeroReset.set(false);
 		notifyDataSetChanged();
 	}
 	
@@ -344,7 +355,7 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 	}
 	
 	private void resetDisplay(){
-		if(freshApps == null || freshApps.isEmpty()){
+		if((freshApps == null || freshApps.isEmpty()) && !zeroReset.get()){
 			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_INSTALLED_TO_NO_APPS.ordinal());
 		}else{
 			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_INSTALLED_TO_LIST.ordinal());
