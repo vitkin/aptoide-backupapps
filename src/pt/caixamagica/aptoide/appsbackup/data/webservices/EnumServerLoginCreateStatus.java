@@ -32,6 +32,7 @@ import android.content.Context;
  */
 public enum EnumServerLoginCreateStatus {
 	SUCCESS,
+	PREVIOUS_LOGIN_STILL_FINISHING_UP,
 	REPO_SERVICE_UNAVAILABLE,
 	LOGIN_CREATE_SERVICE_UNAVAILABLE,
 	USERNAME_NOT_PROPER_EMAIL,
@@ -87,6 +88,8 @@ public enum EnumServerLoginCreateStatus {
 				return context.getString(R.string.username_not_email);
 			case SERVER_ERROR:
 				return context.getString(R.string.server_error);
+			case PREVIOUS_LOGIN_STILL_FINISHING_UP:
+				return context.getString(R.string.previous_login_still_finishing_up);
 			case SUCCESS:
 				return context.getString(R.string.success);
 	
