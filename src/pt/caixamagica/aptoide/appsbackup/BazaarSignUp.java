@@ -434,7 +434,6 @@ public class BazaarSignUp extends Activity {
 					dialogProgress.setCancelable(false);
 				}else{
 					success = false;
-					Toast.makeText(BazaarSignUp.this, status.toString(BazaarSignUp.this), Toast.LENGTH_SHORT).show();
 					if(status == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
 						delayedExecutionHandler.postDelayed(new Runnable() {
 				            public void run() {
@@ -443,6 +442,7 @@ public class BazaarSignUp extends Activity {
 				            }
 				        }, 15000);
 					}else{
+						Toast.makeText(BazaarSignUp.this, status.toString(BazaarSignUp.this), Toast.LENGTH_SHORT).show();
 						dialogProgress.dismiss();
 					}
 				}

@@ -698,6 +698,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 					
 					if(uploads.size() > 0){
 						if(authenticationToken != null){
+							availableAdapter.unselectAll();
+							
 							Intent upload = new Intent(Aptoide.this, Upload.class);
 							upload.putIntegerArrayListExtra("uploads", uploads);
 							startActivity(upload);
@@ -732,6 +734,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 							restores.add(availableAdapter.getItem(i).getAppHashid());
 						}
 					}
+					
+					installedAdapter.unselectAll();
 					
 					if(anyReposInUse){
 						for (Integer appHashid : restores) {
