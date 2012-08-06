@@ -109,7 +109,7 @@
     <string name="hide_password">Passwort ausblenden</string>
     <string name="bad_login">Login mit den angegebenen Daten fehlgeschlagen</string>
     <string name="comments_unavailable">Kommentare nicht verfügbar</string>
-	<string name="bazaar_login">Bazaar Login</string>
+	<string name="bazaar_login">Aptoide Login</string>
 	<string name="clear_login">Login löschen</string>
     <string name="clear_login_sum">Aktuellen Login zurücksetzen</string>
     <string name="set_new_login">Neuen Login erstellen</string>

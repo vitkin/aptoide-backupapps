@@ -110,7 +110,7 @@
     <string name="bad_login">Girilen verilerle oturum açılamadı</string>
     <string name="comments_unavailable">Yorumlar yüklenemedi</string>
 
-    <string name="bazaar_login">Bazaar Oturumu</string>
+    <string name="bazaar_login">Aptoide Oturumu</string>
     <string name="clear_login">Oturumu temizle</string>
     <string name="clear_login_sum">Şimdiki oturum verilerini kaldır</string>
     <string name="set_new_login">Yeni oturum yapılandır</string>

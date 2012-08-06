@@ -110,7 +110,7 @@
     <string name="bad_login">Login inválido</string>
     <string name="comments_unavailable">Comnetários não disponíveis</string>
     
-    <string name="bazaar_login">Bazaar Login</string>
+    <string name="bazaar_login">Aptoide Login</string>
     <string name="clear_login">Limpar login</string>
     <string name="clear_login_sum">Limpar login actual</string>
     <string name="set_new_login">Definir novo login</string>

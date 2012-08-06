@@ -112,7 +112,7 @@
     <string name="bad_login">Ошибка входа</string>
     <string name="comments_unavailable">Комментарии недоступны</string>
 
-    <string name="bazaar_login">Bazaar логин</string>
+    <string name="bazaar_login">Aptoide логин</string>
     <string name="clear_login">Очистка логин</string>
  	<string name="clear_login_sum">Отключение текущего логина</string>
     <string name="set_new_login">Установить новый логин</string>

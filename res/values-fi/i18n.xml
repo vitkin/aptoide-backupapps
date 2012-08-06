@@ -110,7 +110,7 @@
     <string name="hide_password">Piilota salasana</string>
     <string name="bad_login">Kirjautuminen näillä tunnuksilla epäonnistui</string>
     <string name="comments_unavailable">Ei kommentteja</string>
-    <string name="bazaar_login">Bazaar-kirjautuminen</string>
+    <string name="bazaar_login">Aptoide-kirjautuminen</string>
     <string name="clear_login">Tyhjennä kirjautuminen</string>
     <string name="clear_login_sum">Poista nykyinen kirjautuminen käytöstä</string>
     <string name="set_new_login">Aseta uusi kirjautuminen</string>

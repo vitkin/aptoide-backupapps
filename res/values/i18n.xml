@@ -24,7 +24,7 @@
     
 	<!-- this string name has to be misspelled because private is a reserved word -->
     <string name="privt_store">Private store</string>
-    <string name="bazaar_login">Bazaar login</string>
+    <string name="bazaar_login">Aptoide login</string>
     <string name="logging_in">Logging in</string>
     <string name="please_wait">Please wait</string>
     <string name="clear_login">Clear login</string>
@@ -130,7 +130,7 @@
     <string name="loading_apps">Loading apps...</string>
     <string name="loading_more_apps">Loading more apps...</string>
     
-    <string name="search_bazaar">Search %s on Bazaar</string>
+    <string name="search_bazaar">Search %s on Aptoide</string>
     <string name="no_search_results">No search results</string>
     
     <string name="select_version">Select version</string>
@@ -171,12 +171,12 @@
     <string name="login">Login</string> 
     <string name="sign_up">Sign Up</string>
     <string name="new_account">New Account</string>
-    <string name="registration">Bazaar Registration</string>
+    <string name="registration">Aptoide Registration</string>
     <string name="store_privacy">Store Privacy</string>
     <string name="publc">Public</string>
     <string name="privt">Private</string>
     <string name="loading">Loading...</string>
-    <string name="accept_terms">By signing up you are agreeing to the Bazaar Terms of Service and Bazaar Content Policy for Developers</string>
+    <string name="accept_terms">By signing up you are agreeing to the Aptoide Terms of Service and Aptoide Content Policy for Developers</string>
     
     <string name="no_network_connection">No network connection</string>
     <string name="no_permitted_network_connection">No permitted network connection</string>
@@ -188,7 +188,7 @@
     <string name="name">Name</string>
     <string name="optional_name">Optional name</string>
     
-    <string name="login_intro">You may now enter your Bazaar username, password and store:</string>
+    <string name="login_intro">You may now enter your Aptoide username, password and store:</string>
     <string name="repository">Store</string>
     <string name="repository_example">(Example: your username)</string>
     <string name="privacy_username">Store Username</string>

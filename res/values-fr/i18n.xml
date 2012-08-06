@@ -102,7 +102,7 @@
   <string name="bad_login">Echec de login avec ces infos</string>
   <string name="comments_unavailable">Commentaires indisponibles</string>
 
-  <string name="bazaar_login">Login Bazaar</string>
+  <string name="bazaar_login">Login Aptoide</string>
   <string name="clear_login">Effacer login</string>
   <string name="clear_login_sum">Effacer login actuel</string>
   <string name="set_new_login">Entrer nouveau login</string>

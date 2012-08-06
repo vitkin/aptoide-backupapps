@@ -112,8 +112,8 @@
     <string name="bad_login">Neuspješna prijava sa datim informacijama</string>
     <string name="comments_unavailable">Komentari nedostupni</string>
 
-    <string name="bazaar_login">Bazaar Login</string>
-    <string name="credentialssettings">Bazaar login</string>
+    <string name="bazaar_login">Aptoide Login</string>
+    <string name="credentialssettings">Aptoide login</string>
     <string name="clear_login">Očisti login</string>
     <string name="clear_login_summary">Poništi trenutni login</string>
     <string name="set_new_login">Stavi novi login</string>

@@ -45,7 +45,7 @@
     <string name="download_icons">Descargas</string>
     <string name="download_icons_rules">Descargas de los Icones </string>
     
-    <string name="bazaar_login">Bazaar login</string>
+    <string name="bazaar_login">Aptoide login</string>
     <string name="clear_login">Limpiar login</string>
     <string name="clear_login_sum">Desestablecer el login actual</string>
     <string name="set_new_login">Establecer un nuevo login</string>

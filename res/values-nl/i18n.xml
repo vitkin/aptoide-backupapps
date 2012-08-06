@@ -104,7 +104,7 @@
     <string name="bad_login">Inloggen niet gelukt met de ingevoerde gegevens</string>
     <string name="comments_unavailable">Commentaren niet beschikbaar</string>
 
-    <string name="bazaar_login">Bazaar Login</string>
+    <string name="bazaar_login">Aptoide Login</string>
     <string name="clear_login">Login verwijderen</string>
     <string name="clear_login_sum">Je huidige login verwijderen</string>
     <string name="set_new_login">Nieuwe login maken</string>

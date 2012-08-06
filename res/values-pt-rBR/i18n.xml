@@ -109,7 +109,7 @@
     <string name="bad_login">Falha no login com as credendiais dadas</string>
     <string name="comments_unavailable">Comentários indisponíveis</string>
 
-    <string name="bazaar_login">Login do Bazaar</string>
+    <string name="bazaar_login">Login do Aptoide</string>
     <string name="clear_login">Limpar login</string>
     <string name="clear_login_sum">Remover o seu login atual</string>
     <string name="set_new_login">Insira um novo login</string>
