@@ -55,13 +55,15 @@ import android.widget.TextView;
 
  /**
  * DynamicAvailableAppsListAdapter, models a dynamic loading, available apps list adapter
- * 									extends arrayAdapter
+ * 									extends BaseAdapter implements InterfaceAvailableAppsAdapter
  * 
  * @author dsilveira
  * @since 3.0
  *
  */
-public class DynamicAvailableAppsListAdapter extends BaseAdapter{
+public class DynamicAvailableAppsListAdapter extends BaseAdapter implements InterfaceAvailableAppsAdapter{
+	
+	private Context context;
 	
 	private ListView listView;
 	private LayoutInflater layoutInflater;
@@ -233,8 +235,24 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
 					e.printStackTrace();
 				}
 				
-				if(freshBottomApps.size() == 0){
-					append = false;
+				if(freshBottomApps.size() == 0 ){
+					try {
+						if( category != null && !category.hasChildren()){
+							Log.d("Aptoide","scrolling down available list.  offset: "+offset+" range: "+range+" category: "+category);
+							setBottomFreshAvailableApps(serviceDataCaller.callGetAvailableAppsByCategory(offset, range, category.getCategoryHashid()));
+						}else{
+							Log.d("Aptoide","scrolling down available list.  offset: "+offset+" range: "+range);
+							setBottomFreshAvailableApps(serviceDataCaller.callGetAvailableApps(offset, range));
+						}
+
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					if(freshBottomApps.size() == 0 ){
+						append = false;
+					}
 				}
 				
 //				if(trim_top){
@@ -283,6 +301,21 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
 					} catch (RemoteException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					}
+					
+					if(freshTopApps.size() == 0){
+						try {
+							if(category != null && !category.hasChildren()){
+								Log.d("Aptoide","scrolling up available list.  offset: "+offset+" range: "+range+" category: "+category);
+								setTopFreshAvailableApps(serviceDataCaller.callGetAvailableAppsByCategory(offset, range, category.getCategoryHashid()));
+							}else{
+								Log.d("Aptoide","scrolling up available list.  offset: "+offset+" range: "+range);
+								setTopFreshAvailableApps(serviceDataCaller.callGetAvailableApps(offset, range));
+							}	
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 //				}
 
@@ -486,7 +519,7 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
 
 		rowViewHolder.timestamp.setText(((ViewDisplayApplicationBackup) apps.get(position)).getFormatedTimestamp());
 		
-		rowViewHolder.status.setText(((ViewDisplayApplicationBackup) apps.get(position)).getStatus().toString());
+		rowViewHolder.status.setText(((ViewDisplayApplicationBackup) apps.get(position)).getStatus().toString(context));
 		rowViewHolder.size.setText(((ViewDisplayApplicationBackup) apps.get(position)).getSize());
 		
 		rowViewHolder.check.setChecked(((ViewDisplayApplicationBackup) apps.get(position)).isChecked());
@@ -518,15 +551,17 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
 	public long getItemId(int position) {
 		return apps.get(position).getAppHashid();
 	}
-	
+
+	@Override
 	public void toggleSelectAll(){
-		if(((ViewDisplayApplicationBackup) apps.get(0)).isChecked()){
+		if(!apps.isEmpty() && ((ViewDisplayApplicationBackup) apps.get(0)).isChecked()){
 			unselectAll();
 		}else{
 			selectAll();
 		}
 	}
-	
+
+	@Override
 	public void selectAll(){
 		for (ViewDisplayApplication app : apps) {
 			ViewDisplayApplicationBackup backup = ((ViewDisplayApplicationBackup) app);
@@ -536,7 +571,8 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
 		}
 		notifyDataSetChanged();
 	}
-	
+
+	@Override
 	public void unselectAll(){
 		for (ViewDisplayApplication app : apps) {
 			ViewDisplayApplicationBackup backup = ((ViewDisplayApplicationBackup) app);
@@ -546,7 +582,8 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
 		}
 		notifyDataSetChanged();
 	}
-	
+
+	@Override
 	public ViewListIds getSelectedIds(){
 		ViewListIds selected = new ViewListIds();
 		for (ViewDisplayApplication app: apps) {
@@ -567,6 +604,8 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
 	 * @param textViewResourceId
 	 */
 	public DynamicAvailableAppsListAdapter(Context context, ListView listView, AIDLAptoideServiceData serviceDataCaller, Handler interfaceTasksHandler) {
+		
+		this.context = context;
 		
 		this.serviceDataCaller = serviceDataCaller;
 		this.aptoideTasksHandler = interfaceTasksHandler;
@@ -619,8 +658,16 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
         }
         
 	} 
-	
-	
+
+	@Override
+	public void resetDisplayAvailable(){
+		aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_PROGRESSBAR.ordinal());
+		sleep.set(true);
+		Log.d("Aptoide-DynamicAvailableAppsListAdapter", "external reset, sleep: "+sleep.get());
+		this.apps.clear();
+		
+		appsManager.reset();		
+	}
 	
 	public void resetDisplay(ViewDisplayCategory category){
 		aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_PROGRESSBAR.ordinal());
@@ -650,7 +697,8 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
 //		listView.destroyDrawingCache();
 		resetDisplay(this.category);
 	}
-	
+
+	@Override
 	public void refreshDisplayAvailable(){
 		notifyDataSetChanged();
 	}
@@ -690,7 +738,7 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
 			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_NO_APPS.ordinal());
 		}else{
 			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_LIST.ordinal());
-	    	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_UPDATABLE_LIST_DISPLAY.ordinal());
+//	    	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_UPDATABLE_LIST_DISPLAY.ordinal());
 		}
 
 		sleep.set(false);
@@ -751,6 +799,8 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
 	    	changingList.set(false);
 			setLoadingHeader(false);
 			return;
+		}else{
+			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_LIST.ordinal());
 		}
 		
     	int adjustAmount = freshAvailableApps.size();
@@ -789,6 +839,8 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
 		Log.d("Aptoide-DynamicAvailableAppsListAdapter", "appending freshAvailableList: "+freshAvailableApps.size());
 		if(freshAvailableApps.isEmpty()){
 			return;
+		}else{
+			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_LIST.ordinal());
 		}
 		
 		boolean newList = this.apps.isEmpty();
@@ -826,7 +878,14 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter{
 //		trimTopAppsList(trimAmount);
 //		appendAndUpdateDisplay(freshAvailableApps);
 //	}
-	
+
+
+	@Override
+	public boolean isDynamic() {
+		return true;
+	}
+
+	@Override
 	public void shutdownNow(){
 		appsManager.dataColector.shutdownNow();
 	}

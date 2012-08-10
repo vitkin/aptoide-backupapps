@@ -649,6 +649,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		}
 		aptoideClients.put(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST, availableAppsObserver);
     	AptoideLog.d(AptoideServiceData.this, "Registered Available Data Observer");
+    	if( managerDatabase.getTotalAvailableApps(managerPreferences.isHwFilterOn(), managerPreferences.getAgeRating()) > Constants.MAX_APPLICATIONS_IN_STATIC_LIST_MODE){
+        	AptoideLog.d(AptoideServiceData.this, "Switching Available List to dynamic");
+    		switchAvailableListToDynamic();
+    		loadingAvailableListData();
+    	}
 		return checkIfAnyReposInUse();
 	}
 	
@@ -1230,6 +1235,38 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		} catch (Exception e) { }
 	}
 	
+	public void switchAvailableListToStatic(){
+		try {
+			cachedThreadPool.execute(new Runnable() {
+				@Override
+				public void run() {
+//					AptoideLog.d(AptoideServiceData.this, "switching to static available apps!");
+					try {
+						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).switchAvailableToStaticList();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}	
+				}
+			});
+		} catch (Exception e) { }
+	}
+	
+	public void switchAvailableListToDynamic(){
+		try {
+			cachedThreadPool.execute(new Runnable() {
+				@Override
+				public void run() {
+//					AptoideLog.d(AptoideServiceData.this, "switching to dynamic available apps!");
+					try {
+						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).switchAvailableToDynamicList();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}	
+				}
+			});
+		} catch (Exception e) { }
+	}
+	
 	public void noAvailableListData(){
 		try {
 			cachedThreadPool.execute(new Runnable() {
@@ -1585,8 +1622,9 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 					}
 					ViewCache cache = null;
 					if(reposInserting.contains(repository.getHashid())){
-						cache = managerDownloads.startRepoBareDownload(repository);
 						loadingAvailableProgressIndeterminate();
+						loadingAvailableListData();
+						cache = managerDownloads.startRepoBareDownload(repository);
 					}
 	//				Looper.prepare();
 	//				Toast.makeText(getApplicationContext(), "finished downloading bare list", Toast.LENGTH_LONG).show();

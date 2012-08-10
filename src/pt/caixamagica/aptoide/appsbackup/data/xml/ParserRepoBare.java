@@ -30,6 +30,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import pt.caixamagica.aptoide.appsbackup.data.AptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewAppDownloadInfo;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewApplication;
 import pt.caixamagica.aptoide.appsbackup.data.preferences.EnumAgeRating;
@@ -144,6 +145,8 @@ public class ParserRepoBare extends DefaultHandler{
 				if((firstBucket && parsedAppsNumber >= managerXml.getDisplayListsDimensions().getFastReset()) 
 						|| (secondBucket && parsedAppsNumber >= (managerXml.getDisplayListsDimensions().getCacheSize()-managerXml.getDisplayListsDimensions().getFastReset())) 
 						|| parsedAppsNumber >= Constants.APPLICATIONS_IN_EACH_INSERT){
+					
+					
 					final boolean insertingFirstBucket;
 					if(firstBucket){
 						firstBucket = false;
@@ -159,6 +162,9 @@ public class ParserRepoBare extends DefaultHandler{
 						insertingFirstBucket = false;
 						Log.d("Aptoide-RepoBareParser", "bucket full, inserting apps: "+applications.size());
 					}
+
+					parseInfo.getNotification().incrementProgress(applications.size());
+					
 					parsedAppsNumber = 0;
 					applicationsInsertStack.add(applications);
 					downloadsInfoInsertStack.add(downloadsInfo);
@@ -191,7 +197,6 @@ public class ParserRepoBare extends DefaultHandler{
 				}
 				
 				parsedAppsNumber++;
-				parseInfo.getNotification().incrementProgress(1);
 				
 				downloadsInfo.add(downloadInfo);
 				applications.add(application);
@@ -208,8 +213,15 @@ public class ParserRepoBare extends DefaultHandler{
 				parseInfo.getRepository().setScreensPath(tagContentBuilder.toString());
 				break;	
 			case appscount:
-				parseInfo.getRepository().setSize(Integer.parseInt(tagContentBuilder.toString()));		
-				parseInfo.getNotification().setProgressCompletionTarget(parseInfo.getRepository().getSize());
+				int size = Integer.parseInt(tagContentBuilder.toString());
+				parseInfo.getRepository().setSize(size);		
+				parseInfo.getNotification().setProgressCompletionTarget(size);
+				
+				if(size > Constants.MAX_APPLICATIONS_IN_STATIC_LIST_MODE){
+					managerXml.serviceData.switchAvailableListToDynamic();
+				}else{
+					managerXml.serviceData.switchAvailableListToStatic();					
+				}
 				break;
 			case hash:
 				parseInfo.getRepository().setDelta(tagContentBuilder.toString());
@@ -240,6 +252,7 @@ public class ParserRepoBare extends DefaultHandler{
 	@Override
 	public void startDocument() throws SAXException {	//TODO refacto Logs
 		Log.d("Aptoide-RepoBareParser","Started parsing XML from " + parseInfo.getRepository().getRepoName() + " ...");
+		managerXml.serviceData.loadingAvailableProgressIndeterminate();
 		super.startDocument();
 	}
 
@@ -248,6 +261,8 @@ public class ParserRepoBare extends DefaultHandler{
 		Log.d("Aptoide-RepoBareParser","Done parsing XML from " + parseInfo.getRepository().getRepoName() + " ...");
 
 		if(!applications.isEmpty()){
+			parseInfo.getNotification().incrementProgress(applications.size());
+			
 			Log.d("Aptoide-RepoBareParser", "bucket not empty, apps: "+applications.size());
 			applicationsInsertStack.add(applications);
 			downloadsInfoInsertStack.add(downloadsInfo);
@@ -257,6 +272,8 @@ public class ParserRepoBare extends DefaultHandler{
 			managerXml.getManagerDatabase().insertApplications(applicationsInsertStack.remove(Constants.FIRST_ELEMENT));
 			managerXml.getManagerDatabase().insertDownloadsInfo(downloadsInfoInsertStack.remove(Constants.FIRST_ELEMENT));			
 		}
+		
+		parseInfo.getNotification().setCompleted(true);
 		
 		managerXml.getManagerDatabase().optimizeQuerys();
 		

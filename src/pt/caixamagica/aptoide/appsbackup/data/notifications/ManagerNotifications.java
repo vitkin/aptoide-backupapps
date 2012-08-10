@@ -255,6 +255,10 @@ public class ManagerNotifications {
 				setNotification(viewNotification);
 				break;
 				
+			case REPO_UPDATE:
+				serviceData.loadingAvailableProgressSetCompletionTarget(viewNotification.getProgressCompletionTarget());
+				break;
+				
 			default:
 				break;
 		}
@@ -269,6 +273,10 @@ public class ManagerNotifications {
 			case REPO_BARE_DOWNLOAD:
 				serviceData.loadingAvailableProgressUpdate(viewNotification.getCurrentProgress());
 				setNotification(viewNotification);
+				break;
+				
+			case REPO_UPDATE:
+				serviceData.loadingAvailableProgressUpdate(viewNotification.getCurrentProgress());				
 				break;
 				
 			default:

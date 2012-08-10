@@ -308,4 +308,9 @@
     
     <string name="app_system_backup_may_fail">%s is protected by the system and Aptoide-AppsBackup might not be able to back it up, or uninstall it</string>
     <string name="app_too_big_backup_may_fail">%s is too big, the server might refuse to receive the upload</string>
+    
+    <string name="option_not_available_while_updating_repos">Option not available while updating stores!</string>
+    <string name="too_many_apps_to_select_at_once">Too many apps to select at once!</string>
+    <string name="please_wait_server_being_updated">Please wait, the server is being updated, this may take several minutes!</string>
+    
 </resources>

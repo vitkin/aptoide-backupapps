@@ -2335,15 +2335,14 @@ public class ManagerDatabase {
 			}
 			/* Filter by rating */
 			selectAvailableApps +=								" AND "+Constants.KEY_APPLICATION_RATING+"<"+ratingFilter.ordinal()
-					
-														+" )";
+
+																+" GROUP BY "+Constants.KEY_APPLICATION_PACKAGE_NAME+" )";
 			
 			/* Filter by category? */
 			if(categoryHashid != Constants.TOP_CATEGORY){
 				selectAvailableApps +=" NATURAL INNER JOIN (SELECT * FROM "+Constants.TABLE_APP_CATEGORY
 																+" WHERE "+Constants.KEY_APP_CATEGORY_CATEGORY_HASHID+"="+categoryHashid+")";
 			}			
-				selectAvailableApps +=" GROUP BY "+Constants.KEY_APPLICATION_PACKAGE_NAME;
 				
 //		Log.d("Aptoide-ManagerDatabase", "available apps: "+selectAvailableApps);
 		

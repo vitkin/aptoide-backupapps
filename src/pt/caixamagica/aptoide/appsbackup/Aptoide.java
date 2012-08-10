@@ -40,8 +40,10 @@ import pt.caixamagica.aptoide.appsbackup.data.system.ViewScreenDimensions;
 import pt.caixamagica.aptoide.appsbackup.data.util.Constants;
 import pt.caixamagica.aptoide.appsbackup.debug.AptoideLog;
 import pt.caixamagica.aptoide.appsbackup.debug.InterfaceAptoideLog;
+import pt.caixamagica.aptoide.appsbackup.ifaceutil.DynamicAvailableAppsListAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.EnumAppStatus;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.FixedTabsAdapter;
+import pt.caixamagica.aptoide.appsbackup.ifaceutil.InterfaceAvailableAppsAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticAvailableAppsListAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticAvailableAppsListAdapter.AvailableRowViewHolder;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticCategoriesListAdapter;
@@ -139,6 +141,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //	private View emptyUpdatableAppsList;
 //	private View loadingCategoriesList;
 	private View loadingAvailableAppsList;
+	private ProgressBar loadingAvailableAppsUnknownProgress;
 	private ProgressBar loadingAvailableAppsProgress;
 	private AtomicInteger loadingAvailableAppsProgressCompletionTarget;
 	private AtomicInteger loadingAvailableAppsProgressCurrent;
@@ -171,7 +174,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	
 //	private StaticCategoriesListAdapter categoriesAdapter = null;
 //	private DynamicAvailableAppsListAdapter availableAdapter = null;
-	private StaticAvailableAppsListAdapter availableAdapter = null;
+	private InterfaceAvailableAppsAdapter availableAdapter = null;
 	private StaticInstalledAppsListAdapter installedAdapter = null;
 //	private StaticUpdatableAppsListAdapter updatableAdapter = null;
 	
@@ -335,6 +338,18 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 		}
 
 		@Override
+		public void switchAvailableToStaticList() throws RemoteException {
+			AptoideLog.v(Aptoide.this, "received switchAvailableToStaticList callback");
+			interfaceTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_STATIC_LIST.ordinal());
+		}
+
+		@Override
+		public void switchAvailableToDynamicList() throws RemoteException {
+			AptoideLog.v(Aptoide.this, "received switchAvailableToDynamicList callback");
+			interfaceTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_DYNAMIC_LIST.ordinal());			
+		}
+
+		@Override
 		public void noAvailableListDataAvailable() throws RemoteException {
 			AptoideLog.v(Aptoide.this, "received noAvailableApps callback");
 			interfaceTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_NO_APPS.ordinal());
@@ -355,6 +370,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 
 		@Override
 		public void loadingAvailableListProgressUpdate(int currentProgress) throws RemoteException {
+			AptoideLog.v(Aptoide.this, "received loadingAvailableApps callback, progress update: "+currentProgress);
 			loadingAvailableAppsProgressCurrent.set(currentProgress);
 			interfaceTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.AVAILABLE_PROGRESS_UPDATE.ordinal());
 		}
@@ -471,7 +487,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 					break;
 					
 				case AVAILABLE_PROGRESS_INDETERMINATE:
-					availableProgressIndeterminate();
+					availableProgressIndeterminate(true);
 					break;
 					
 				case SWITCH_INSTALLED_TO_PROGRESSBAR:
@@ -492,6 +508,14 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 					
 				case SWITCH_AVAILABLE_TO_LIST:
 					switchAvailableToList();
+					break;
+					
+				case SWITCH_AVAILABLE_TO_STATIC_LIST:
+					switchAvailableToStaticList();
+					break;
+					
+				case SWITCH_AVAILABLE_TO_DYNAMIC_LIST:
+					switchAvailableToDynamicList();
 					break;
 					
 				case SWITCH_AVAILABLE_TO_CATEGORIES:
@@ -603,11 +627,13 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //			emptyUpdatableAppsList.setVisibility(View.GONE);
 //			emptyUpdatableAppsList.setTag(EnumAppsLists.Updates);
 			
+			
 //			loadingCategoriesList = categoriesView.findViewById(R.id.loading);
 //			loadingAvailableAppsList = LinearLayout.inflate(this, R.layout.list_loading, appsListFlipper);
 			loadingAvailableAppsList = availableView.findViewById(R.id.loading);
 			loadingAvailableAppsList.setTag(EnumAppsLists.RESTORE);
-			loadingAvailableAppsProgress = (ProgressBar) loadingAvailableAppsList.findViewById(R.id.loading_bar);
+			loadingAvailableAppsUnknownProgress = (ProgressBar) loadingAvailableAppsList.findViewById(R.id.loading_bar);
+			loadingAvailableAppsProgress = (ProgressBar) loadingAvailableAppsList.findViewById(R.id.loading_progress_bar);
 			loadingAvailableAppsProgressCompletionTarget = new AtomicInteger(0);
 			loadingAvailableAppsProgressCurrent = new AtomicInteger(0);
 //			loadingInstalledAppsList = LinearLayout.inflate(this, R.layout.list_loading, appsListFlipper);
@@ -1004,8 +1030,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	
 	private void switchAvailableToProgressBar(){
 		AptoideLog.d(Aptoide.this, "switching available to progressBar");
-		
-		loadingAvailableAppsProgress.setIndeterminate(true);
+
+		availableProgressIndeterminate(true);
 		
 //        appsListFlipper.invalidate();
 //        appsListFlipper.removeViewAt(EnumAppsLists.Available.ordinal());
@@ -1020,6 +1046,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	}
 	
 	private void availableProgressSetCompletionTarget(){
+		availableProgressIndeterminate(false);
 		loadingAvailableAppsProgress.setIndeterminate(false);
 		loadingAvailableAppsProgress.setMax(loadingAvailableAppsProgressCompletionTarget.get());
 	}
@@ -1028,8 +1055,14 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 		loadingAvailableAppsProgress.setProgress(loadingAvailableAppsProgressCurrent.get());
 	}
 	
-	private void availableProgressIndeterminate(){
-		loadingAvailableAppsProgress.setIndeterminate(true);
+	private void availableProgressIndeterminate(boolean indeterminate){
+		if(indeterminate){
+			loadingAvailableAppsUnknownProgress.setVisibility(View.VISIBLE);
+			loadingAvailableAppsProgress.setVisibility(View.GONE);
+		}else{
+			loadingAvailableAppsUnknownProgress.setVisibility(View.GONE);
+			loadingAvailableAppsProgress.setVisibility(View.VISIBLE);			
+		}
 	}
 
 	private void switchAvailableToList(){
@@ -1042,6 +1075,14 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 		emptyAvailableAppsList.setVisibility(View.GONE);
 		availableAppsListView.setVisibility(View.VISIBLE);
 		loadingAvailableAppsList.setVisibility(View.GONE);
+	}
+	
+	private void switchAvailableToStaticList(){
+		availableAdapter = new StaticAvailableAppsListAdapter(this, availableAppsListView, serviceDataCaller, interfaceTasksHandler);
+	}
+	
+	private void switchAvailableToDynamicList(){
+		availableAdapter = new DynamicAvailableAppsListAdapter(this, availableAppsListView, serviceDataCaller, interfaceTasksHandler);		
 	}
 	
 	private void switchAvailableToCategory(){
@@ -1665,7 +1706,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 					
 					sortDialog.show();
 				}else{
-					Toast.makeText(Aptoide.this, "Option not available while updating stores!", Toast.LENGTH_SHORT).show();					
+					Toast.makeText(Aptoide.this, getString(R.string.option_not_available_while_updating_repos), Toast.LENGTH_SHORT).show();					
 				}
 				return true;
 				
@@ -1673,9 +1714,13 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //				onSearchRequested();
 //				return true;
 				
-			case UN_SELECT_ALL:
+			case UN_SELECT_ALL:				
 				switch (currentAppsList) {
 					case RESTORE:
+						if(availableAdapter.isDynamic()){
+							Toast.makeText(Aptoide.this, getString(R.string.too_many_apps_to_select_at_once), Toast.LENGTH_SHORT).show();
+							return true;
+						}
 						availableAdapter.toggleSelectAll();						
 						break;
 						

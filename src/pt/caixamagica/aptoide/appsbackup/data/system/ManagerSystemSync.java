@@ -208,10 +208,9 @@ public class ManagerSystemSync {
 			public void run() {
 				List<PackageInfo> systemInstalledList = packageManager.getInstalledPackages(0);
 				for (PackageInfo installedAppInfo : systemInstalledList) {
-					if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[1].equals("system")){
-						continue;
-						//TODO maybe show it but mark as system
-					}
+//					if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[1].equals("system")){
+//						continue;
+//					}
 					serviceData.getManagerCache().cacheIcon((installedAppInfo.packageName+"|"+installedAppInfo.versionCode).hashCode(), ((BitmapDrawable)installedAppInfo.applicationInfo.loadIcon(packageManager)).getBitmap());
 				}
 				serviceData.refreshInstalledLists();				

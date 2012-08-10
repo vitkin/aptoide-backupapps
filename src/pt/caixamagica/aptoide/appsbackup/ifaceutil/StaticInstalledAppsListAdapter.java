@@ -265,7 +265,7 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 	}
 	
 	public void toggleSelectAll(){
-		if(((ViewDisplayApplicationBackup) apps.get(0)).isChecked()){
+		if(!apps.isEmpty() && ((ViewDisplayApplicationBackup) apps.get(0)).isChecked()){
 			unselectAll();
 		}else{
 			selectAll();
@@ -330,13 +330,11 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 	public void zeroResetDisplayInstalled(){
 		zeroReset.set(true);
 		appsManager.reset();
-    	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_AVAILABLE_LIST_DISPLAY.ordinal());
 	}
 	
 	public void resetDisplayInstalled(){
 		zeroReset.set(false);
 		appsManager.reset();
-    	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_AVAILABLE_LIST_DISPLAY.ordinal());
 	}
 	
 	public void refreshDisplayInstalled(){
@@ -364,8 +362,11 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 			Log.d("Aptoide-StaticInstalledAppsListAdapter", "new Installed List: "+getCount());
 	   		initDisplay();
 	    	refreshDisplayInstalled();
-	    	
-//	    	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_UPDATABLE_LIST_DISPLAY.ordinal());
+
+	    	if(!zeroReset.get()){
+	    		aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_AVAILABLE_LIST_DISPLAY.ordinal());
+//	    		aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_UPDATABLE_LIST_DISPLAY.ordinal());
+	    	}
 		}
 	}
 	

@@ -435,6 +435,7 @@ public class BazaarSignUp extends Activity {
 				}else{
 					success = false;
 					if(status == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
+						Toast.makeText(BazaarSignUp.this, getString(R.string.please_wait_server_being_updated), Toast.LENGTH_LONG).show();
 						delayedExecutionHandler.postDelayed(new Runnable() {
 				            public void run() {
 				            	Log.d("Aptoide-Login", "Loging in with: "+serverLogin);

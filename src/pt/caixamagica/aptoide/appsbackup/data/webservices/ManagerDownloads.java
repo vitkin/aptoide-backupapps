@@ -809,7 +809,7 @@ public class ManagerDownloads {
 			DefaultHttpClient httpClient = new DefaultHttpClient();
 			HttpGet httpGet = new HttpGet(remotePath);
 			Log.d("Aptoide-download","downloading from: "+remotePath+" to: "+localPath);
-			Log.d("Aptoide-download","downloading with: "+getUserAgentString()+"    login: "+download.isLoginRequired());
+			Log.d("Aptoide-download","downloading with: "+getUserAgentString()+"    private: "+download.isLoginRequired());
 
 			httpGet.setHeader("User-Agent", getUserAgentString());	//TODO is consistently getting 404 from server
 			

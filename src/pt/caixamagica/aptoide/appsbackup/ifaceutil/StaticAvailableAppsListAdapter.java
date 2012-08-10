@@ -20,20 +20,17 @@
 
 package pt.caixamagica.aptoide.appsbackup.ifaceutil;
 
-import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import pt.caixamagica.aptoide.appsbackup.EnumAppsLists;
 import pt.caixamagica.aptoide.appsbackup.EnumAptoideInterfaceTasks;
 import pt.caixamagica.aptoide.appsbackup.R;
+import pt.caixamagica.aptoide.appsbackup.data.AIDLAptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.display.ViewDisplayApplication;
 import pt.caixamagica.aptoide.appsbackup.data.display.ViewDisplayApplicationBackup;
 import pt.caixamagica.aptoide.appsbackup.data.display.ViewDisplayListApps;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewListIds;
-
 import android.content.Context;
-import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
@@ -47,16 +44,15 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import pt.caixamagica.aptoide.appsbackup.data.AIDLAptoideServiceData;
 
  /**
  * StaticAvailableAppsListAdapter, models a static loading, available apps list adapter
- * 									extends baseAdapter
+ * 									extends BaseAdapter implements InterfaceAvailableAppsAdapter
  * 
  * @author dsilveira
  *
  */
-public class StaticAvailableAppsListAdapter extends BaseAdapter{
+public class StaticAvailableAppsListAdapter extends BaseAdapter implements InterfaceAvailableAppsAdapter{
 
 	private Context context;
 	private ListView listView;
@@ -211,14 +207,16 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter{
 		return apps.get(position).getAppHashid();
 	}
 	
+	@Override
 	public void toggleSelectAll(){
-		if(((ViewDisplayApplicationBackup) apps.get(0)).isChecked()){
+		if(!apps.isEmpty() && ((ViewDisplayApplicationBackup) apps.get(0)).isChecked()){
 			unselectAll();
 		}else{
 			selectAll();
 		}
 	}
 	
+	@Override
 	public void selectAll(){
 		for (ViewDisplayApplication backup : apps) {
 			if(!((ViewDisplayApplicationBackup) backup).isChecked()){
@@ -228,6 +226,7 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter{
 		notifyDataSetChanged();
 	}
 	
+	@Override
 	public void unselectAll(){
 		for (ViewDisplayApplication backup : apps) {
 			if(((ViewDisplayApplicationBackup) backup).isChecked()){
@@ -237,6 +236,7 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter{
 		notifyDataSetChanged();
 	}
 	
+	@Override
 	public ViewListIds getSelectedIds(){
 		ViewListIds selected = new ViewListIds();
 		for (ViewDisplayApplication app: apps) {
@@ -274,11 +274,13 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter{
 	
 	
 	
+	@Override
 	public void resetDisplayAvailable(){
 		appsManager.reset();
 //    	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_INSTALLED_LIST_DISPLAY.ordinal());
 	}
 	
+	@Override
 	public void refreshDisplayAvailable(){
 		notifyDataSetChanged();
 	}
@@ -307,7 +309,14 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter{
 //	    	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_UPDATABLE_LIST_DISPLAY.ordinal());
 		}
 	}
+
 	
+	@Override
+	public boolean isDynamic() {
+		return false;
+	}
+	
+	@Override
 	public void shutdownNow(){
 		appsManager.availableColectorsPool.shutdownNow();
 	}
