@@ -910,6 +910,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	}
 	
 	private void initListsAdapters(){
+		AptoideLog.d(Aptoide.this, "init lists adapters");
 //		categoriesAdapter = new StaticCategoriesListAdapter(this, categoriesListView, serviceDataCaller, interfaceTasksHandler);
 //		categoriesAdapter = new StaticCategoriesListAdapter(this, availableAppsListView, serviceDataCaller, interfaceTasksHandler);
 //		availableAdapter = new DynamicAvailableAppsListAdapter(this, availableAppsListView, serviceDataCaller, interfaceTasksHandler);
@@ -1078,10 +1079,13 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	}
 	
 	private void switchAvailableToStaticList(){
+		AptoideLog.d(Aptoide.this, "switching available to static");
 		availableAdapter = new StaticAvailableAppsListAdapter(this, availableAppsListView, serviceDataCaller, interfaceTasksHandler);
 	}
 	
 	private void switchAvailableToDynamicList(){
+		AptoideLog.d(Aptoide.this, "switching available to dynamic");
+		availableAdapter.shutdownNow();
 		availableAdapter = new DynamicAvailableAppsListAdapter(this, availableAppsListView, serviceDataCaller, interfaceTasksHandler);		
 	}
 	

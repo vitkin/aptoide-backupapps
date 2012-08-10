@@ -1012,7 +1012,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 			cachedThreadPool.execute(new Runnable() {
 				@Override
 				public void run() {
-					resetAvailableLists();
+//					resetAvailableLists();
 					getDeltas(true);
 				}
 			});

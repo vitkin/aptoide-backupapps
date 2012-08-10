@@ -117,9 +117,9 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 
 			@Override
 			public void run() {
-				aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_INSTALLED_TO_PROGRESSBAR.ordinal());
 				try {
 					setFreshInstalledApps(serviceDataCaller.callGetInstalledApps());
+					aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_INSTALLED_TO_PROGRESSBAR.ordinal());
 					interfaceTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_INSTALLED_LIST_DISPLAY.ordinal());
 				} catch (RemoteException e) {
 					e.printStackTrace();
