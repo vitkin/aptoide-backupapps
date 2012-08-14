@@ -10,24 +10,8 @@
     &#160;Interface Designer:\n
     \t\t Teresa Deus &amp; Aptoide\n\n    
     &#160;Translators:\n\n
-    &#160;&#160;&#160;Spanish:\n
-    \t\t\tFrancisco \"ppelao3k\"\n
-    &#160;&#160;&#160;Arabic:\n
-    \t\t\tManaa Alshihe\n
-    &#160;&#160;&#160;Italian:\n
-    \t\t\tPavo Baxter\n
-    &#160;&#160;&#160;French:\n
-    \t\t\tAlexis Bonvin\n
-    &#160;&#160;&#160;Chinese:\n
-    \t\t\tTheodore Wte\n
-    &#160;&#160;&#160;Polish:\n
-    \t\t\tStanislaw \"trurl3\"\n
-    &#160;&#160;&#160;German:\n
-    \t\t\tMartin Nehrdich\n
-    &#160;&#160;&#160;Turkish:\n
-    \t\t\tAnonymous\n
-    &#160;&#160;&#160;Bosnian/Croatian/Serbian&#160;:\n
-    \t\t\tRijad \"rijads\"\n
+    &#160;&#160;&#160;Portuguese:\n
+    \t\t\tDuarte Silveira\n
     </string>
         
     <string name="home">Home: </string>
@@ -38,8 +22,8 @@
 </resources>
 
 <!--
- * Copyright (C) 2009  Roberto Jacinto
- * roberto.jacinto@caixamagica.pt
+ * Copyright (C) 2011  Duarte Silveira
+ * duarte.silveira@caixamagica.pt
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

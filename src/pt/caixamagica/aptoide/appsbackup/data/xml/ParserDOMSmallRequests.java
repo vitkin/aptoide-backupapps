@@ -318,9 +318,9 @@ public class ParserDOMSmallRequests{
 						status = EnumServerUploadApkStatus.NO_MD5;
 					}else if(error.equals("Application duplicate: the uploaded apk already exists in this repository")){
 						status = EnumServerUploadApkStatus.APK_DUPLICATE;
-					}else if(error.equals("It's not possible to upload the required APK since an infection was detected. If you are the developer/owner of the application, please contact Bazaar Staff.")){
+					}else if(error.equals("It's not possible to upload the required APK since an infection was detected. If you are the developer/owner of the application, please contact Aptoide Staff.")){
 						status = EnumServerUploadApkStatus.APK_INFECTED_WITH_VIRUS;
-					}else if(error.equals("Due to Intelectual Property reasons, it's not possible to upload the required APK. If you are the developer\\/owner of the application, please contact Bazaar Staff.")){
+					}else if(error.equals("Due to Intelectual Property reasons, it's not possible to upload the required APK. If you are the developer\\/owner of the application, please contact Aptoide Staff.")){
 						status = EnumServerUploadApkStatus.APK_BLACKLISTED;
 					}else if(error.equals("Unable to upload the apk icon.")){
 						status = EnumServerUploadApkStatus.SERVER_ERROR_ICON_UPLOAD;

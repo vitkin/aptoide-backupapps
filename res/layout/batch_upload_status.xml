@@ -87,7 +87,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:text="@string/back_to_grid"
+        android:text="@string/return_to_apps_list"
         android:visibility="gone" />
 
 </LinearLayout>

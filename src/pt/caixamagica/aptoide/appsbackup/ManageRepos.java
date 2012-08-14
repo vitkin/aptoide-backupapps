@@ -827,7 +827,7 @@ public class ManageRepos extends ListActivity{
 						
 					case BAD_LOGIN:
 						Log.d("Aptoide-ManageRepo", "return bad_login");
-						sec_msg2.setText(getText(R.string.bad_login));
+						sec_msg2.setText(getText(R.string.check_login));
 						sec_msg2.setVisibility(View.VISIBLE);
 						msg.obj = 1;
 						break;
@@ -889,7 +889,7 @@ public class ManageRepos extends ListActivity{
 							
 						case BAD_LOGIN:
 							Log.d("Aptoide-ManageRepo", "return bad_login");
-							sec_msg2.setText(getText(R.string.bad_login));
+							sec_msg2.setText(getText(R.string.check_login));
 							sec_msg2.setVisibility(View.VISIBLE);
 							msg.obj = 1;
 							break;

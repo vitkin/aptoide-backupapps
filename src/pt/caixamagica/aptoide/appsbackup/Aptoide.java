@@ -1745,7 +1745,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 				Builder aboutCreator = new AlertDialog.Builder(theme).setView(about);
 				final AlertDialog aboutDialog = aboutCreator.create();
 				aboutDialog.setIcon(R.drawable.icon);
-				aboutDialog.setTitle(R.string.app_name);
+				aboutDialog.setTitle(R.string.self_name);
 //				aboutDialog.setButton(getText(R.string.changelog), new DialogInterface.OnClickListener() {
 //					public void onClick(DialogInterface dialog, int	whichButton) {
 //						Uri uri = Uri.parse(getString(R.string.changelog_url));

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Aptoide Apps Backup</string>
+    <string name="self_name">Aptoide Apps Backup</string>
     
     <string name="wifi">WiFi</string>
     <string name="ethernet">Ethernet</string>
@@ -21,35 +21,35 @@
     </string-array>
     
     <string-array name="category_array">  
-		<item>@string/c1</item>
-		<item>@string/c2</item>
-		<item>@string/c3</item>
-		<item>@string/c4</item>
-		<item>@string/c5</item>
-		<item>@string/c6</item>
-		<item>@string/c7</item>
-		<item>@string/c8</item>
-		<item>@string/c9</item>
-		<item>@string/c10</item>
-		<item>@string/c11</item>
-		<item>@string/c12</item>
-		<item>@string/c13</item>
-		<item>@string/c14</item>
-		<item>@string/c15</item>
-		<item>@string/c16</item>
-		<item>@string/c17</item>
-		<item>@string/c18</item>
-		<item>@string/c19</item>
-		<item>@string/c20</item>
-		<item>@string/c21</item>
-		<item>@string/c22</item>
+		<item>@string/comics</item>
+		<item>@string/communication</item>
+		<item>@string/entertainment</item>
+		<item>@string/finance</item>
+		<item>@string/health</item>
+		<item>@string/lifestyle</item>
+		<item>@string/multimedia</item>
+		<item>@string/news_weather</item>
+		<item>@string/productivity</item>
+		<item>@string/reference</item>
+		<item>@string/shopping</item>
+		<item>@string/social</item>
+		<item>@string/sports</item>
+		<item>@string/themes</item>
+		<item>@string/tools</item>
+		<item>@string/travel</item>
+		<item>@string/demo</item>
+		<item>@string/software_libraries</item>
+		<item>@string/arcade_action_games</item>
+		<item>@string/brain_puzzle_games</item>
+		<item>@string/cards_casino_games</item>
+		<item>@string/casual_games</item>
 	</string-array>
 	
     <string-array name="rating_array">  
-		<item>@string/r1</item>
-		<item>@string/r2</item>
-		<item>@string/r3</item>
-		<item>@string/r4</item>
+		<item>@string/all</item>
+		<item>@string/pre_teen</item>
+		<item>@string/teen</item>
+		<item>@string/mature</item>
 	</string-array>
     
 </resources>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aptoide_started">Aptoide has started</string>
+    <string name="aptoide_stopped">Aptoide has successfully stopped</string>
+    
+    <string name="manage_repos">Manage Stores</string>
+    <string name="remove_repo">Remove Store</string>
+    <string name="remove_repo_choose">Choose stores to remove</string>
+    <string name="remove_repo_confirm">Do you want to remove store? </string>
+    <string name="edit_repo">Edit Store</string>
+    <string name="edit_repo_choose">Choose store to edit</string>
+    <string name="add_repo_choose">Choose stores to add</string>
+    <string name="add_repo_confirm">Do you want to add this store to your list?\n\n</string>
+	<string name="add_repo">Add new store</string>
+    <string name="add_default_repo_confirm">You don\'t have any added store.\nDo you want to add our store?\n(Search for more stores online)\n\n</string>
+    <string name="repo_uri">URI to store: </string>
+    
+    <string name="downloading_repo">Downloading store index</string>
+    
+    <string name="username_email">Username (e-mail)</string>
+    <string name="show_password">Show password</string> 
+	<string name="bad_login">Invalid Login </string>
+    <string name="cant_connect">Can\'t connect to store</string>
+    <string name="service_unavailable">Service unavailable</string>
+    
+    <string name="store">Store</string>
+    <string name="local">Local</string>
+    <string name="likes">Likes</string>
+    <string name="dislikes">Dislikes</string>
+    <string name="screenshots">Screenshots:</string> 
+    <string name="comments">Comments:</string>
+    <string name="comment_on_app">Comment on application</string>
+    <string name="comments_unavailable">Comments unavailable</string>
+    <string name="in_response_to">In response to</string>
+    <string name="comment_subject">Comment Subject</string>
+    <string name="comment_body">Comment Body</string>
+    <string name="no_body">No body</string>
+    
+    <string name="click_to_install_app">Click to install application</string>
+    <string name="bad_checksum">Bad checksum, please try again at a later date</string>
+    <string name="unable_to_connect">Unable to connect to store</string>
+    
+    <string name="icon">Icon</string>
+    <string name="download_icons_permissions">Download Icons Permissions</string>
+    <string name="download_icons">Download icons</string>
+<!--     <string name="download_icons_rules">Download icon rules </string> -->
+
+    <string name="hw_specs">Hardware specs</string>
+    <string name="sdk_version">SDK version</string>
+    <string name="screen_size">Screen size</string>
+    <string name="gles_version">GLES version</string>
+    
+    <string name="hw_filters">Hardware Filters</string>
+    <string name="hw_filter_apps">Filter apps by hardware</string>
+    <string name="hw_show_apps">Don\'t show applications not compatible with your device.</string>
+<!--     <string name="app_filter">Filter Applications</string> -->
+<!--     <string name="app_filter_sum">Don\'t show applications not compatible with your device.</string> -->
+    <string name="mature_filter">Mature Filtering</string>
+   <string name="dont_show_mature_content">Don\'t show Mature content</string>
+    
+    <string name="app_rating">Application Rating Filter</string>
+    <string name="mature">Mature</string>
+    <string name="teen">Teen</string>
+    <string name="pre_teen">Pre-Teen</string>
+    <string name="no_filter">No Filter</string>
+    <string name="app_rating_description">Filter apps rated above</string>
+    
+    <string name="show_applications_by">Show applications by: </string>
+    <string name="category">Category</string>
+    <string name="all_applications">All applications</string> 
+     
+    <string name="updates">Updates</string>
+    
+    <string name="update_all">Update all</string>
+    
+    <string name="loading_more_apps">Loading more apps...</string>
+    
+    <string name="search_bazaar">Search %s on Aptoide</string>
+    <string name="no_search_results">No search results</string>
+    
+    <string name="select_version">Select version</string>
+    <string name="scheduled_downloads">Scheduled Downloads</string>
+   	<string name="no_scheduled_downloads">No scheduled downloads!</string>
+    <string name="invert_selection">Invert Selection</string>
+    <string name="remove_selected">Remove Selected</string>
+    <string name="schedule_downloads_sum">Install scheduled downloads automatically when a Wifi connection is present</string>
+    <string name="automatic_install">Automatic install</string>
+    <string name="schedule">Schedule</string>
+    <string name="unschedule">Unschedule</string>
+    <string name="scheduled">Scheduled</string>
+    <string name="unscheduled">Unscheduled</string>
+    <string name="name_of_application">Name of the application</string>
+    
+    <string name="options">Options</string>
+    <string name="edit">Edit</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="install">Install</string>
+    <string name="install_selected">Install Selected</string>
+    <string name="update">Update</string>
+    <string name="installed_version">Installed version:</string>
+    <string name="downgrade">Downgrade</string>
+    <string name="attention">Attention</string>
+    <string name="done">Done</string>   
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>   
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="starting">Starting</string>
+    <string name="download">download</string>
+    <string name="confirm_remove">Confirm Removal?</string>
+    
+    <string name="submit">Submit</string>
+    <string name="submitting">Submitting</string>
+    <string name="submitted">Submitted</string> 
+    
+    <string name="loading">Loading...</string>
+    
+    <string name="set_account_name">Do you wish to enter a Name for the account\'s user?</string>
+    <string name="name">Name</string>
+    <string name="optional_name">Optional name</string>
+    
+    <string name="privacy_username">Store Username</string>
+    <string name="privacy_password">Store Password</string>
+    <string name="show_privacy_password">Show privacy password</string> 
+     
+    <string name="no_repository">No repository</string>
+    <string name="no_private_repo_username">No private repo username</string>
+    <string name="no_private_repo_password">No private repo password</string>
+    
+</resources>
