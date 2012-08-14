@@ -86,7 +86,7 @@
     <string name="backup_selected_apps">Backup selected apps</string>
     <string name="restore_selected_apps">Restore selected apps</string>
     
-    <string name="form_intro">You may fill out the form to:</string>
+    <string name="form_intro">You may fill out the form:</string>
     <string name="app_name">App name</string>
     
     <string name="app_category">App category</string>
@@ -137,7 +137,6 @@
     <string name="login_create_service_unavailable">User creation service currently unavailable</string>
     <string name="repo_service_unavailable">Store service currently unavailable</string>
     <string name="repo_not_associated_with_user">This store is not associated with this user, please correct it!</string>
-    <string name="check_repo_login">Please check your store\'s privacy username and password!</string>
     <string name="check_login">Please check your username and password!</string>
     <string name="check_repo">Please check your store!</string>
     <string name="username_not_email">Username not properly formatted e-mail</string>

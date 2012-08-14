@@ -128,4 +128,6 @@
     <string name="no_private_repo_username">No private repo username</string>
     <string name="no_private_repo_password">No private repo password</string>
     
+    <string name="check_repo_login">Please check your store\'s privacy username and password!</string>
+    
 </resources>
