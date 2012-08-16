@@ -1226,6 +1226,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				@Override
 				public void run() {
 					try {
+				    	if( managerDatabase.getTotalAvailableApps(managerPreferences.isHwFilterOn(), managerPreferences.getAgeRating()) > Constants.MAX_APPLICATIONS_IN_STATIC_LIST_MODE){
+				        	AptoideLog.d(AptoideServiceData.this, "Switching Available List to dynamic");
+				    		switchAvailableListToDynamic();
+				    		loadingAvailableListData();
+				    	}
 						aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).resetAvailableListData();
 					} catch (Exception e) {
 						e.printStackTrace();
