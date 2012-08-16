@@ -334,25 +334,29 @@ public class Upload extends Activity {
 		});
 		notUploaded.setVisibility(View.GONE);
 		
-//		backButton = (Button) findViewById(R.id.uploaded_exit);
-//		backButton.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				finish();
-//			}
-//		  });
-//		backButton.setEnabled(false);
+		backButton = (Button) findViewById(R.id.uploaded_exit);
+		backButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		  });
+		disableGoingBack();
 	}
 	
 	private void enableGoingBack(){
 //		backButton.setEnabled(true);
 //		backButton.setVisibility(View.VISIBLE);
+		backButton.setTextColor(Color.BLACK);
+		backButton.setClickable(true);		
 		goingBackEnabled.set(true);
 	}
 	
 	private void disableGoingBack(){
 //		backButton.setEnabled(false);
 //		backButton.setVisibility(View.INVISIBLE);
+		backButton.setTextColor(Color.WHITE);
+		backButton.setClickable(false);
 		goingBackEnabled.set(false);
 	}
 	

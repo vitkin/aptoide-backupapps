@@ -88,7 +88,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:text="@string/return_to_apps_list"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 </LinearLayout>
 <!--
