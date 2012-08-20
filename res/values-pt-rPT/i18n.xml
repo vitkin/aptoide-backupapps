@@ -139,6 +139,7 @@
     <string name="repo_not_associated_with_user">Esta loja não está associada a este utilizador, por favor corrija-a!</string>
     <string name="check_login">Por favor confirme o seu nome de utilizador e a sua palavra passe!</string>
     <string name="check_repo">Por favor verifique a sua loja!</string>
+    <string name="repo_is_private">Loja é privada!</string>
     <string name="username_not_email">Nome de utilizador não formatado correctamente, como e-mail</string>
     <string name="wrong_password">Palavra passe errada</string>
     <string name="hmac_problem">problema de HMAC</string>
@@ -177,7 +178,7 @@
     <string name="server_error_icon_upload">Erro de servidor (Ícone)</string>
     <string name="server_error_graphic_upload">Erro de servidor (Gráfico)</string>
     <string name="server_error">Erro de servidor </string>
-    <string name="previous_login_still_finishing_up">Autenticação anterior por concluir</string>
+    <string name="updating_repo_please_wait">A actualizar loja, aguarde por favor!</string>
     
     <string name="success">Sucesso</string>
     

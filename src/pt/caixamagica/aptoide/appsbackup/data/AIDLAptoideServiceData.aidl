@@ -121,6 +121,7 @@ interface AIDLAptoideServiceData {
 	void callRegisterLoginObserver(in AIDLLogin loginObserver);
 	
 	int callServerLoginCreate(in ViewServerLogin serverLogin);
+	void callServerLoginAfterCreate(in ViewServerLogin serverLogin);
 	String callGetServerToken();
 	int callServerLogin(in ViewServerLogin serverLogin);
 	ViewServerLogin callGetServerLogin();
@@ -159,5 +160,7 @@ interface AIDLAptoideServiceData {
 	
 	ViewUploadInfo callGetUploadInfo(in int appHashid);
 	void callUploadApk(in ViewApk uploadingApk);
+	
+	boolean callIsInsertingRepo();
 	
 }

@@ -1812,9 +1812,10 @@ public class ManagerDatabase {
 									+", "+Constants.KEY_REPO_SIZE+", "+Constants.KEY_REPO_DELTA+", "+Constants.KEY_REPO_LAST_SYNCHRO
 									+", "+Constants.KEY_LOGIN_USERNAME+", "+Constants.KEY_LOGIN_PASSWORD
 									+" FROM "+Constants.TABLE_REPOSITORY
-									+" NATURAL LEFT JOIN "+Constants.TABLE_LOGIN;
+									+" NATURAL LEFT JOIN "+Constants.TABLE_LOGIN
+									+" WHERE "+Constants.KEY_REPO_IN_USE+"="+Constants.DB_TRUE;
 		if(!force){
-			selectReposNeedingUpdate	+= " WHERE "+Constants.KEY_REPO_LAST_SYNCHRO+"<"+(currentTimeStamp-(Constants.REPOS_UPDATE_INTERVAL*Constants.HOURS_TO_MILISECONDS));
+			selectReposNeedingUpdate	+= " AND "+Constants.KEY_REPO_LAST_SYNCHRO+"<"+(currentTimeStamp-(Constants.REPOS_UPDATE_INTERVAL*Constants.HOURS_TO_MILISECONDS));
 		}
 		
 		Cursor cursorReposNeedingUpdate = aptoideAtomicQuery(selectReposNeedingUpdate);

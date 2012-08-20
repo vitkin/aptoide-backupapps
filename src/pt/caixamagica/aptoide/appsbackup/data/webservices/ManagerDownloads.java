@@ -361,70 +361,83 @@ public class ManagerDownloads {
 	
 	public EnumServerLoginStatus checkServerConnection(ViewServerLogin serverLogin){
 		Log.d("Aptoide-ManagerDownloads", "checking connection for: "+serverLogin);
+		EnumServerLoginStatus status = EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE;
 		
-		String uri = Constants.SCHEME_HTTP_PREFIX+serverLogin.getRepoName()+Constants.DOMAIN_APTOIDE_STORE;
-		Log.d("Aptoide-ManagerDownloads", "uri: "+uri);
+		String uri = Constants.SCHEME_HTTP_PREFIX+serverLogin.getRepoName()+Constants.DOMAIN_APTOIDE_STORE+"v2/info.xml?info=bare&unix=true&order_by=alphabetic&order_direction=ascending&offset=0&range=1";
+
 		
-		HttpParams httpParameters = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParameters, 120000);
-		HttpConnectionParams.setSoTimeout(httpParameters, 120000);
+//		HttpParams httpParameters = new BasicHttpParams();
+//		HttpConnectionParams.setConnectionTimeout(httpParameters, 120000);
+//		HttpConnectionParams.setSoTimeout(httpParameters, 120000);
 		           
-		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
+//		DefaultHttpClient httpClient = new DefaultHttpClient(httpParameters);
 		
 //		DefaultHttpClient mHttpClient = Threading.getThreadSafeHttpClient();
 		
-		httpClient.setRedirectHandler(new RedirectHandler() {
-			public boolean isRedirectRequested(HttpResponse response, HttpContext context) {
-				return false;
-			}
-
-			public URI getLocationURI(HttpResponse response, HttpContext context) throws ProtocolException {
-				return null;
-			}
-		});
-		
-        HttpGet httpGet = new HttpGet(uri+"info.xml");
+//		httpClient.setRedirectHandler(new RedirectHandler() {
+//			public boolean isRedirectRequested(HttpResponse response, HttpContext context) {
+//				return false;
+//			}
+//
+//			public URI getLocationURI(HttpResponse response, HttpContext context) throws ProtocolException {
+//				return null;
+//			}
+//		});
+        
         
         try {
         	if(serverLogin.isRepoPrivate()){
         		Log.d("Aptoide-ManagerDownloads", "private repo, username: "+serverLogin.getPrivUsername()+" password: "+serverLogin.getPrivPassword());
-        		URL url = new URL(uri);
-        		httpClient.getCredentialsProvider().setCredentials(
-        				new AuthScope(url.getHost(), url.getPort()),
-        				new UsernamePasswordCredentials(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
+//        		URL url = new URL(uri);
+//        		httpClient.getCredentialsProvider().setCredentials(
+//        				new AuthScope(url.getHost(), url.getPort()),
+//        				new UsernamePasswordCredentials(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
+        		uri+="&username="+serverLogin.getPrivUsername()+"&password="+serverLogin.getPrivPassword();
         	}
+    		Log.d("Aptoide-ManagerDownloads", "uri: "+uri);
+    		URL endpoint = new URL(uri);
+    		HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection(); //Careful with UnknownHostException. Throws MalformedURLException, IOException
+
+			connection.setRequestMethod("GET");
+			connection.setRequestProperty("Accept", "application/xml");
+			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+//			connection.setConnectTimeout(TIME_OUT);
+			
+			
+//        	HttpGet httpGet = new HttpGet(uri);
         	
-			HttpResponse httpResponse = httpClient.execute(httpGet);
+//			HttpResponse httpResponse = httpClient.execute(httpGet);
 			
-			Header[] redirect = httpResponse.getHeaders("Location");
-			if(redirect.length > 0){
-				String redirectedUri = redirect[0].getValue();
-
-				httpGet = null;
-				httpGet = new HttpGet(redirectedUri);
-				
-				if(serverLogin.isRepoPrivate()){
-	        		Log.d("Aptoide-ManagerDownloads", "private repo, username: "+serverLogin.getPrivUsername()+" password: "+serverLogin.getPrivPassword());
-	        		URL redirectedUrl = new URL(redirectedUri);
-	        		httpClient.getCredentialsProvider().setCredentials(
-	        				new AuthScope(redirectedUrl.getHost(), redirectedUrl.getPort()),
-	        				new UsernamePasswordCredentials(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
-	        	}
-				
-				httpResponse = null;
-				httpResponse = httpClient.execute(httpGet);
-			}
-
-			int result = httpResponse.getStatusLine().getStatusCode();
-			Log.d("Aptoide-ManagerDownloads", "HTTP status line: "+httpResponse.getStatusLine());
-			
-			if(result == 200){
-				return EnumServerLoginStatus.SUCCESS;
-			}else if (result == 401){
-				return EnumServerLoginStatus.BAD_REPO_PRIVACY_LOGIN;
-			}else{				
-				return EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE;
-			}
+//			Header[] redirect = httpResponse.getHeaders("Location");
+//			if(redirect.length > 0){
+//				String redirectedUri = redirect[0].getValue();
+//
+//				httpGet = null;
+//				httpGet = new HttpGet(redirectedUri);
+//				
+//				if(serverLogin.isRepoPrivate()){
+//	        		Log.d("Aptoide-ManagerDownloads", "private repo, username: "+serverLogin.getPrivUsername()+" password: "+serverLogin.getPrivPassword());
+//	        		URL redirectedUrl = new URL(redirectedUri);
+//	        		httpClient.getCredentialsProvider().setCredentials(
+//	        				new AuthScope(redirectedUrl.getHost(), redirectedUrl.getPort()),
+//	        				new UsernamePasswordCredentials(serverLogin.getPrivUsername(), serverLogin.getPrivPassword()));
+//	        	}
+//				
+//				httpResponse = null;
+//				httpResponse = httpClient.execute(httpGet);
+//			}
+    		status = serviceData.getManagerXml().dom.parseServerConnectionCheckReturn(connection);
+//			int result = httpResponse.getStatusLine().getStatusCode();
+//			Log.d("Aptoide-ManagerDownloads", "HTTP status line: "+httpResponse.getStatusLine());
+//			
+//			if(result == 200){
+//				return EnumServerLoginStatus.SUCCESS;
+//			}else if (result == 401){
+//				return EnumServerLoginStatus.BAD_REPO_PRIVACY_LOGIN;
+//			}else{				
+//				return EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE;
+//			}
+    		return status;
 //		} catch (ClientProtocolException e) {
 //			return EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE;
 //		} catch (IOException e) { 

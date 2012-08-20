@@ -37,6 +37,8 @@ interface AIDLAptoideInterface{
 	void switchAvailableToStaticList();
 	void switchAvailableToDynamicList();
 	
+	void switchAvailableToWaitingOnServer();
+	
 	void noAvailableListDataAvailable();
 	void loadingAvailableListDataAvailable();
 	void loadingAvailableListProgressSetCompletionTarget(in int progressCompletionTarget);

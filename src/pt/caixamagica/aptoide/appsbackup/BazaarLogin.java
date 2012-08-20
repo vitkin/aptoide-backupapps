@@ -266,6 +266,12 @@ public class BazaarLogin extends Activity {
 // 					Toast.makeText(Login.this, Login.this.getString(R.string.no_private_repo_password), Toast.LENGTH_SHORT).show();
 // 				}
  				else{
+ 					try {
+						serviceDataCaller.callClearServerLogin();
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
  						
  					dialogProgress = ProgressDialog.show(BazaarLogin.this, BazaarLogin.this.getString(R.string.logging_in), BazaarLogin.this.getString(R.string.please_wait),true);
  					dialogProgress.setIcon(android.R.drawable.ic_menu_info_details);
@@ -379,9 +385,16 @@ public class BazaarLogin extends Activity {
 // 					new CreateAccountTask(BazaarLogin.this, createAccountProgress, serverLogin).execute();
 // 				}
  				
+				try {
+					serviceDataCaller.callClearServerLogin();
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+ 				
  				Intent signUp = new Intent(BazaarLogin.this, BazaarSignUp.class);
  				if(afterAction){
-						switch (actionType) {
+					switch (actionType) {
 						case BACKUP:
 							signUp.putIntegerArrayListExtra("uploads", actionListIds);
 							break;
@@ -393,7 +406,7 @@ public class BazaarLogin extends Activity {
 						default:
 							break;
 					}
-					}
+				}
  				startActivity(signUp);
  				finish();
  			}
@@ -467,7 +480,8 @@ public class BazaarLogin extends Activity {
 
 				if(status.equals(EnumServerLoginStatus.SUCCESS)){
 					success = true;
-					dialogProgress.setCancelable(false);
+					dialogProgress.dismiss();
+//					dialogProgress.setCancelable(false);
 				}else{
 					success = false;
 					Toast.makeText(BazaarLogin.this, status.toString(BazaarLogin.this), Toast.LENGTH_SHORT).show();

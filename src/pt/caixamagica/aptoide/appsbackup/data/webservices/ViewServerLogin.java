@@ -23,6 +23,7 @@ package pt.caixamagica.aptoide.appsbackup.data.webservices;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import pt.caixamagica.aptoide.appsbackup.data.model.ViewLogin;
 import pt.caixamagica.aptoide.appsbackup.data.util.Constants;
 import pt.caixamagica.aptoide.appsbackup.data.util.Security;
 
@@ -66,6 +67,25 @@ public class ViewServerLogin implements Parcelable{
 		}
 		this.repoIsPrivate = false;
 	}
+	
+	public ViewServerLogin(ViewLogin login){
+		this.username = login.getUsername().toLowerCase();
+		MessageDigest md;
+//		try {
+//			md = MessageDigest.getInstance("SHA");
+//			md.update(login.getPassword().getBytes());
+//			this.passhash = Security.byteArrayToHexString(md.digest());
+//		} catch (NoSuchAlgorithmException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		this.passhash = login.getPassword();
+		this.repoIsPrivate = false;
+	}
+	
+	public ViewLogin getLogin(){
+		return new ViewLogin(this.username, this.passhash);
+	}
 
 	public String getUsername() {
 		return this.username;
@@ -91,6 +111,12 @@ public class ViewServerLogin implements Parcelable{
 		this.repoIsPrivate = true;
 		this.priv_username = priv_username;
 		this.priv_password = priv_password;
+	}
+	
+	public void setRepoPrivate(){
+		this.repoIsPrivate = true;
+		this.priv_username = this.username;
+		this.priv_password = this.passhash;
 	}
 	
 	public boolean isRepoPrivate(){

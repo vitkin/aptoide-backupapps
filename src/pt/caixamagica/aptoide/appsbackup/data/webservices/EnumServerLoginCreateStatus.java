@@ -89,7 +89,7 @@ public enum EnumServerLoginCreateStatus {
 			case SERVER_ERROR:
 				return context.getString(R.string.server_error);
 			case PREVIOUS_LOGIN_STILL_FINISHING_UP:
-				return context.getString(R.string.previous_login_still_finishing_up);
+				return context.getString(R.string.updating_repo_please_wait);
 			case SUCCESS:
 				return context.getString(R.string.success);
 	

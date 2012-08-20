@@ -27,10 +27,12 @@ import pt.caixamagica.aptoide.appsbackup.data.AptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.EnumConnectionLevels;
 import pt.caixamagica.aptoide.appsbackup.data.ViewClientStatistics;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewLogin;
+import pt.caixamagica.aptoide.appsbackup.data.model.ViewRepository;
 import pt.caixamagica.aptoide.appsbackup.data.system.ViewScreenDimensions;
 import pt.caixamagica.aptoide.appsbackup.data.util.Constants;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumIconDownloadsPermission;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewIconDownloadPermissions;
+import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewServerLogin;
 import pt.caixamagica.aptoide.appsbackup.debug.AptoideLog;
 import pt.caixamagica.aptoide.appsbackup.debug.InterfaceAptoideLog;
 
@@ -198,7 +200,7 @@ public class ManagerPreferences implements InterfaceAptoideLog{
 	}
 	
 	public void clearServerLogin(){
-		AptoideLog.v(this, "cleared serverLogin: ");
+		AptoideLog.v(this, "cleared serverLogin");
 		setPreferences.remove(EnumPreferences.SERVER_USERNAME.name());
 		setPreferences.remove(EnumPreferences.SERVER_PASSHASH.name());
 		setPreferences.remove(EnumPreferences.SERVER_TOKEN.name());
@@ -219,12 +221,67 @@ public class ManagerPreferences implements InterfaceAptoideLog{
 	}
 	
 	public void setServerToken(String token){
+//		AptoideLog.v(this, "set serverToken: "+token);
 		setPreferences.putString(EnumPreferences.SERVER_TOKEN.name(), token);
 		setPreferences.commit();		
 	}
 	
 	public String getToken(){
 		return getPreferences.getString(EnumPreferences.SERVER_TOKEN.name(), null);
+	}
+	
+	public void setServerInconsistentState(boolean inconsistent, String repoName, boolean isRepoPrivate){
+		setPreferences.putBoolean(EnumPreferences.SERVER_INCONSISTENT.name(), inconsistent);
+		setPreferences.commit();
+		if(!inconsistent){
+			setPreferences.remove(EnumPreferences.SERVER_NAME.name());
+			setPreferences.remove(EnumPreferences.SERVER_PRIVATE.name());
+			setPreferences.commit();
+		}else{
+			setInconsistentRepoName(repoName);
+			setInconsistentRepoIsPrivate(isRepoPrivate);
+		}
+	}
+	
+	public boolean isServerInconsistenState(){
+		return getPreferences.getBoolean(EnumPreferences.SERVER_INCONSISTENT.name(), false);
+	}
+	
+	private void setInconsistentRepoName(String repoName){
+//		AptoideLog.v(this, "set InconsistentRepoName: "+repoName);
+		setPreferences.putString(EnumPreferences.SERVER_NAME.name(), repoName);
+		setPreferences.commit();		
+	}
+	
+	private void setInconsistentRepoIsPrivate(boolean privat){
+//		AptoideLog.v(this, "set InconsistentRepoIsPrivate: "+privat);
+		setPreferences.putBoolean(EnumPreferences.SERVER_PRIVATE.name(), privat);
+		setPreferences.commit();		
+	}
+	
+	public String getInconsistentRepoName(){
+		return getPreferences.getString(EnumPreferences.SERVER_NAME.name(), null);
+	}
+	
+	public boolean isInconsistentRepoPrivate(){
+		return getPreferences.getBoolean(EnumPreferences.SERVER_PRIVATE.name(), false);		
+	}
+	
+	public void setServerInconsistentStore(ViewServerLogin serverLogin, String token){
+		AptoideLog.v(this, "setServerInconsistentStore: "+serverLogin+" token: "+token);
+		setServerLogin(serverLogin.getLogin());
+		setServerToken(token);
+		setServerInconsistentState(true, serverLogin.getRepoName(), serverLogin.isRepoPrivate());	
+	}
+	
+	public ViewServerLogin getServerInconsistentStore(){
+		ViewServerLogin serverLogin = new ViewServerLogin(getServerLogin());
+		serverLogin.setRepoName(getInconsistentRepoName());
+		if(isInconsistentRepoPrivate()){
+			serverLogin.setRepoPrivate();
+		}
+		AptoideLog.v(this, "getServerInconsistentStore: "+serverLogin);
+		return serverLogin;
 	}
 	
 }

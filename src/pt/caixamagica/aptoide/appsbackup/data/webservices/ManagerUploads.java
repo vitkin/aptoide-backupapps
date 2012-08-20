@@ -268,14 +268,14 @@ public class ManagerUploads {
 
 			status = serviceData.getManagerXml().dom.parseServerLoginCreateReturn(connection);
 			
-			if(status.equals(EnumServerLoginCreateStatus.SUCCESS)){
-				EnumServerLoginStatus loginStatus = login(serverLogin);
-				if(loginStatus.equals(EnumServerLoginStatus.SUCCESS)){
-//			        serviceData.getManagerPreferences().setServerLogin(new ViewLogin(serverLogin.getUsername(), serverLogin.getPasshash()));
-				}else{
-					status = EnumServerLoginCreateStatus.SERVER_ERROR;
-				}
-		    }
+//			if(status.equals(EnumServerLoginCreateStatus.SUCCESS)){
+//				EnumServerLoginStatus loginStatus = login(serverLogin);
+//				if(loginStatus.equals(EnumServerLoginStatus.SUCCESS)){
+////			        serviceData.getManagerPreferences().setServerLogin(new ViewLogin(serverLogin.getUsername(), serverLogin.getPasshash()));
+//				}else{
+//					status = EnumServerLoginCreateStatus.SERVER_ERROR;
+//				}
+//		    }
 			
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block

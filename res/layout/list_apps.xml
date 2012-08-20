@@ -30,6 +30,18 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#4f4f4f"
                 android:textSize="14sp" />
+            
+            <TextView
+                android:id="@+id/loading_title_waiting_on_server"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/loading_bar"
+                android:layout_marginTop="8dp"
+                android:text="@string/please_wait_server_being_updated"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#4f4f4f"
+                android:textSize="14sp"
+                android:visibility="gone" />
 
             <ProgressBar
                 android:id="@+id/loading_bar"

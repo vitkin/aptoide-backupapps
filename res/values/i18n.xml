@@ -139,6 +139,7 @@
     <string name="repo_not_associated_with_user">This store is not associated with this user, please correct it!</string>
     <string name="check_login">Please check your username and password!</string>
     <string name="check_repo">Please check your store!</string>
+    <string name="repo_is_private">Store is private!</string>
     <string name="username_not_email">Username not properly formatted e-mail</string>
     <string name="wrong_password">Wrong password</string>
     <string name="hmac_problem">HMAC problem</string>
@@ -177,7 +178,7 @@
     <string name="server_error_icon_upload">Server Error (Icon)</string>
     <string name="server_error_graphic_upload">Server Error (Graphic)</string>
     <string name="server_error">Server Error</string>
-    <string name="previous_login_still_finishing_up">Previous Login Still finishing up</string>
+    <string name="updating_repo_please_wait">Updating store, please wait!</string>
     
     <string name="success">Success</string>
     

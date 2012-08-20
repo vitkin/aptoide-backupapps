@@ -141,6 +141,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //	private View emptyUpdatableAppsList;
 //	private View loadingCategoriesList;
 	private View loadingAvailableAppsList;
+	private View loadingAppsTitle;
+	private View loadingAppsTitleWaitingOnServer;
 	private ProgressBar loadingAvailableAppsUnknownProgress;
 	private ProgressBar loadingAvailableAppsProgress;
 	private AtomicInteger loadingAvailableAppsProgressCompletionTarget;
@@ -350,6 +352,12 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 		}
 
 		@Override
+		public void switchAvailableToWaitingOnServer() throws RemoteException {
+			AptoideLog.v(Aptoide.this, "received switchAvailableToWaitingOnServer callback");
+			interfaceTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_WAITING_ON_SERVER.ordinal());
+		}
+
+		@Override
 		public void noAvailableListDataAvailable() throws RemoteException {
 			AptoideLog.v(Aptoide.this, "received noAvailableApps callback");
 			interfaceTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_NO_APPS.ordinal());
@@ -518,6 +526,10 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 					switchAvailableToDynamicList();
 					break;
 					
+				case SWITCH_AVAILABLE_TO_WAITING_ON_SERVER:
+					switchAvailableToWaitingOnServer();
+					break;
+					
 				case SWITCH_AVAILABLE_TO_CATEGORIES:
 					switchAvailableToCategory();
 					break;
@@ -632,6 +644,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //			loadingAvailableAppsList = LinearLayout.inflate(this, R.layout.list_loading, appsListFlipper);
 			loadingAvailableAppsList = availableView.findViewById(R.id.loading);
 			loadingAvailableAppsList.setTag(EnumAppsLists.RESTORE);
+			loadingAppsTitle = loadingAvailableAppsList.findViewById(R.id.loading_title);
+			loadingAppsTitleWaitingOnServer = loadingAvailableAppsList.findViewById(R.id.loading_title_waiting_on_server);
 			loadingAvailableAppsUnknownProgress = (ProgressBar) loadingAvailableAppsList.findViewById(R.id.loading_bar);
 			loadingAvailableAppsProgress = (ProgressBar) loadingAvailableAppsList.findViewById(R.id.loading_progress_bar);
 			loadingAvailableAppsProgressCompletionTarget = new AtomicInteger(0);
@@ -723,9 +737,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 					}
 					
 					if(uploads.size() > 0){
+						installedAdapter.unselectAll();
 						if(authenticationToken != null){
-							availableAdapter.unselectAll();
-							
 							Intent upload = new Intent(Aptoide.this, Upload.class);
 							upload.putIntegerArrayListExtra("uploads", uploads);
 							startActivity(upload);
@@ -761,7 +774,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 						}
 					}
 					
-					installedAdapter.unselectAll();
+					availableAdapter.unselectAll();
 					
 					if(anyReposInUse){
 						for (Integer appHashid : restores) {
@@ -1042,6 +1055,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 		emptyAvailableAppsList.setVisibility(View.GONE);
 		availableAppsListView.setVisibility(View.GONE);
 		loadingAvailableAppsList.setVisibility(View.VISIBLE);
+        loadingAppsTitle.setVisibility(View.VISIBLE);
+        loadingAppsTitleWaitingOnServer.setVisibility(View.GONE);
         
 //        switchUpdatableToProgressBar();
 	}
@@ -1087,6 +1102,14 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 		AptoideLog.d(Aptoide.this, "switching available to dynamic");
 		availableAdapter.shutdownNow();
 		availableAdapter = new DynamicAvailableAppsListAdapter(this, availableAppsListView, serviceDataCaller, interfaceTasksHandler);		
+	}
+	
+	private void switchAvailableToWaitingOnServer(){
+		AptoideLog.d(Aptoide.this, "switching available to waiting on server");
+		switchAvailableToProgressBar();
+        loadingAppsTitle.setVisibility(View.GONE);
+        loadingAppsTitleWaitingOnServer.setVisibility(View.VISIBLE);
+		
 	}
 	
 	private void switchAvailableToCategory(){
@@ -1762,35 +1785,48 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 				return true;	
 				
 			case LOGIN:
-				Log.d("Aptoide-Settings", "clicked set server login");
-				String token = null;
+				boolean insertingRepo = false;
 				try {
-					token = serviceDataCaller.callGetServerToken();
-				} catch (RemoteException e) {
+					insertingRepo = serviceDataCaller.callIsInsertingRepo();
+				} catch (RemoteException e1) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e1.printStackTrace();
 				}
-				if(token == null){
-					Log.d("Aptoide-Settings", "No login set");
-					Intent login = new Intent(Aptoide.this, BazaarLogin.class);
-					login.putExtra("InvoqueType", BazaarLogin.InvoqueType.NO_CREDENTIALS_SET.ordinal());
-					startActivity(login);
-//					DialogLogin dialogLogin = new DialogLogin(Settings.this, serviceDataCaller, DialogLogin.InvoqueType.NO_CREDENTIALS_SET);
-//					loginComments.setOnDismissListener(new OnDismissListener() {
-//						@Override
-//						public void onDismiss(DialogInterface dialog) {
-//							addAppVersionComment();
-//						}
-//					});
-//					dialogLogin.show();
-				}else{
-					Log.d("Aptoide-Settings", "Login edit");
-					Intent login = new Intent(Aptoide.this, BazaarLogin.class);
-					login.putExtra("InvoqueType", BazaarLogin.InvoqueType.OVERRIDE_CREDENTIALS.ordinal());
-					startActivity(login);
-//					DialogLogin dialogLogin = new DialogLogin(Settings.this, serviceDataCaller, DialogLogin.InvoqueType.OVERRIDE_CREDENTIALS);
-//					Toast.makeText(Settings.this, "Login already set", Toast.LENGTH_SHORT).show();
-//					dialogLogin.show();
+				if(insertingRepo){
+					AptoideLog.d(Aptoide.this, getString(R.string.updating_repo_please_wait));
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.updating_repo_please_wait), Toast.LENGTH_SHORT).show();
+				}
+				else{
+					Log.d("Aptoide-Settings", "clicked set server login");
+					String token = null;
+					try {
+						token = serviceDataCaller.callGetServerToken();
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if(token == null){
+						Log.d("Aptoide-Settings", "No login set");
+						Intent login = new Intent(Aptoide.this, BazaarLogin.class);
+						login.putExtra("InvoqueType", BazaarLogin.InvoqueType.NO_CREDENTIALS_SET.ordinal());
+						startActivity(login);
+	//					DialogLogin dialogLogin = new DialogLogin(Settings.this, serviceDataCaller, DialogLogin.InvoqueType.NO_CREDENTIALS_SET);
+	//					loginComments.setOnDismissListener(new OnDismissListener() {
+	//						@Override
+	//						public void onDismiss(DialogInterface dialog) {
+	//							addAppVersionComment();
+	//						}
+	//					});
+	//					dialogLogin.show();
+					}else{
+						Log.d("Aptoide-Settings", "Login edit");
+						Intent login = new Intent(Aptoide.this, BazaarLogin.class);
+						login.putExtra("InvoqueType", BazaarLogin.InvoqueType.OVERRIDE_CREDENTIALS.ordinal());
+						startActivity(login);
+	//					DialogLogin dialogLogin = new DialogLogin(Settings.this, serviceDataCaller, DialogLogin.InvoqueType.OVERRIDE_CREDENTIALS);
+	//					Toast.makeText(Settings.this, "Login already set", Toast.LENGTH_SHORT).show();
+	//					dialogLogin.show();
+					}
 				}
 				return true;
 				

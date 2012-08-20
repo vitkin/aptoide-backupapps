@@ -271,10 +271,12 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		@Override
 		public void callDelayedUpdateRepos() throws RemoteException {
 			delayedExecutionHandler.postDelayed(new Runnable() {
-	            public void run() {
-	            	getDeltas(true);
-	            }
-	        }, 15000);
+				public void run() {
+					try {
+						getDeltas(true);
+					} catch (Exception e) { }
+				}
+			}, 15000);
 		}
 
 		@Override
@@ -450,6 +452,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		}
 
 		@Override
+		public void callServerLoginAfterCreate(ViewServerLogin serverLogin) throws RemoteException {
+			serverLoginAfterCreate(serverLogin);
+		}
+
+		@Override
 		public String callGetServerToken() throws RemoteException {
 			return getServerToken();
 		}
@@ -614,6 +621,12 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 			uploadApk(uploadingApk);
 		}
 
+		@Override
+		public boolean callIsInsertingRepo() throws RemoteException {
+//			return (reposInserting.size() > 0);
+			return addingRepo.get();
+		}
+
 		
 	}; 
 
@@ -654,7 +667,13 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
     		switchAvailableListToDynamic();
     		loadingAvailableListData();
     	}
-		return checkIfAnyReposInUse();
+    	
+    	if(managerPreferences.isServerInconsistenState()){
+    		serverLoginAfterCreate(managerPreferences.getServerInconsistentStore());
+    		return EnumAvailableAppsStatus.NO_REPO_IN_USE.ordinal();
+    	}else{
+    		return checkIfAnyReposInUse();
+    	}
 	}
 	
 	public void unregisterAvailableDataObserver(AIDLAptoideInterface availableAppsObserver){
@@ -1139,18 +1158,14 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	
 	
 	public void repoInserted(){
-		try {
-			delayedExecutionHandler.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					try{
-						loginClient.repoInserted();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}, 1000);
-		} catch (Exception e) { }
+		delayedExecutionHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				try{
+					loginClient.repoInserted();
+				} catch (Exception e) { }
+			}
+		}, 1000);
 	}
 	
 	
@@ -1594,6 +1609,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	
 	public void parsingRepoDeltaFinished(ViewRepository repository, int repoSizeDifferential){
 		if(reposInserting.contains(repository.getHashid())){
+			reposInserting.remove(Integer.valueOf(repository.getHashid()));
 			if(repoSizeDifferential != 0){
 				if(repoSizeDifferential > 0){
 					parsingRepoIconsFinished(repository);
@@ -1601,7 +1617,6 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				resetAvailableLists();AptoideLog.d(AptoideServiceData.this, "parsing repo delta finished");
 				resetInstalledLists();
 			}
-			reposInserting.remove(Integer.valueOf(repository.getHashid()));
 			
 	//		insertedRepo(repository.getHashid());
 		}
@@ -1799,6 +1814,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 //		AptoideLog.d(AptoideServiceData.this, "parsing repo icons finished, reposInserting: "+reposInserting+" repo: "+repository);
 		if(reposInserting.contains(repository.getHashid())){
 			reposInserting.remove(Integer.valueOf(repository.getHashid()));
+			addingRepo.set(false);
 			getRepoIcons(new ViewDownloadStatus(repository, Constants.FIRST_ELEMENT, EnumDownloadType.ICON));
 		}
 	}
@@ -1809,7 +1825,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		if(downloadStatus.getRepository().getSize() < downloadStatus.getOffset()){
 //			refreshAvailableDisplay();
 //			resetAvailableLists();
-			addingRepo.set(false);
+//			addingRepo.set(false);
 			shouldIShutDown();
 			return;
 		}else{
@@ -2312,8 +2328,9 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 					AptoideLog.d(AptoideServiceData.this, "deactivating repo: "+serverLogin.getRepoName());
 					managerDatabase.toggleRepositoryInUse(repoInUse.getHashid(), false);
 
-					ViewRepository dormentRepo = managerDatabase.getRepository(serverLogin.getRepoUri().hashCode());
+					ViewRepository dormentRepo;
 					try {
+						dormentRepo = managerDatabase.getRepository(serverLogin.getRepoUri().hashCode());
 						if(dormentRepo != null && (dormentRepo.getUri().equals(serverLogin.getRepoUri()) 
 								&& (!dormentRepo.isLoginRequired() ||
 										( dormentRepo.getLogin().getUsername().equals(serverLogin.getPrivUsername())
@@ -2370,6 +2387,37 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		AptoideLog.d(AptoideServiceData.this, "serverLoginCreate status: "+loginCreateStatus);
 		return loginCreateStatus.ordinal();
 	}
+	
+	public void serverLoginAfterCreate(final ViewServerLogin serverLogin){
+		try {
+			aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).switchAvailableToWaitingOnServer();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	Log.d("Aptoide-LoginAfterCreate", "Trying to Login with: "+serverLogin);
+    	
+    	if( getManagerUploads().login(serverLogin) == EnumServerLoginStatus.SUCCESS ){
+        	String token = managerPreferences.getToken();
+			if(EnumServerLoginStatus.reverseOrdinal(serverLoginInsertRepo(serverLogin)) == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
+				managerPreferences.setServerInconsistentStore(serverLogin, token);
+				delayedExecutionHandler.postDelayed(new Runnable() {
+					public void run() {
+						try {
+							serverLoginAfterCreate(serverLogin);
+						} catch (Exception e) { }
+					}
+				}, 15000);
+			}
+    	}else{
+    		delayedExecutionHandler.postDelayed(new Runnable() {
+    			public void run() {
+    				try {
+    					serverLoginAfterCreate(serverLogin);
+    				} catch (Exception e) { }
+    			}
+    		}, 15000);
+    	}
+	}
 
 	public int serverLogin(ViewServerLogin serverLogin) {
 		EnumServerLoginStatus loginStatus;
@@ -2396,18 +2444,21 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	
 	public void clearServerLogin(){
 		if(!addingRepo.get()){
+//		if(reposInserting.size() > 0){
 			managerPreferences.clearServerLogin();
 			try {
 				ViewRepository repoInUse = managerDatabase.getRepoInUse();
 				AptoideLog.d(AptoideServiceData.this, "disabling repo: "+repoInUse);
 				managerDatabase.toggleRepositoryInUse(repoInUse.getHashid(), false);
-				resetAvailableLists();
+				switchAvailableListToStatic();
+//				resetAvailableLists();
 				resetInstalledLists();
 			} catch (Exception e) {
 				AptoideLog.d(AptoideServiceData.this, "already cleared server login");
 			}
 		}else{
-			Toast.makeText(getApplicationContext(), getResources().getString(R.string.previous_login_still_finishing_up), Toast.LENGTH_SHORT).show();
+			AptoideLog.d(AptoideServiceData.this, getString(R.string.updating_repo_please_wait));
+//			Toast.makeText(getApplicationContext(), getResources().getString(R.string.updating_repo_please_wait), Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -2891,7 +2942,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	
 	public ViewUploadInfo getUploadInfo(int appHashid){
 		ViewUploadInfo uploadInfo = managerSystemSync.getUploadInfo(managerDatabase.getAppPackageName(appHashid), appHashid);
-		uploadInfo.setRepoName(managerDatabase.getRepoInUse().getRepoName());
+		if(managerPreferences.isServerInconsistenState()){
+			uploadInfo.setRepoName(managerPreferences.getInconsistentRepoName());
+		}else{
+			uploadInfo.setRepoName(managerDatabase.getRepoInUse().getRepoName());
+		}
 		return uploadInfo;
 	}
 	

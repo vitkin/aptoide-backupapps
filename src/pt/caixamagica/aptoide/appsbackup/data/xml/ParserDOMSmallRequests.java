@@ -121,6 +121,33 @@ public class ParserDOMSmallRequests{
     return status;
 	}
 	
+	public EnumServerLoginStatus parseServerConnectionCheckReturn(HttpURLConnection connection) throws ParserConfigurationException, SAXException, IOException{
+		EnumServerLoginStatus status = EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE;
+
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	
+		DocumentBuilder builder = factory.newDocumentBuilder();
+        Document dom = builder.parse( connection.getInputStream() );
+        dom.getDocumentElement().normalize();
+        NodeList receivedErrorsList = dom.getElementsByTagName("error");
+        Log.d("Aptoide-ManagerUploads checkServerConnection", "received errors: "+receivedErrorsList.getLength());
+        if(receivedErrorsList.getLength()>0){
+        	Node receivedError = receivedErrorsList.item(0);
+        	String error = receivedError.getFirstChild().getNodeValue();
+        	Log.d("Aptoide-ManagerUploads checkServerConnection", receivedError.getNodeName());
+        	Log.d("Aptoide-ManagerUploads checkServerConnection", receivedError.getFirstChild().getNodeValue().trim());
+        	if(error.startsWith("Invalid repo:")){
+        		status = EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE;
+        	}else if(error.startsWith("Private repository:")){
+        		status = EnumServerLoginStatus.BAD_REPO_PRIVACY_LOGIN;
+        	}
+        }else{
+        	status = EnumServerLoginStatus.SUCCESS;
+        }
+        
+        return status;
+	}
+	
 	public EnumServerLoginStatus parseServerLoginReturn(HttpURLConnection connection) throws ParserConfigurationException, SAXException, IOException{
 		EnumServerLoginStatus status = EnumServerLoginStatus.LOGIN_SERVICE_UNAVAILABLE;
 
@@ -148,6 +175,8 @@ public class ParserDOMSmallRequests{
     	        		status = EnumServerLoginStatus.BAD_LOGIN;
     	        	}else if(error.equals("Invalid login credentials")){
     	        		status = EnumServerLoginStatus.BAD_LOGIN;
+    	        	}else if(error.equals("The provided store does not exist.")){
+    	        		status = EnumServerLoginStatus.REPO_NOT_FROM_DEVELOPPER;
     	        	}
     	        }
         	}

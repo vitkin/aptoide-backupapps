@@ -1,0 +1,659 @@
+# Translations template for PROJECT.
+# Copyright (C) 2012 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2012.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2012-08-16 19:34+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 1.0dev\n"
+
+msgctxt "self_update"
+msgid "Self update"
+msgstr ""
+
+msgctxt "update_available"
+msgid "Update available"
+msgstr ""
+
+msgctxt "update_confirm"
+msgid ""
+"There is a new version of aptoide apps backup available,\n"
+"do you wish to update?"
+msgstr ""
+
+msgctxt "self_updating"
+msgid "Please wait while processing update download…"
+msgstr ""
+
+#. this string name has to be misspelled because private is a reserved word
+msgctxt "privt_store"
+msgid "Private store"
+msgstr ""
+
+msgctxt "bazaar_login"
+msgid "Aptoide login"
+msgstr ""
+
+msgctxt "logging_in"
+msgid "Logging in"
+msgstr ""
+
+msgctxt "please_wait"
+msgid "Please wait"
+msgstr ""
+
+msgctxt "clear_login"
+msgid "Clear login"
+msgstr ""
+
+msgctxt "clear_login_sum"
+msgid "Unset your current login"
+msgstr ""
+
+msgctxt "set_new_login"
+msgid "New login"
+msgstr ""
+
+msgctxt "set_new_login_sum"
+msgid "Set a new login"
+msgstr ""
+
+msgctxt "username"
+msgid "Username"
+msgstr ""
+
+msgctxt "email"
+msgid "E-mail"
+msgstr ""
+
+msgctxt "password"
+msgid "Password"
+msgstr ""
+
+msgctxt "no_username"
+msgid "No Username"
+msgstr ""
+
+msgctxt "no_password"
+msgid "No Password"
+msgstr ""
+
+msgctxt "login_required"
+msgid "Login required"
+msgstr ""
+
+msgctxt "about"
+msgid "About"
+msgstr ""
+
+msgctxt "description"
+msgid "Your Android application backup manager.\n"
+msgstr ""
+
+msgctxt "version"
+msgid "Version"
+msgstr ""
+
+msgctxt "downloading_app"
+msgid "Downloading application"
+msgstr ""
+
+msgctxt "settings"
+msgid "Settings"
+msgstr ""
+
+msgctxt "backup_uploads_permissions"
+msgid "Backup upload Permissions"
+msgstr ""
+
+msgctxt "allowed_connections"
+msgid "Allowed connections"
+msgstr ""
+
+msgctxt "auto_backup"
+msgid "Automatic Backup"
+msgstr ""
+
+msgctxt "auto_backup_sum"
+msgid "On new apps install"
+msgstr ""
+
+msgctxt "never"
+msgid "Never"
+msgstr ""
+
+msgctxt "cache"
+msgid "Cache"
+msgstr ""
+
+msgctxt "clear_cache"
+msgid "Clear cache"
+msgstr ""
+
+msgctxt "clear_cache_description"
+msgid ""
+"Warning: removing cached apks will affect ongoing restores. Don't do this"
+" if you have ongoing restores!"
+msgstr ""
+
+msgctxt "display_options"
+msgid "Display Options"
+msgstr ""
+
+msgctxt "sort_applications_by"
+msgid "Sort applications by:"
+msgstr ""
+
+msgctxt "freshness"
+msgid "Most Recent"
+msgstr ""
+
+msgctxt "alphabetic"
+msgid "Alphabetically"
+msgstr ""
+
+msgctxt "size"
+msgid "Size"
+msgstr ""
+
+msgctxt "stars"
+msgid "Rating"
+msgstr ""
+
+msgctxt "downloads"
+msgid "Downloads"
+msgstr ""
+
+msgctxt "show_system_apps"
+msgid "Show system applications"
+msgstr ""
+
+msgctxt "backup"
+msgid "BACKUP"
+msgstr ""
+
+msgctxt "restore"
+msgid "RESTORE"
+msgstr ""
+
+msgctxt "available"
+msgid "Available"
+msgstr ""
+
+msgctxt "installed"
+msgid "Installed"
+msgstr ""
+
+msgctxt "system"
+msgid "System"
+msgstr ""
+
+#. this string name has to be misspelled because protected is a reserved word
+msgctxt "protectd"
+msgid "Protected"
+msgstr ""
+
+msgctxt "too_big"
+msgid "Too big"
+msgstr ""
+
+msgctxt "backed_up"
+msgid "Backed up"
+msgstr ""
+
+msgctxt "no_apps"
+msgid "No apps to display!"
+msgstr ""
+
+msgctxt "loading_apps"
+msgid "Loading apps..."
+msgstr ""
+
+msgctxt "uninstall"
+msgid "Uninstall"
+msgstr ""
+
+msgctxt "login"
+msgid "Login"
+msgstr ""
+
+msgctxt "sign_up"
+msgid "Sign Up"
+msgstr ""
+
+msgctxt "new_account"
+msgid "New Account"
+msgstr ""
+
+msgctxt "registration"
+msgid "Aptoide Registration"
+msgstr ""
+
+msgctxt "store_privacy"
+msgid "Store Privacy"
+msgstr ""
+
+msgctxt "publc"
+msgid "Public"
+msgstr ""
+
+msgctxt "privt"
+msgid "Private"
+msgstr ""
+
+msgctxt "accept_terms"
+msgid ""
+"By signing up you are agreeing to the Aptoide Terms of Service and "
+"Aptoide Content Policy for Developers"
+msgstr ""
+
+msgctxt "no_network_connection"
+msgid "No network connection"
+msgstr ""
+
+msgctxt "no_permitted_network_connection"
+msgid "No permitted network connection"
+msgstr ""
+
+msgctxt "no_space_left_in_sdcard"
+msgid "No space left in SDcard"
+msgstr ""
+
+msgctxt "download_failed"
+msgid "Download failed"
+msgstr ""
+
+msgctxt "repository"
+msgid "Store"
+msgstr ""
+
+msgctxt "repository_example"
+msgid "(Example: your username)"
+msgstr ""
+
+msgctxt "un_select_all"
+msgid "Un/Select all"
+msgstr ""
+
+msgctxt "delete"
+msgid "Delete"
+msgstr ""
+
+msgctxt "backup_selected_apps"
+msgid "Backup selected apps"
+msgstr ""
+
+msgctxt "restore_selected_apps"
+msgid "Restore selected apps"
+msgstr ""
+
+msgctxt "form_intro"
+msgid "You may fill out the form:"
+msgstr ""
+
+msgctxt "app_name"
+msgid "App name"
+msgstr ""
+
+msgctxt "app_category"
+msgid "App category"
+msgstr ""
+
+msgctxt "comics"
+msgid "Comics"
+msgstr ""
+
+msgctxt "communication"
+msgid "Communication"
+msgstr ""
+
+msgctxt "entertainment"
+msgid "Entertainment"
+msgstr ""
+
+msgctxt "finance"
+msgid "Finance"
+msgstr ""
+
+msgctxt "health"
+msgid "Health"
+msgstr ""
+
+msgctxt "lifestyle"
+msgid "Lifestyle"
+msgstr ""
+
+msgctxt "multimedia"
+msgid "Multimedia"
+msgstr ""
+
+msgctxt "news_weather"
+msgid "News & Weather"
+msgstr ""
+
+msgctxt "productivity"
+msgid "Productivity"
+msgstr ""
+
+msgctxt "reference"
+msgid "Reference"
+msgstr ""
+
+msgctxt "shopping"
+msgid "Shopping"
+msgstr ""
+
+msgctxt "social"
+msgid "Social"
+msgstr ""
+
+msgctxt "sports"
+msgid "Sports"
+msgstr ""
+
+msgctxt "themes"
+msgid "Themes"
+msgstr ""
+
+msgctxt "tools"
+msgid "Tools"
+msgstr ""
+
+msgctxt "travel"
+msgid "Travel"
+msgstr ""
+
+msgctxt "demo"
+msgid "Demo"
+msgstr ""
+
+msgctxt "software_libraries"
+msgid "Software Libraries"
+msgstr ""
+
+msgctxt "arcade_action_games"
+msgid "Arcade & Action (Games)"
+msgstr ""
+
+msgctxt "brain_puzzle_games"
+msgid "Brain & Puzzle (Games)"
+msgstr ""
+
+msgctxt "cards_casino_games"
+msgid "Cards & Casino (Games)"
+msgstr ""
+
+msgctxt "casual_games"
+msgid "Casual (Games)"
+msgstr ""
+
+msgctxt "form_rating"
+msgid "App rating"
+msgstr ""
+
+msgctxt "all"
+msgid "All"
+msgstr ""
+
+msgctxt "pre_teen"
+msgid "Pre-Teen (minimal age: 10)"
+msgstr ""
+
+msgctxt "teen"
+msgid "Teen (minimal age: 16)"
+msgstr ""
+
+msgctxt "mature"
+msgid "Mature (minimal age: 18)"
+msgstr ""
+
+msgctxt "app_description_optional"
+msgid "App description (Optional)"
+msgstr ""
+
+msgctxt "app_description"
+msgid "App description"
+msgstr ""
+
+msgctxt "phone_number_optional"
+msgid "Phone number (Optional)"
+msgstr ""
+
+msgctxt "phone_number"
+msgid "Phone number"
+msgstr ""
+
+msgctxt "e_mail_optional"
+msgid "E-mail (Optional)"
+msgstr ""
+
+msgctxt "e_mail"
+msgid "E-mail"
+msgstr ""
+
+msgctxt "website_url_optional"
+msgid "Website url (Optional)"
+msgstr ""
+
+msgctxt "website_url"
+msgid "Website url"
+msgstr ""
+
+msgctxt "uploading_apps"
+msgid "Uploading apps:"
+msgstr ""
+
+msgctxt "uploaded_apps"
+msgid "Uploaded apps:"
+msgstr ""
+
+msgctxt "not_uploaded_apps"
+msgid "Failed to upload:"
+msgstr ""
+
+msgctxt "return_to_apps_list"
+msgid "Return to apps list"
+msgstr ""
+
+msgctxt "login_service_unavailable"
+msgid "Login service currently unavailable"
+msgstr ""
+
+msgctxt "login_create_service_unavailable"
+msgid "User creation service currently unavailable"
+msgstr ""
+
+msgctxt "repo_service_unavailable"
+msgid "Store service currently unavailable"
+msgstr ""
+
+msgctxt "repo_not_associated_with_user"
+msgid "This store is not associated with this user, please correct it!"
+msgstr ""
+
+msgctxt "check_login"
+msgid "Please check your username and password!"
+msgstr ""
+
+msgctxt "check_repo"
+msgid "Please check your store!"
+msgstr ""
+
+msgctxt "username_not_email"
+msgid "Username not properly formatted e-mail"
+msgstr ""
+
+msgctxt "wrong_password"
+msgid "Wrong password"
+msgstr ""
+
+msgctxt "hmac_problem"
+msgid "HMAC problem"
+msgstr ""
+
+msgctxt "user_agent_problem"
+msgid "User agent problem"
+msgstr ""
+
+msgctxt "username_already_registered"
+msgid "Username already registered"
+msgstr ""
+
+msgctxt "missing_parameter"
+msgid "Missing parameter"
+msgstr ""
+
+msgctxt "unknown_username"
+msgid "Unknown username"
+msgstr ""
+
+msgctxt "repo_requires_authentication"
+msgid "Store requires authentication"
+msgstr ""
+
+msgctxt "repo_already_exists"
+msgid "Store already exists"
+msgstr ""
+
+msgctxt "missing_token"
+msgid "Missing token"
+msgstr ""
+
+msgctxt "missing_apk"
+msgid "Missing apk"
+msgstr ""
+
+msgctxt "select_rating"
+msgid "Please select a rating"
+msgstr ""
+
+msgctxt "enter_apk_name"
+msgid "Please enter an application name!"
+msgstr ""
+
+msgctxt "select_category"
+msgid "Please select a category!"
+msgstr ""
+
+msgctxt "enter_description"
+msgid "Please enter a description!"
+msgstr ""
+
+msgctxt "token_error"
+msgid "Token error"
+msgstr ""
+
+msgctxt "invalid_repo_name"
+msgid "Invalid store name"
+msgstr ""
+
+msgctxt "invalid_apk"
+msgid "Invalid apk"
+msgstr ""
+
+msgctxt "invalid_rating"
+msgid "Invalid rating"
+msgstr ""
+
+msgctxt "invalid_category"
+msgid "Invalid category"
+msgstr ""
+
+msgctxt "invalid_website"
+msgid "Invalid website url"
+msgstr ""
+
+msgctxt "invalid_email"
+msgid "Invalid e-mail address"
+msgstr ""
+
+msgctxt "failed_apk_upload"
+msgid "Apk upload failed"
+msgstr ""
+
+msgctxt "apk_too_big"
+msgid "Apk too big"
+msgstr ""
+
+msgctxt "apk_duplicate"
+msgid "Apk duplicate"
+msgstr ""
+
+msgctxt "apk_infected"
+msgid "Apk infected with virus"
+msgstr ""
+
+msgctxt "apk_blacklisted"
+msgid "Apk blacklisted"
+msgstr ""
+
+msgctxt "failed_server_connection"
+msgid "Server connection failed, please retry!"
+msgstr ""
+
+msgctxt "server_error_apk"
+msgid "Server Error (Lost Apk)"
+msgstr ""
+
+msgctxt "server_error_screenshots"
+msgid "Server Error (Screenchots)"
+msgstr ""
+
+msgctxt "server_error_md5"
+msgid "Server Error (MD5)"
+msgstr ""
+
+msgctxt "server_error_icon_upload"
+msgid "Server Error (Icon)"
+msgstr ""
+
+msgctxt "server_error_graphic_upload"
+msgid "Server Error (Graphic)"
+msgstr ""
+
+msgctxt "server_error"
+msgid "Server Error"
+msgstr ""
+
+msgctxt "previous_login_still_finishing_up"
+msgid "Previous Login Still finishing up"
+msgstr ""
+
+msgctxt "success"
+msgid "Success"
+msgstr ""
+
+#, c-format
+msgctxt "app_system_backup_may_fail"
+msgid ""
+"%s is protected by the system and Aptoide-AppsBackup might not be able to"
+" back it up, or uninstall it"
+msgstr ""
+
+#, c-format
+msgctxt "app_too_big_backup_may_fail"
+msgid "%s is too big, the server might refuse to receive the upload"
+msgstr ""
+
+msgctxt "option_not_available_while_updating_repos"
+msgid "Option not available while updating stores!"
+msgstr ""
+
+msgctxt "too_many_apps_to_select_at_once"
+msgid "Too many apps to select at once!"
+msgstr ""
+
+msgctxt "please_wait_server_being_updated"
+msgid "Please wait, the server is being updated, this may take several minutes!"
+msgstr ""
+

@@ -42,7 +42,10 @@ public enum EnumPreferences {
 	AUTOMATIC_INSTALL,
 	SERVER_USERNAME,	//TODO move these next 3 values to database to support multiple servers
 	SERVER_PASSHASH,
-	SERVER_TOKEN;
+	SERVER_TOKEN,
+	SERVER_INCONSISTENT,
+	SERVER_NAME,
+	SERVER_PRIVATE;
 	
 	public static EnumPreferences reverseOrdinal(int ordinal){
 		return values()[ordinal];

@@ -56,7 +56,7 @@ public enum EnumServerLoginStatus {
 			case LOGIN_SERVICE_UNAVAILABLE:
 				return  context.getString(R.string.login_service_unavailable);
 			case PREVIOUS_LOGIN_STILL_FINISHING_UP:
-				return context.getString(R.string.previous_login_still_finishing_up);
+				return context.getString(R.string.updating_repo_please_wait);
 
 			default:
 				return context.getString(R.string.server_error);
