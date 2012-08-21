@@ -197,7 +197,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 			serviceDataIsBound = true;
 			
 			AptoideLog.v(Aptoide.this, "Connected to ServiceData");	
-			interfaceTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.ZERO_RESET_INSTALLED_LIST_DISPLAY.ordinal());
+//			interfaceTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.ZERO_RESET_INSTALLED_LIST_DISPLAY.ordinal());
 			
 			if(!serviceDataSeenRunning){
 				synchronizingInstalledApps.set(true);

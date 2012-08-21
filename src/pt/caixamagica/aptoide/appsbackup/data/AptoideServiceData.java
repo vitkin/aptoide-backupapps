@@ -99,6 +99,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Parcel;
 import android.os.RemoteException;
+import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 import pt.caixamagica.aptoide.appsbackup.AIDLAppInfo;
@@ -194,6 +195,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		@Override
 		public void callSyncInstalledApps() throws RemoteException {
 	    	syncInstalledApps();			
+		}
+
+		@Override
+		public void callCacheInstalledAppsIcons() throws RemoteException {
+			managerSystemSync.cacheInstalledIcons();
 		}
 
 		@Override
@@ -626,7 +632,6 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 //			return (reposInserting.size() > 0);
 			return addingRepo.get();
 		}
-
 		
 	}; 
 
@@ -719,7 +724,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				String packageName = receivedIntent.getData().getEncodedSchemeSpecificPart();
 				Log.d("Aptoide-ServiceData", "installedAppsChangeListener - package added: "+packageName);
 				addInstalledApp(packageName);
-				if(managerPreferences.isAutomaticInstallOn()){
+				if(managerPreferences.isAutomaticInstallOn() && getServerToken() != null){
 					Log.d("Aptoide-AppsBackup", "preparing to auto-upload: "+packageName);
 					
 					ViewListIds uploads = new ViewListIds();
@@ -1148,14 +1153,14 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 			public void run() {
 //				Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 				managerDatabase.insertInstalledApplications(managerSystemSync.getInstalledApps());
-				AptoideLog.d(AptoideServiceData.this, "Sync'ed Installed Apps");
-				
+				AptoideLog.d(AptoideServiceData.this, "Sync'ed Installed Apps");				
 				syncingInstalledApps.set(false);
-				managerSystemSync.cacheInstalledIcons();
+				resetInstalledLists();
+				
+//				managerSystemSync.cacheInstalledIcons();
 			}
 		});
-	}		
-	
+	}
 	
 	public void repoInserted(){
 		delayedExecutionHandler.postDelayed(new Runnable() {
@@ -2307,7 +2312,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 							AptoideLog.d(AptoideServiceData.this, "reactivating repo: "+dormentRepo.getUri());
 							managerDatabase.toggleRepositoryInUse(dormentRepo.getHashid(), true);
 							repoInserted();
-							resetAvailableLists();
+//							resetAvailableLists();
 							resetInstalledLists();
 							getDelta(dormentRepo.getHashid());
 						}else{
@@ -2338,7 +2343,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 							AptoideLog.d(AptoideServiceData.this, "reactivating repo: "+dormentRepo.getUri());
 							managerDatabase.toggleRepositoryInUse(dormentRepo.getHashid(), true);
 							repoInserted();
-							resetAvailableLists();
+//							resetAvailableLists();
 							resetInstalledLists();
 							getDelta(dormentRepo.getHashid());
 						}else{
@@ -2389,34 +2394,39 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	}
 	
 	public void serverLoginAfterCreate(final ViewServerLogin serverLogin){
-		try {
-			aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).switchAvailableToWaitingOnServer();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    	Log.d("Aptoide-LoginAfterCreate", "Trying to Login with: "+serverLogin);
-    	
-    	if( getManagerUploads().login(serverLogin) == EnumServerLoginStatus.SUCCESS ){
-        	String token = managerPreferences.getToken();
-			if(EnumServerLoginStatus.reverseOrdinal(serverLoginInsertRepo(serverLogin)) == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
-				managerPreferences.setServerInconsistentStore(serverLogin, token);
-				delayedExecutionHandler.postDelayed(new Runnable() {
-					public void run() {
-						try {
-							serverLoginAfterCreate(serverLogin);
-						} catch (Exception e) { }
+		cachedThreadPool.execute(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).switchAvailableToWaitingOnServer();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+		    	Log.d("Aptoide-LoginAfterCreate", "Trying to Login with: "+serverLogin);
+		    	
+		    	if( getManagerUploads().login(serverLogin) == EnumServerLoginStatus.SUCCESS ){
+		        	String token = managerPreferences.getToken();
+					if(EnumServerLoginStatus.reverseOrdinal(serverLoginInsertRepo(serverLogin)) == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
+						managerPreferences.setServerInconsistentStore(serverLogin, token);
+						delayedExecutionHandler.postDelayed(new Runnable() {
+							public void run() {
+								try {
+									serverLoginAfterCreate(serverLogin);
+								} catch (Exception e) { }
+							}
+						}, 15000);
 					}
-				}, 15000);
+		    	}else{
+		    		delayedExecutionHandler.postDelayed(new Runnable() {
+		    			public void run() {
+		    				try {
+		    					serverLoginAfterCreate(serverLogin);
+		    				} catch (Exception e) { }
+		    			}
+		    		}, 15000);
+		    	}
 			}
-    	}else{
-    		delayedExecutionHandler.postDelayed(new Runnable() {
-    			public void run() {
-    				try {
-    					serverLoginAfterCreate(serverLogin);
-    				} catch (Exception e) { }
-    			}
-    		}, 15000);
-    	}
+		});
 	}
 
 	public int serverLogin(ViewServerLogin serverLogin) {
@@ -2562,7 +2572,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 			public void run() {
 				managerPreferences.setAppsSortingPolicy(sortingPolicy);
 				resetInstalledLists();
-				resetAvailableLists();
+//				resetAvailableLists();
 				AptoideLog.d(AptoideServiceData.this, "setting sorting policy to: "+EnumAppsSorting.reverseOrdinal(sortingPolicy));
 			}
 		});
@@ -2883,9 +2893,9 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	
 	
 	public void addInstalledApp(final String packageName){
-		cachedThreadPool.execute(new Runnable() {
-			@Override
-			public void run() {
+//		cachedThreadPool.execute(new Runnable() {
+//			@Override
+//			public void run() {
 				ViewApplicationInstalled installedApp = managerSystemSync.getInstalledApp(packageName);
 				if(installedApp != null){
 					managerDatabase.insertInstalledApplication(installedApp);
@@ -2902,8 +2912,8 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 //						}
 //					}
 				}
-			}
-		});
+//			}
+//		});
 	}
 	
 	public void removeInstalledApp(final String packageName){
@@ -2941,7 +2951,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	}
 	
 	public ViewUploadInfo getUploadInfo(int appHashid){
-		ViewUploadInfo uploadInfo = managerSystemSync.getUploadInfo(managerDatabase.getAppPackageName(appHashid), appHashid);
+		String packageName = managerDatabase.getAppPackageName(appHashid);
+		if(packageName == null){
+			return null;
+		}
+		ViewUploadInfo uploadInfo = managerSystemSync.getUploadInfo(packageName, appHashid);
 		if(managerPreferences.isServerInconsistenState()){
 			uploadInfo.setRepoName(managerPreferences.getInconsistentRepoName());
 		}else{

@@ -63,6 +63,7 @@ interface AIDLAptoideServiceData {
 	ViewDisplayListsDimensions callGetDisplayListsDimensions();
 	
 	void callSyncInstalledApps();
+	void callCacheInstalledAppsIcons();
 	
 	void callRegisterReposObserver(in AIDLReposInfo reposInfoObserver);
 	ViewDisplayListRepos callGetRepos();

@@ -21,6 +21,7 @@
 package pt.caixamagica.aptoide.appsbackup.ifaceutil;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -80,6 +81,8 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 	
 	public Context context;
 	
+	public ArrayList<Integer> selectionsSavedState;
+	
 
 	
 	private Handler interfaceTasksHandler = new Handler() {
@@ -105,6 +108,20 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
     	
     	public InstalledAppsManager(){
     		installedColectorsPool = Executors.newSingleThreadExecutor();
+    	}
+    	
+    	public void cacheInstalledAppsIcons(){
+    		installedColectorsPool.execute(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						serviceDataCaller.callCacheInstalledAppsIcons();
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});    		
     	}
     	
     	public void reset(){
@@ -290,6 +307,25 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 		notifyDataSetChanged();
 	}
 	
+	public void saveSelectionState(){
+		selectionsSavedState = new ArrayList<Integer>();
+		int i;
+		ViewDisplayApplication app;
+		for (i=0; i<apps.size(); i++) {
+			app = apps.get(i);
+			ViewDisplayApplicationBackup backup = ((ViewDisplayApplicationBackup) app);
+			if(backup.isChecked()){
+				selectionsSavedState.add(i);
+			}
+		}
+	}
+	
+	public void restoreSelectedState(){
+		for (Integer selected : selectionsSavedState) {
+			((ViewDisplayApplicationBackup) apps.get(selected)).toggleCheck();
+		}
+	}
+	
 	public ViewListIds getSelectedIds(){
 		ViewListIds selected = new ViewListIds();
 		for (ViewDisplayApplication app: apps) {
@@ -325,6 +361,8 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 		this.listView = listView;
 		layoutInflater = LayoutInflater.from(context);
 		
+		selectionsSavedState = new ArrayList<Integer>();
+		
 	} 
 	
 	public void zeroResetDisplayInstalled(){
@@ -358,15 +396,21 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 		}else{
 			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_INSTALLED_TO_LIST.ordinal());
 		
+			saveSelectionState();
+			
 	    	this.apps = freshApps;
 			Log.d("Aptoide-StaticInstalledAppsListAdapter", "new Installed List: "+getCount());
 	   		initDisplay();
 	    	refreshDisplayInstalled();
+	    	
+	    	restoreSelectedState();
 
 	    	if(!zeroReset.get()){
 	    		aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_AVAILABLE_LIST_DISPLAY.ordinal());
 //	    		aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_UPDATABLE_LIST_DISPLAY.ordinal());
 	    	}
+	    	
+	    	appsManager.cacheInstalledAppsIcons();
 		}
 	}
 	

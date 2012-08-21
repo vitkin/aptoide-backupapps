@@ -2265,6 +2265,11 @@ public class ManagerDatabase {
 
 			installedApps = new ViewDisplayListApps();
 			
+			if(appsCursor.getCount() == Constants.EMPTY_INT){
+				//TODO throw exception
+				return installedApps;
+			}
+			
 			appsCursor.moveToFirst();
 			do{
 				app = new ViewDisplayApplicationBackup(appsCursor.getInt(APP_HASHID), appsCursor.getString(APP_NAME), appsCursor.getString(INSTALLED_VERSION_NAME)
@@ -2970,11 +2975,17 @@ public class ManagerDatabase {
 			db.setTransactionSuccessful();
 			db.endTransaction();
 
+			iconsInfo = new ArrayList<ViewDownloadInfo>(iconsCursor.getCount());
+			
+			if(iconsCursor.getCount() == Constants.EMPTY_INT){
+				//TODO throw exception
+				return iconsInfo;
+			}
+			
 			repoCursor.moveToFirst();
 			String repoIconsPath = repoCursor.getString(ICONS_PATH);
 			repoCursor.close();
 			
-			iconsInfo = new ArrayList<ViewDownloadInfo>(iconsCursor.getCount());
 			
 			iconsCursor.moveToFirst();
 			do{
@@ -3780,6 +3791,7 @@ public class ManagerDatabase {
 		
 		if(cursorApp.getCount() == Constants.EMPTY_INT){
 			//TODO raise exception app not installed
+			return null;
 		}
 		
 		cursorApp.moveToFirst();

@@ -206,6 +206,7 @@ public class ManagerSystemSync {
 		 tasksPool.execute(new Runnable() {
 			@Override
 			public void run() {
+				Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 				List<PackageInfo> systemInstalledList = packageManager.getInstalledPackages(0);
 				for (PackageInfo installedAppInfo : systemInstalledList) {
 //					if(installedAppInfo.applicationInfo.sourceDir.split("[/]+")[1].equals("system")){

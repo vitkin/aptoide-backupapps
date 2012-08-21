@@ -34,6 +34,7 @@ import pt.caixamagica.aptoide.appsbackup.data.util.Constants;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerUploadApkStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewApk;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewUploadInfo;
+import pt.caixamagica.aptoide.appsbackup.debug.exceptions.AptoideException;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -245,6 +246,9 @@ public class Upload extends Activity {
 			for (int appHashid : uploads) {
 				try {
 					ViewUploadInfo uploadInfo = serviceDataCaller.callGetUploadInfo(appHashid);
+					if(uploadInfo == null){
+						throw new AptoideException("failed to retrieve uploadInfo");
+					}
 					Log.d("Aptoide-AppsBackup", "upload: "+uploadInfo);
 					ViewApk uploadingApk = new ViewApk(uploadInfo.getAppHashid(), uploadInfo.getAppName(), uploadInfo.getLocalPath()); //TODO refactor ViewUploadInfo to deprecate ViewApk and to receive repo info from servicedata
 					uploadingApk.setRepository(uploadInfo.getRepoName());
@@ -254,6 +258,7 @@ public class Upload extends Activity {
 					
 				} catch (RemoteException e) {
 					e.printStackTrace();
+					continue;
 				}
 			}
 			
