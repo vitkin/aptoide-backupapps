@@ -2405,6 +2405,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		    	Log.d("Aptoide-LoginAfterCreate", "Trying to Login with: "+serverLogin);
 		    	
 		    	if( getManagerUploads().login(serverLogin) == EnumServerLoginStatus.SUCCESS ){
+		    		repoInserted();
 		        	String token = managerPreferences.getToken();
 					if(EnumServerLoginStatus.reverseOrdinal(serverLoginInsertRepo(serverLogin)) == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
 						managerPreferences.setServerInconsistentStore(serverLogin, token);

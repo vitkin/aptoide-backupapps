@@ -398,7 +398,7 @@ public class BazaarSignUp extends Activity {
 						e.printStackTrace();
 					}
 	            	success = true;
-					dialogProgress.dismiss();
+//					dialogProgress.dismiss();
 	            	
 				}else{
 					success = false;
