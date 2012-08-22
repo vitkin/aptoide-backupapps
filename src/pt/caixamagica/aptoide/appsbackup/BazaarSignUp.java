@@ -375,6 +375,7 @@ public class BazaarSignUp extends Activity {
 		
 		@Override
 		protected EnumServerLoginCreateStatus doInBackground(Void... args) {
+			dialogProgress.setCancelable(false);
 			try {
 				return EnumServerLoginCreateStatus.reverseOrdinal(serviceDataCaller.callServerLoginCreate(serverLogin));
 			} catch (RemoteException e) {
@@ -387,8 +388,8 @@ public class BazaarSignUp extends Activity {
 			if(status!=null){
 
 				if(status.equals(EnumServerLoginCreateStatus.SUCCESS)){
-////					success = true;
-////					dialogProgress.setCancelable(false);
+					success = true;
+					dialogProgress.setCancelable(false);
 	            	Log.d("Aptoide-SignUp", "Created new acocunt with login: "+serverLogin);
 // 					new LoginTask(BazaarSignUp.this, serverLogin).execute();
 	            	try {
@@ -397,16 +398,18 @@ public class BazaarSignUp extends Activity {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-	            	success = true;
+//	            	success = true;
 //					dialogProgress.dismiss();
 	            	
 				}else{
 					success = false;
+					dialogProgress.setCancelable(true);
 					Toast.makeText(BazaarSignUp.this, status.toString(BazaarSignUp.this), Toast.LENGTH_SHORT).show();
 					dialogProgress.dismiss();
 				}
 				
 			}else{
+				dialogProgress.setCancelable(true);
 				Toast.makeText(BazaarSignUp.this, getString(R.string.login_create_service_unavailable), Toast.LENGTH_SHORT).show();
 				dialogProgress.dismiss();
 			}

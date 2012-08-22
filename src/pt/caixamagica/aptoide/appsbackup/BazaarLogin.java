@@ -467,6 +467,7 @@ public class BazaarLogin extends Activity {
 		
 		@Override
 		protected EnumServerLoginStatus doInBackground(Void... args) {
+			dialogProgress.setCancelable(false);
 			try {
 				return EnumServerLoginStatus.reverseOrdinal(serviceDataCaller.callServerLogin(serverLogin));
 			} catch (RemoteException e) {
@@ -480,15 +481,18 @@ public class BazaarLogin extends Activity {
 
 				if(status.equals(EnumServerLoginStatus.SUCCESS)){
 					success = true;
-					dialogProgress.dismiss();
-//					dialogProgress.setCancelable(false);
+//					dialogProgress.setCancelable(true);
+//					dialogProgress.dismiss();
+					dialogProgress.setCancelable(false);
 				}else{
 					success = false;
+					dialogProgress.setCancelable(true);
 					Toast.makeText(BazaarLogin.this, status.toString(BazaarLogin.this), Toast.LENGTH_SHORT).show();
 					dialogProgress.dismiss();
 				}
 				
 			}else{
+				dialogProgress.setCancelable(true);
 				Toast.makeText(BazaarLogin.this, getString(R.string.login_service_unavailable), Toast.LENGTH_SHORT).show();
 				dialogProgress.dismiss();
 			}
