@@ -724,7 +724,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				String packageName = receivedIntent.getData().getEncodedSchemeSpecificPart();
 				Log.d("Aptoide-ServiceData", "installedAppsChangeListener - package added: "+packageName);
 				addInstalledApp(packageName);
-				if(managerPreferences.isAutomaticInstallOn() && getServerToken() != null){
+				if(managerPreferences.isAutomaticInstallOn() && getServerToken() != null && !managerDatabase.isApplicationInstalled(packageName)){
 					Log.d("Aptoide-AppsBackup", "preparing to auto-upload: "+packageName);
 					
 					ViewListIds uploads = new ViewListIds();
