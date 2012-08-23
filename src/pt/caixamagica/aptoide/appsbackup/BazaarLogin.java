@@ -151,13 +151,20 @@ public class BazaarLogin extends Activity {
 	private EditText password;
 //	private CheckBox showPass;
 	
+	private CheckBox store_default;
+
+	private TextView repository_id;
+	private TextView repository_example;
 	private EditText repository;
  	private CheckBox privt;
+ 	
 // 	private TextView priv_username_id;
 // 	private EditText priv_username;
 // 	private TextView priv_password_id;
 // 	private EditText priv_password;
 //	private CheckBox priv_showPass;
+
+	
 	
 	
 	@Override
@@ -205,8 +212,36 @@ public class BazaarLogin extends Activity {
  //            }
  //        });
  		
+ 		store_default = (CheckBox) findViewById(R.id.default_store);
+ 		repository_id = (TextView) findViewById(R.id.repository_id);
+ 		repository_id.setVisibility(View.GONE);
+ 		
  		repository = ((EditText)findViewById(R.id.repository));
+ 		repository.setVisibility(View.GONE);
+ 		
+ 		repository_example = (TextView) findViewById(R.id.repository_example);
+ 		repository_example.setVisibility(View.GONE);
+ 		
  		privt = (CheckBox) findViewById(R.id.privt_store);
+ 		privt.setVisibility(View.GONE);
+ 		
+ 		store_default.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+ 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+ 				if(!isChecked){
+ 					repository_id.setVisibility(View.VISIBLE);
+ 					repository.setVisibility(View.VISIBLE);
+ 					repository_example.setVisibility(View.VISIBLE);
+ 					privt.setVisibility(View.VISIBLE);
+ 				}else {
+ 					repository_id.setVisibility(View.GONE);
+ 					repository.setVisibility(View.GONE);
+ 					repository_example.setVisibility(View.GONE);
+ 					privt.setVisibility(View.GONE);
+ 				}
+ 				
+ 			}
+ 		});
+ 		
 // 		privt.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 // 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 // 				if(isChecked){

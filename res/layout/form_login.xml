@@ -97,6 +97,16 @@
                         android:password="true"
                         android:singleLine="true" />
 
+
+                    <CheckBox
+                        android:id="@+id/default_store"
+                        android:layout_width="fill_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:checked="true" 
+                        android:text="@string/default_store"
+                        android:textColor="#696969" />
+                    
                     <TextView
                         android:id="@+id/repository_id"
                         android:layout_width="fill_parent"
@@ -132,53 +142,56 @@
                         android:text="@string/privt_store"
                         android:textColor="#696969" />
 
-<!--                     <TextView -->
-<!--                         android:id="@+id/priv_username_id" -->
-<!--                         android:layout_width="fill_parent" -->
-<!--                         android:layout_height="wrap_content" -->
-<!--                         android:layout_marginLeft="2dp" -->
-<!--                         android:layout_marginTop="2dp" -->
-<!--                         android:text="@string/privacy_username" -->
-<!--                         android:textColor="#424542" -->
-<!--                         android:textSize="15sp" -->
-<!--                         android:visibility="gone" /> -->
+                    <!-- <TextView -->
+                    <!-- android:id="@+id/priv_username_id" -->
+                    <!-- android:layout_width="fill_parent" -->
+                    <!-- android:layout_height="wrap_content" -->
+                    <!-- android:layout_marginLeft="2dp" -->
+                    <!-- android:layout_marginTop="2dp" -->
+                    <!-- android:text="@string/privacy_username" -->
+                    <!-- android:textColor="#424542" -->
+                    <!-- android:textSize="15sp" -->
+                    <!-- android:visibility="gone" /> -->
 
-<!--                     <EditText -->
-<!--                         android:id="@+id/priv_username" -->
-<!--                         android:layout_width="fill_parent" -->
-<!--                         android:layout_height="0dp" -->
-<!--                         android:layout_weight="1" -->
-<!--                         android:ems="200" -->
-<!--                         android:hint="@string/privacy_username" -->
-<!--                         android:inputType="textEmailAddress" -->
-<!--                         android:singleLine="true" -->
-<!--                         android:textColor="#696969" -->
-<!--                         android:textSize="18sp" -->
-<!--                         android:visibility="gone" > -->
-<!--                     </EditText> -->
 
-<!--                     <TextView -->
-<!--                         android:id="@+id/priv_password_id" -->
-<!--                         android:layout_width="fill_parent" -->
-<!--                         android:layout_height="wrap_content" -->
-<!--                         android:layout_marginLeft="2dp" -->
-<!--                         android:layout_marginTop="2dp" -->
-<!--                         android:text="@string/privacy_password" -->
-<!--                         android:textColor="#424542" -->
-<!--                         android:textSize="15sp" -->
-<!--                         android:visibility="gone" /> -->
+                    <!-- <EditText -->
+                    <!-- android:id="@+id/priv_username" -->
+                    <!-- android:layout_width="fill_parent" -->
+                    <!-- android:layout_height="0dp" -->
+                    <!-- android:layout_weight="1" -->
+                    <!-- android:ems="200" -->
+                    <!-- android:hint="@string/privacy_username" -->
+                    <!-- android:inputType="textEmailAddress" -->
+                    <!-- android:singleLine="true" -->
+                    <!-- android:textColor="#696969" -->
+                    <!-- android:textSize="18sp" -->
+                    <!-- android:visibility="gone" > -->
+                    <!-- </EditText> -->
 
-<!--                     <EditText -->
-<!--                         android:id="@+id/priv_password" -->
-<!--                         android:layout_width="fill_parent" -->
-<!--                         android:layout_height="0dp" -->
-<!--                         android:layout_weight="1" -->
-<!--                         android:hint="@string/privacy_password" -->
-<!--                         android:password="true" -->
-<!--                         android:singleLine="true" -->
-<!--                         android:textColor="#696969" -->
-<!--                         android:textSize="18sp" -->
-<!--                         android:visibility="gone" /> -->
+
+                    <!-- <TextView -->
+                    <!-- android:id="@+id/priv_password_id" -->
+                    <!-- android:layout_width="fill_parent" -->
+                    <!-- android:layout_height="wrap_content" -->
+                    <!-- android:layout_marginLeft="2dp" -->
+                    <!-- android:layout_marginTop="2dp" -->
+                    <!-- android:text="@string/privacy_password" -->
+                    <!-- android:textColor="#424542" -->
+                    <!-- android:textSize="15sp" -->
+                    <!-- android:visibility="gone" /> -->
+
+
+                    <!-- <EditText -->
+                    <!-- android:id="@+id/priv_password" -->
+                    <!-- android:layout_width="fill_parent" -->
+                    <!-- android:layout_height="0dp" -->
+                    <!-- android:layout_weight="1" -->
+                    <!-- android:hint="@string/privacy_password" -->
+                    <!-- android:password="true" -->
+                    <!-- android:singleLine="true" -->
+                    <!-- android:textColor="#696969" -->
+                    <!-- android:textSize="18sp" -->
+                    <!-- android:visibility="gone" /> -->
 
                     <TextView
                         android:id="@+id/bad_login"

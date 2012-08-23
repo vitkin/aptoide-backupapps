@@ -360,7 +360,7 @@ public class Upload extends Activity {
 	private void disableGoingBack(){
 //		backButton.setEnabled(false);
 //		backButton.setVisibility(View.INVISIBLE);
-		backButton.setTextColor(Color.WHITE);
+		backButton.setTextColor(Color.GRAY);
 		backButton.setClickable(false);
 		goingBackEnabled.set(false);
 	}

@@ -26,7 +26,7 @@
         <ListView
             android:id="@+id/uploading_list"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/border_background_normal" />
     </LinearLayout>
 
@@ -52,7 +52,7 @@
         <ListView
             android:id="@+id/uploaded_list"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/border_background_normal" />
     </LinearLayout>
 
@@ -78,7 +78,7 @@
         <ListView
             android:id="@+id/failed_list"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/border_background_normal" />
     </LinearLayout>
 

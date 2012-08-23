@@ -6,6 +6,7 @@
     <string name="self_updating">Please wait while processing update download&#8230;</string>  
    
 	<!-- this string name has to be misspelled because private is a reserved word -->
+    <string name="default_store">Use my default store</string>
     <string name="privt_store">Private store</string>
     <string name="bazaar_login">Aptoide login</string>
     <string name="logging_in">Logging in</string>
