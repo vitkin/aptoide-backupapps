@@ -230,6 +230,7 @@ public class ParserRepoBare extends DefaultHandler{
 			case repository:
 				managerXml.getManagerDatabase().insertRepository(parseInfo.getRepository());
 				
+				managerXml.serviceData.getManagerPreferences().setServerInconsistentState(false, null, false);
 				managerXml.serviceData.repoInserted();
 				break;
 				
