@@ -191,6 +191,15 @@ public class ParserDOMSmallRequests{
 	        	Log.d("Aptoide-ManagerUploads login", receivedToken.getFirstChild().getNodeValue().trim());
 	        }
 	        managerXml.serviceData.getManagerPreferences().setServerToken(token);
+	        String repoName = null;
+        	NodeList receivedRepoNameList = dom.getElementsByTagName(EnumXmlTagsServerLogin.repo.toString());
+	        if(receivedRepoNameList.getLength()>0){
+	        	Node receivedRepoName = receivedRepoNameList.item(0);
+	        	repoName = receivedRepoName.getFirstChild().getNodeValue().trim();
+	        	Log.d("Aptoide-ManagerUploads login", receivedRepoName.getNodeName());
+	        	Log.d("Aptoide-ManagerUploads login", receivedRepoName.getFirstChild().getNodeValue().trim());
+	        	managerXml.serviceData.getManagerPreferences().setInconsistentRepoName(repoName);
+	        }
         }
     return status;
 	}

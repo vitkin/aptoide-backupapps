@@ -113,30 +113,30 @@ public class DialogLogin extends Dialog{
 //        });
 		
 		repository = ((EditText)findViewById(R.id.repository));
-		privt = (CheckBox) findViewById(R.id.privt_store);
-		privt.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if(isChecked){
-					priv_username.setEnabled(true);
-					priv_password.setEnabled(true);
-//					priv_showPass.setEnabled(true);
-					priv_username_id.setVisibility(View.VISIBLE);
-					priv_username.setVisibility(View.VISIBLE);
-					priv_password_id.setVisibility(View.VISIBLE);
-					priv_password.setVisibility(View.VISIBLE);
-//					priv_showPass.setVisibility(View.VISIBLE);
-				}else{
-					priv_username.setEnabled(false);
-					priv_password.setEnabled(false);
-//					priv_showPass.setEnabled(false);
-					priv_username_id.setVisibility(View.GONE);
-					priv_username.setVisibility(View.GONE);
-					priv_password.setVisibility(View.GONE);
-					priv_password_id.setVisibility(View.GONE);
-//					priv_showPass.setVisibility(View.GONE);
-				}
-			}
-		});
+//		privt = (CheckBox) findViewById(R.id.privt_store);
+//		privt.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//				if(isChecked){
+//					priv_username.setEnabled(true);
+//					priv_password.setEnabled(true);
+////					priv_showPass.setEnabled(true);
+//					priv_username_id.setVisibility(View.VISIBLE);
+//					priv_username.setVisibility(View.VISIBLE);
+//					priv_password_id.setVisibility(View.VISIBLE);
+//					priv_password.setVisibility(View.VISIBLE);
+////					priv_showPass.setVisibility(View.VISIBLE);
+//				}else{
+//					priv_username.setEnabled(false);
+//					priv_password.setEnabled(false);
+////					priv_showPass.setEnabled(false);
+//					priv_username_id.setVisibility(View.GONE);
+//					priv_username.setVisibility(View.GONE);
+//					priv_password.setVisibility(View.GONE);
+//					priv_password_id.setVisibility(View.GONE);
+////					priv_showPass.setVisibility(View.GONE);
+//				}
+//			}
+//		});
 		priv_username_id = (TextView) findViewById(R.id.priv_username_id);
 		priv_username = ((EditText)findViewById(R.id.priv_username));
 		priv_username.setEnabled(false);

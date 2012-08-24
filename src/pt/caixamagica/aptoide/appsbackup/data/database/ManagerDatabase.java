@@ -2129,6 +2129,47 @@ public class ManagerDatabase {
 
 	
 	/**
+	 * isApplicationAvailable, returns true if an app is already in available
+	 * 
+	 * @param String packageName
+	 * 
+	 * @return boolean isApplicationAvailable
+	 * 
+	 * @author dsilveira
+	 * @since 3.0
+	 * 
+	 */
+	public boolean isApplicationAvailable(String packageName){
+		
+		String selectIsAppAvailable = "SELECT MAX("+Constants.KEY_APPLICATION_VERSION_CODE+") FROM "+Constants.TABLE_APPLICATION
+										+" NATURAL INNER JOIN "+Constants.TABLE_REPOSITORY
+										+" WHERE "+Constants.KEY_REPO_IN_USE+"="+Constants.DB_TRUE
+										+" AND "+Constants.KEY_APPLICATION_PACKAGE_NAME+"='"+packageName+"'";
+
+		Cursor cursorIsAppAvailable = aptoideAtomicQuery(selectIsAppAvailable);
+//		Log.d("Aptoide-ManagerDatabase", "is installed: "+selectIsAppInstalled);
+
+		if(cursorIsAppAvailable == null || cursorIsAppAvailable.isClosed()){
+			return false;
+		}
+		
+		if(cursorIsAppAvailable.getCount() == Constants.EMPTY_INT){
+			cursorIsAppAvailable.close();
+			return false;
+		}else{
+			cursorIsAppAvailable.moveToFirst();
+			if(cursorIsAppAvailable.isNull(Constants.COLUMN_FIRST)){
+				cursorIsAppAvailable.close();
+				return false;
+			}else{
+				cursorIsAppAvailable.close();
+				return true;
+			}
+		}
+	}
+
+	
+	/**
 	 * isApplicationInstalled, returns true if an app is already installed
 	 * 
 	 * @param String packageName

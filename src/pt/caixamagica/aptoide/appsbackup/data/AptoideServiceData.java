@@ -724,7 +724,8 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				String packageName = receivedIntent.getData().getEncodedSchemeSpecificPart();
 				Log.d("Aptoide-ServiceData", "installedAppsChangeListener - package added: "+packageName);
 				addInstalledApp(packageName);
-				if(managerPreferences.isAutomaticInstallOn() && getServerToken() != null && !managerDatabase.isApplicationInstalled(packageName)){
+//				if(managerPreferences.isAutomaticInstallOn() && getServerToken() != null && !managerDatabase.isApplicationAvailable(packageName)){
+				if(managerPreferences.isAutomaticInstallOn() && !managerDatabase.isApplicationAvailable(packageName)){
 					Log.d("Aptoide-AppsBackup", "preparing to auto-upload: "+packageName);
 					
 					ViewListIds uploads = new ViewListIds();
@@ -2293,6 +2294,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		}else{
 
 			repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
+			if(repoConnectionStatus.equals(EnumServerLoginStatus.BAD_REPO_PRIVACY_LOGIN)){
+				Log.d("Aptoide-Login", "Private Repo");
+				serverLogin.setRepoPrivate(serverLogin.getUsername(), serverLogin.getPasshash());
+				repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
+			}
 			if(repoConnectionStatus == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
 				repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
 			}
@@ -2448,6 +2454,9 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		if(loginStatus != EnumServerLoginStatus.SUCCESS){
 			return loginStatus.ordinal();
 		}else{
+			if(serverLogin.getRepoName() == null){
+				serverLogin.setRepoName(managerPreferences.getInconsistentRepoName());
+			}
 			return serverLoginInsertRepo(serverLogin);
 		}
 		

@@ -247,8 +247,8 @@ public class ManagerPreferences implements InterfaceAptoideLog{
 		return getPreferences.getBoolean(EnumPreferences.SERVER_INCONSISTENT.name(), false);
 	}
 	
-	private void setInconsistentRepoName(String repoName){
-//		AptoideLog.v(this, "set InconsistentRepoName: "+repoName);
+	public void setInconsistentRepoName(String repoName){
+		AptoideLog.v(this, "set InconsistentRepoName: "+repoName);
 		setPreferences.putString(EnumPreferences.SERVER_NAME.name(), repoName);
 		setPreferences.commit();		
 	}
@@ -260,6 +260,7 @@ public class ManagerPreferences implements InterfaceAptoideLog{
 	}
 	
 	public String getInconsistentRepoName(){
+		AptoideLog.v(this, "getInconsistentRepoName: "+getPreferences.getString(EnumPreferences.SERVER_NAME.name(), null));
 		return getPreferences.getString(EnumPreferences.SERVER_NAME.name(), null);
 	}
 	

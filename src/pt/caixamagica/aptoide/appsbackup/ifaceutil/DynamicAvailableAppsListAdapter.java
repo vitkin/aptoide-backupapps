@@ -21,6 +21,7 @@
 package pt.caixamagica.aptoide.appsbackup.ifaceutil;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -101,6 +102,8 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter implements Inte
 	
 	private AIDLAptoideServiceData serviceDataCaller = null;
 	private Handler aptoideTasksHandler;
+
+	public ArrayList<Integer> selectionsSavedState;
 
 	
 	private Handler interfaceTasksHandler = new Handler() {
@@ -581,6 +584,25 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter implements Inte
 			}
 		}
 		notifyDataSetChanged();
+	}
+	
+	public void saveSelectionState(){
+		selectionsSavedState = new ArrayList<Integer>();
+		int i;
+		ViewDisplayApplication app;
+		for (i=0; i<apps.size(); i++) {
+			app = apps.get(i);
+			ViewDisplayApplicationBackup backup = ((ViewDisplayApplicationBackup) app);
+			if(backup.isChecked()){
+				selectionsSavedState.add(i);
+			}
+		}
+	}
+	
+	public void restoreSelectedState(){
+		for (Integer selected : selectionsSavedState) {
+			((ViewDisplayApplicationBackup) apps.get(selected)).toggleCheck();
+		}
 	}
 
 	@Override

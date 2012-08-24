@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="first_run">Primeira utilização</string>
+    <string name="first_run_intro">Aptoide Apps Backup usa uma loja "www.aptoide.com" grátis para guardar as suas apps.\nEsta pode ser pública ou privada.\n\nPretende configurar agora?\n</string>
+    <string name="before_restoring">Anted de restaurar</string>
+    <string name="before_restoring_alert">Antes de restaurar uma applicação, precisa de configurar a sua loja "www.aptoide.com" de onde a sua aplicação será copiada.\n\nPretende configurar agora?\n</string>
+    <string name="later">Mais tarde</string>
+    <string name="setup_now">Configurar agora</string>
+    
     <string name="self_update">Própria actualização</string>
     <string name="update_available">Actualização disponível</string>
     <string name="update_confirm">está disponível uma nova versão do aptoide apps backup,\npretende actualizar?</string>
     <string name="self_updating">Aguarde, por favor, enquanto a actualização é efectuada&#8230;</string>  
    
-	<!-- this string name has to be misspelled because private is a reserved word -->
-    <string name="privt_store">Loja privada</string>
     <string name="bazaar_login">Autenticação de Aptoide</string>
     <string name="logging_in">A autenticar</string>
     <string name="please_wait">Aguarde, por favor</string>

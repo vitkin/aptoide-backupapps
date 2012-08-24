@@ -74,6 +74,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -275,6 +276,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 //					});
 //					dialogLogin.show();
 	            	anyReposInUse = false;
+	            	new DialogFirstRunState(Aptoide.this).show();
 	            }
 
 //	            AptoideLog.v(Aptoide.this, "Called for registering as Myapp Observer");
@@ -805,6 +807,27 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 			FixedTabsAdapter indicatorAdapter = new FixedTabsAdapter(this);
 			pageIndicator.setAdapter(indicatorAdapter);
 			pageIndicator.setViewPager(appsListPager);
+			appsListPager.setOnPageChangeListener(new OnPageChangeListener() {
+				@Override
+				public void onPageSelected(int position) {
+					EnumAppsLists newVisiblePage = EnumAppsLists.reverseOrdinal(position);
+					Log.d("Aptoide-AppsBackup", "Viewing page: "+newVisiblePage);
+					String token = null;
+					try {
+						token = serviceDataCaller.callGetServerToken();
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					if(newVisiblePage.equals(EnumAppsLists.RESTORE) && token == null){
+		            	new DialogBeforeRestoringAlert(Aptoide.this).show();
+					}
+				}
+				@Override
+				public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+				@Override
+				public void onPageScrollStateChanged(int state) { }
+			});
 			
 //			appsListFlipper.addView(loadingAvailableAppsList);
 //			appsListFlipper.addView(loadingInstalledAppsList);
@@ -1550,7 +1573,6 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		menu.clear();
-		super.onCreateOptionsMenu(menu);
 		currentAppsList = EnumAppsLists.reverseOrdinal(appsListPager.getCurrentItem());
 		switch (currentAppsList) {
 			case RESTORE:
@@ -1595,7 +1617,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 			.setIcon(android.R.drawable.ic_menu_edit);
 		
 		
-		return true;
+		return super.onCreateOptionsMenu(menu);
 	}
 	
 

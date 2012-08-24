@@ -134,13 +134,13 @@
                         android:textColor="#424542"
                         android:textSize="12sp" />
 
-                    <CheckBox
-                        android:id="@+id/privt_store"
-                        android:layout_width="fill_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:text="@string/privt_store"
-                        android:textColor="#696969" />
+<!--                     <CheckBox -->
+<!--                         android:id="@+id/privt_store" -->
+<!--                         android:layout_width="fill_parent" -->
+<!--                         android:layout_height="0dp" -->
+<!--                         android:layout_weight="1" -->
+<!--                         android:text="@string/privt_store" -->
+<!--                         android:textColor="#696969" /> -->
 
                     <!-- <TextView -->
                     <!-- android:id="@+id/priv_username_id" -->

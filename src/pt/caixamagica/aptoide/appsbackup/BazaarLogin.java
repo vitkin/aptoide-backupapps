@@ -151,12 +151,12 @@ public class BazaarLogin extends Activity {
 	private EditText password;
 //	private CheckBox showPass;
 	
-	private CheckBox store_default;
+	private CheckBox repositoryDefault;
 
-	private TextView repository_id;
-	private TextView repository_example;
+	private TextView repositoryId;
+	private TextView repositoryExample;
 	private EditText repository;
- 	private CheckBox privt;
+// 	private CheckBox privt;
  	
 // 	private TextView priv_username_id;
 // 	private EditText priv_username;
@@ -212,31 +212,31 @@ public class BazaarLogin extends Activity {
  //            }
  //        });
  		
- 		store_default = (CheckBox) findViewById(R.id.default_store);
- 		repository_id = (TextView) findViewById(R.id.repository_id);
- 		repository_id.setVisibility(View.GONE);
+ 		repositoryDefault = (CheckBox) findViewById(R.id.default_store);
+ 		repositoryId = (TextView) findViewById(R.id.repository_id);
+ 		repositoryId.setVisibility(View.GONE);
  		
  		repository = ((EditText)findViewById(R.id.repository));
  		repository.setVisibility(View.GONE);
  		
- 		repository_example = (TextView) findViewById(R.id.repository_example);
- 		repository_example.setVisibility(View.GONE);
+ 		repositoryExample = (TextView) findViewById(R.id.repository_example);
+ 		repositoryExample.setVisibility(View.GONE);
  		
- 		privt = (CheckBox) findViewById(R.id.privt_store);
- 		privt.setVisibility(View.GONE);
+// 		privt = (CheckBox) findViewById(R.id.privt_store);
+// 		privt.setVisibility(View.GONE);
  		
- 		store_default.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+ 		repositoryDefault.setOnCheckedChangeListener(new OnCheckedChangeListener() {
  			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
  				if(!isChecked){
- 					repository_id.setVisibility(View.VISIBLE);
+ 					repositoryId.setVisibility(View.VISIBLE);
  					repository.setVisibility(View.VISIBLE);
- 					repository_example.setVisibility(View.VISIBLE);
- 					privt.setVisibility(View.VISIBLE);
+ 					repositoryExample.setVisibility(View.VISIBLE);
+// 					privt.setVisibility(View.VISIBLE);
  				}else {
- 					repository_id.setVisibility(View.GONE);
+ 					repositoryId.setVisibility(View.GONE);
  					repository.setVisibility(View.GONE);
- 					repository_example.setVisibility(View.GONE);
- 					privt.setVisibility(View.GONE);
+ 					repositoryExample.setVisibility(View.GONE);
+// 					privt.setVisibility(View.GONE);
  				}
  				
  			}
@@ -292,7 +292,7 @@ public class BazaarLogin extends Activity {
  					Toast.makeText(BazaarLogin.this, BazaarLogin.this.getString(R.string.no_username), Toast.LENGTH_SHORT).show();
  				}else if(password.getText().toString().trim().equals("")){
  					Toast.makeText(BazaarLogin.this, BazaarLogin.this.getString(R.string.no_password), Toast.LENGTH_SHORT).show();
- 				}else if(repository.getText().toString().trim().equals("")){
+ 				}else if(!repositoryDefault.isChecked() && repository.getText().toString().trim().equals("")){
  					Toast.makeText(BazaarLogin.this, BazaarLogin.this.getString(R.string.no_repository), Toast.LENGTH_SHORT).show();
  				}
 // 				else if(privt.isChecked() && priv_username.getText().toString().trim().equals("")){
@@ -360,11 +360,15 @@ public class BazaarLogin extends Activity {
  					if(serverLogin.getPasshash() == null){
  						serverLogin =  new ViewServerLogin(username.getText().toString(), password.getText().toString());
  					}
- 					serverLogin.setRepoName(repository.getText().toString());
- 					if(privt.isChecked()){
-// 						serverLogin.setRepoPrivate(priv_username.getText().toString(), priv_password.getText().toString());
- 						serverLogin.setRepoPrivate(serverLogin.getUsername(), serverLogin.getPasshash());
+ 					if(repositoryDefault.isChecked()){
+ 						serverLogin.setRepoName(null);
+ 					}else{
+ 						serverLogin.setRepoName(repository.getText().toString());
  					}
+// 					if(privt.isChecked()){
+//// 						serverLogin.setRepoPrivate(priv_username.getText().toString(), priv_password.getText().toString());
+// 						serverLogin.setRepoPrivate(serverLogin.getUsername(), serverLogin.getPasshash());
+// 					}
  
  					Log.d("Aptoide-Login", "Logging in, login: "+serverLogin);
  					new LoginTask(BazaarLogin.this, serverLogin).execute();
@@ -519,7 +523,7 @@ public class BazaarLogin extends Activity {
 //					dialogProgress.setCancelable(true);
 //					dialogProgress.dismiss();
 					dialogProgress.setCancelable(false);
-				}else{
+				}else{	
 					success = false;
 					dialogProgress.setCancelable(true);
 					Toast.makeText(BazaarLogin.this, status.toString(BazaarLogin.this), Toast.LENGTH_SHORT).show();

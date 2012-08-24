@@ -299,7 +299,12 @@ public class ManagerUploads {
 	
 	public EnumServerLoginStatus login(ViewServerLogin serverLogin){
 		EnumServerLoginStatus status = EnumServerLoginStatus.LOGIN_SERVICE_UNAVAILABLE;
-		String endpointString = String.format(Constants.URI_FORMAT_LOGIN_WS, URLEncoder.encode(serverLogin.getUsername()), URLEncoder.encode(serverLogin.getPasshash()), URLEncoder.encode(serverLogin.getRepoName()));
+		String endpointString;
+		if(serverLogin.getRepoName() == null){
+			endpointString = String.format(Constants.URI_FORMAT_LOGIN_DEFAULT_REPO_WS, URLEncoder.encode(serverLogin.getUsername()), URLEncoder.encode(serverLogin.getPasshash()));
+		}else{
+			endpointString = String.format(Constants.URI_FORMAT_LOGIN_WS, URLEncoder.encode(serverLogin.getUsername()), URLEncoder.encode(serverLogin.getPasshash()), URLEncoder.encode(serverLogin.getRepoName()));
+		}
 
 //    	Log.d("Aptoide-ManagerUploads login", endpointString);
 
@@ -526,7 +531,7 @@ public class ManagerUploads {
 		String apkPath = viewApk.getPath();
 		String token = serviceData.getManagerPreferences().getToken();
 		
-		String body = formPart("isAptUploader", "true");
+		String body = formPart("uploadType", "4");
 
 		if(viewApk.getCategory() != null){
 			body += formPart("category", viewApk.getCategory() );

@@ -100,6 +100,7 @@ public class Constants {
 	
 	public static final String URI_SEARCH_BAZAAR = "http://m.aptoide.com/searchview.php?search=";
 	public static final String URI_FORMAT_LOGIN_WS = "http://www.aptoide.com/webservices/checkUserCredentials/%1$s/%2$s/repo/%3$s/xml";		//TODO adapt to multiple servers
+	public static final String URI_FORMAT_LOGIN_DEFAULT_REPO_WS = "http://www.aptoide.com/webservices/checkUserCredentials/%1$s/%2$s/xml";
 	public static final String URI_FORMAT_ADD_LIKE_WS = "http://www.aptoide.com/webservices/addApkLike/%1$s/%2$s/apphashid/%3$s/like/xml";
 	public static final String URI_FORMAT_ADD_DISLIKE_WS = "http://www.aptoide.com/webservices/addApkLike/%1$s/%2$s/apphashid/%3$s/dontlike/xml";
 	public static final String URI_FORMAT_COMMENTS_WS = "http://www.aptoide.com/webservices/listApkComments/%1$s/apphashid/%2$s/xml";

@@ -396,14 +396,20 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 		}else{
 			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_INSTALLED_TO_LIST.ordinal());
 		
-			saveSelectionState();
+			boolean savingSelectionState = false;
+			if(this.apps.size() == freshApps.size()){
+				savingSelectionState = true;
+				saveSelectionState();
+			}
 			
 	    	this.apps = freshApps;
 			Log.d("Aptoide-StaticInstalledAppsListAdapter", "new Installed List: "+getCount());
 	   		initDisplay();
 	    	refreshDisplayInstalled();
 	    	
-	    	restoreSelectedState();
+	    	if(savingSelectionState){
+	    		restoreSelectedState();
+	    	}
 
 	    	if(!zeroReset.get()){
 	    		aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_AVAILABLE_LIST_DISPLAY.ordinal());

@@ -31,6 +31,7 @@ public enum EnumXmlTagsServerLogin {
 	response,
 	status,
 	token,
+	repo,
 	errors,
 	entry,
 	unrecognized;

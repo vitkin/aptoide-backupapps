@@ -20,6 +20,7 @@
 
 package pt.caixamagica.aptoide.appsbackup.ifaceutil;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -68,6 +69,8 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter implements Inter
 	private AIDLAptoideServiceData serviceDataCaller = null;
 	
 	private Handler aptoideTasksHandler;
+	
+	public ArrayList<Integer> selectionsSavedState;
 
 	
 	private Handler interfaceTasksHandler = new Handler() {
@@ -236,6 +239,25 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter implements Inter
 		notifyDataSetChanged();
 	}
 	
+	public void saveSelectionState(){
+		selectionsSavedState = new ArrayList<Integer>();
+		int i;
+		ViewDisplayApplication app;
+		for (i=0; i<apps.size(); i++) {
+			app = apps.get(i);
+			ViewDisplayApplicationBackup backup = ((ViewDisplayApplicationBackup) app);
+			if(backup.isChecked()){
+				selectionsSavedState.add(i);
+			}
+		}
+	}
+	
+	public void restoreSelectedState(){
+		for (Integer selected : selectionsSavedState) {
+			((ViewDisplayApplicationBackup) apps.get(selected)).toggleCheck();
+		}
+	}
+	
 	@Override
 	public ViewListIds getSelectedIds(){
 		ViewListIds selected = new ViewListIds();
@@ -300,11 +322,21 @@ public class StaticAvailableAppsListAdapter extends BaseAdapter implements Inter
 			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_NO_APPS.ordinal());
 		}else{
 			aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.SWITCH_AVAILABLE_TO_LIST.ordinal());
-		
+
+			boolean savingSelectionState = false;
+			if(this.apps.size() == freshApps.size()){
+				savingSelectionState = true;
+				saveSelectionState();
+			}
+			
 	    	this.apps = freshApps;
 			Log.d("Aptoide-StaticAvailableAppsListAdapter", "new Available List: "+getCount());
 	   		initDisplay();
 	    	refreshDisplayAvailable();
+
+	    	if(savingSelectionState){
+	    		restoreSelectedState();
+	    	}
 	    	
 //	    	aptoideTasksHandler.sendEmptyMessage(EnumAptoideInterfaceTasks.RESET_UPDATABLE_LIST_DISPLAY.ordinal());
 		}
