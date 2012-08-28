@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="pt.caixamagica.aptoide.appsbackup" android:versionCode="9996" android:versionName="0.99.96" android:installLocation="auto">
+      package="pt.caixamagica.aptoide.appsbackup" android:versionCode="9997" android:versionName="0.99.97" android:installLocation="auto">
     <uses-sdk android:minSdkVersion="4" android:targetSdkVersion="13"/>
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,7 +13,7 @@
     <application android:icon="@drawable/icon" android:label="@string/self_name" android:theme="@android:style/Theme.Light.NoTitleBar"> 
     
 		<activity android:name=".Aptoide" android:label="@string/self_name" android:process=":aabInterface" android:launchMode="singleTask"
-		    	  android:configChanges="keyboardHidden|orientation" >
+		    	  android:configChanges="keyboardHidden|orientation|screenSize" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -21,7 +21,7 @@
 		</activity>
 
 		<activity android:name=".Upload" android:process=":aabInterface" android:launchMode="singleTask" 
-		    	  android:configChanges="keyboardHidden|orientation" >
+		    	  android:configChanges="keyboardHidden|orientation|screenSize" >
 		</activity>
 
 <!-- 		<activity android:name=".Splash" android:process=":aabInterface" android:launchMode="singleTask"  -->
@@ -29,19 +29,19 @@
 <!-- 		</activity> -->
 
 		<activity android:name=".SelfUpdate" android:process=":aabInterface" android:launchMode="singleTask" 
-		    	  android:configChanges="keyboardHidden|orientation" >
+		    	  android:configChanges="keyboardHidden|orientation|screenSize" >
 		</activity>
 
 		<activity android:name=".Settings" android:process=":aabInterface" android:launchMode="singleTask" 
-		    	  android:configChanges="keyboardHidden|orientation" >
+		    	  android:configChanges="keyboardHidden|orientation|screenSize" >
 		</activity>
 
 		<activity android:name=".BazaarLogin" android:process=":aabInterface" android:launchMode="singleTask" 
-		    	  android:configChanges="keyboardHidden|orientation" >
+		    	  android:configChanges="keyboardHidden|orientation|screenSize" >
 		</activity>
 
 		<activity android:name=".BazaarSignUp" android:process=":aabInterface" android:launchMode="singleTask" 
-		    	  android:configChanges="keyboardHidden|orientation" >
+		    	  android:configChanges="keyboardHidden|orientation|screenSize" >
 		</activity>
 		
 		<service android:name=".data.AptoideServiceData" android:process=":aabData">

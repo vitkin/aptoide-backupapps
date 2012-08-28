@@ -190,7 +190,7 @@ public class ManagerNotifications {
 		StringBuilder textApp = new StringBuilder();
 		switch (viewNotification.getNotificationType()) {
 			case GET_APP:
-				textApp.append(serviceData.getString(R.string.downloading_app)+":\n "+notificationLabel);
+				textApp.append(serviceData.getString(R.string.downloading_app, notificationLabel));
 //				if(serviceData.getManagerCache().isIconCached(viewNotification.getTargetsHashid())){
 //					contentView.setImageViewUri(R.id.download_notification_icon, Uri.parse(Constants.PATH_CACHE_ICONS+viewNotification.getTargetsHashid()));	
 //				}else{
@@ -199,7 +199,7 @@ public class ManagerNotifications {
 				break;
 				
 			case REPO_BARE_DOWNLOAD:
-				textApp.append(serviceData.getString(R.string.downloading_repo)+":\n "+notificationLabel);
+				textApp.append(serviceData.getString(R.string.downloading_repo, notificationLabel));
 //				contentView.setImageViewResource(R.id.download_notification_icon, R.drawable.ic_notification);		
 				break;
 	
@@ -226,7 +226,7 @@ public class ManagerNotifications {
     	// The PendingIntent to launch our activity if the user selects this notification
     	PendingIntent onClickAction = PendingIntent.getActivity(serviceData, 0, onClick, 0);
 
-    	Notification notification = new Notification(R.drawable.ic_notification, serviceData.getString(R.string.downloading_app)+" "+notificationLabel, System.currentTimeMillis());
+    	Notification notification = new Notification(R.drawable.ic_notification, serviceData.getString(R.string.downloading_app, notificationLabel), System.currentTimeMillis());
     	notification.flags |= Notification.FLAG_NO_CLEAR|Notification.FLAG_ONGOING_EVENT;
 		notification.contentView = contentView;
 

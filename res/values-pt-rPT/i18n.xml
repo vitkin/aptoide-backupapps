@@ -30,7 +30,8 @@
     <string name="description">O seu gestor de cópias de segurança para Android.\n</string>
     <string name="version">Versão</string>
     
-    <string name="downloading_app">A descarregar applicação</string>
+    <string name="restoring_app">A restaurar applicação: %s</string>
+    <string name="downloading_app">A descarregar applicação: %s</string>
     
     <string name="settings">Configurações</string>
     <string name="backup_uploads_permissions">Permissões de carga, para o servidor, de cópias de segurança</string>

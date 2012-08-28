@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-08-24 19:51+0100\n"
+"POT-Creation-Date: 2012-08-28 18:31+0100\n"
 "PO-Revision-Date: 2012-08-16 19:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: pt_PT <LL@li.org>\n"
@@ -138,8 +138,14 @@ msgctxt "version"
 msgid "Version"
 msgstr "Versão"
 
+#, fuzzy, c-format
+msgctxt "restoring_app"
+msgid "Restoring application: %s"
+msgstr "A descarregar applicação"
+
+#, fuzzy, c-format
 msgctxt "downloading_app"
-msgid "Downloading application"
+msgid "Downloading application: %s"
 msgstr "A descarregar applicação"
 
 msgctxt "settings"
@@ -703,12 +709,4 @@ msgid "Please wait, the server is being updated, this may take several minutes!"
 msgstr ""
 "Aguarde por favor, o servidor está a ser actualizado, isto pode demorar "
 "alguns minutos!"
-
-#~ msgctxt "privt_store"
-#~ msgid "Private store"
-#~ msgstr "Loja privada"
-
-#~ msgctxt "previous_login_still_finishing_up"
-#~ msgid "Previous Login Still finishing up"
-#~ msgstr "Autenticação anterior por concluir"
 

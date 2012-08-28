@@ -773,6 +773,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 						app = ((ViewDisplayApplicationBackup) availableAdapter.getItem(i));
 						if(app.isChecked()){
 							restores.add(availableAdapter.getItem(i).getAppHashid());
+							Toast.makeText(Aptoide.this, getString(R.string.restoring_app, availableAdapter.getItem(i).getAppName()), Toast.LENGTH_SHORT).show();
 						}
 					}
 					

@@ -369,9 +369,11 @@ public class Upload extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d("Aptoide-AppsBackup-Upload", "onCreate isRunnning? "+isRunning);
         if(!isRunning){
         	isRunning = true;
-        	
+
+    		Log.d("Aptoide-AppsBackup-Upload", "onCreate isRunnning? "+isRunning);
 			if(!serviceDataIsBound){
 	    		bindService(new Intent(this, AptoideServiceData.class), serviceDataConnection, Context.BIND_AUTO_CREATE);
 	    	}
@@ -394,6 +396,7 @@ public class Upload extends Activity {
 	
 	@Override
 	protected void onNewIntent(Intent intent) {
+		Log.d("Aptoide-AppsBackup-Upload", "new Intent ");
 		handleUploads(intent);
 		super.onNewIntent(intent);
 	}
@@ -416,6 +419,7 @@ public class Upload extends Activity {
 
 	@Override
 	public void finish() {
+		Log.d("Aptoide-AppsBackup-Upload", "finish ");
 		try {
 			serviceDataCaller.callUpdateRepos();
 			serviceDataCaller.callDelayedUpdateRepos();
