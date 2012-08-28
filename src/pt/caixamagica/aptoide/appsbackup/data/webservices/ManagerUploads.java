@@ -531,7 +531,7 @@ public class ManagerUploads {
 		String apkPath = viewApk.getPath();
 		String token = serviceData.getManagerPreferences().getToken();
 		
-		String body = formPart("uploadType", "4");
+		String body = formPart("uploadType", "aptbackup");
 
 		if(viewApk.getCategory() != null){
 			body += formPart("category", viewApk.getCategory() );

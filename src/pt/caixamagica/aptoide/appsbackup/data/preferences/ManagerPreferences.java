@@ -23,6 +23,7 @@ package pt.caixamagica.aptoide.appsbackup.data.preferences;
 import java.util.UUID;
 
 import pt.caixamagica.aptoide.appsbackup.EnumAppsSorting;
+import pt.caixamagica.aptoide.appsbackup.R;
 import pt.caixamagica.aptoide.appsbackup.data.AptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.EnumConnectionLevels;
 import pt.caixamagica.aptoide.appsbackup.data.ViewClientStatistics;
@@ -37,7 +38,9 @@ import pt.caixamagica.aptoide.appsbackup.debug.AptoideLog;
 import pt.caixamagica.aptoide.appsbackup.debug.InterfaceAptoideLog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Parcelable;
 
 /**
  * ManagerPreferences, manages aptoide's preferences I/O
@@ -63,12 +66,30 @@ public class ManagerPreferences implements InterfaceAptoideLog{
 		setPreferences = getPreferences.edit();
 		AptoideLog.v(this, "gotSharedPreferences: "+Constants.FILE_PREFERENCES);
 		if(getAptoideClientUUID() == null){
+			createLauncherShortcut(serviceData.getApplicationContext());
 			setAptoideClientUUID( UUID.randomUUID().toString() );
 		}
 		
 		if(getAuthorizedDownloadConnections() == EnumConnectionLevels.NONE){
 			setAuthorizedDownloadConnections(EnumConnectionLevels.OTHER);
 		}
+	}
+	
+	private void createLauncherShortcut(Context context){
+		Intent shortcutIntent = new Intent(Intent.ACTION_MAIN);
+		shortcutIntent.setClassName(context, "pt.caixamagica.aptoide.appsbackup.Aptoide");
+		shortcutIntent.putExtra("pt.caixamagica.aptoide.appsbackup", context.getString(R.string.description));
+
+		final Intent intent = new Intent();
+		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+
+		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, context.getString(R.string.self_name));
+		Parcelable iconResource = Intent.ShortcutIconResource.fromContext(context, R.drawable.icon);
+
+		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource);
+		intent.putExtra("duplicate", false);
+		intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+		context.sendBroadcast(intent);
 	}
 
 	

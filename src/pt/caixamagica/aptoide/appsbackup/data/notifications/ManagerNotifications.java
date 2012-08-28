@@ -219,7 +219,7 @@ public class ManagerNotifications {
 		contentView.setProgressBar(R.id.download_notification_progress_bar, viewNotification.getProgressCompletionTarget(), viewNotification.getCurrentProgress(), false);	
 		
     	Intent onClick = new Intent();
-		onClick.setClassName("pt.caixamagica.aptoide.appsbackup", "pt.caixamagica.aptoide.appsbackup");
+		onClick.setClassName("pt.caixamagica.aptoide.appsbackup", "pt.caixamagica.aptoide.appsbackup.Aptoide");
 		onClick.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
 		onClick.setAction("pt.caixamagica.aptoide.appsbackup.FROM_NOTIFICATION");
     	

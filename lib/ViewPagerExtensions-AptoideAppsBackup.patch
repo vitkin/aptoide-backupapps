@@ -1,0 +1,30 @@
+Index: src/com/astuetz/viewpager/extensions/FixedTabsView.java
+===================================================================
+--- src/com/astuetz/viewpager/extensions/FixedTabsView.java	(revision 5316)
++++ src/com/astuetz/viewpager/extensions/FixedTabsView.java	(working copy)
+@@ -143,6 +143,7 @@
+ 	
+ 	@Override
+ 	public void onPageSelected(int position) {
++		mAdapter.onPageSelected(position);
+ 		selectTab(position);
+ 	}
+ 	
+@@ -182,6 +183,7 @@
+ 			}
+ 			
+ 		}
++		
+ 	}
+ 	
+ }
+Index: src/com/astuetz/viewpager/extensions/TabsAdapter.java
+===================================================================
+--- src/com/astuetz/viewpager/extensions/TabsAdapter.java	(revision 5316)
++++ src/com/astuetz/viewpager/extensions/TabsAdapter.java	(working copy)
+@@ -20,4 +20,5 @@
+ 
+ public interface TabsAdapter {
+ 	public View getView(int position);
++	public void onPageSelected(int position);
+ }
