@@ -199,6 +199,7 @@ public class ParserRepoDelta extends DefaultHandler{
 				case delta:
 					String delta = tagContentBuilder.toString();
 					if(delta == ""){
+						managerXml.parsingRepoDeltaFinished(parseInfo.getRepository(), 0);
 						throw new SAXException("Empty delta -> no new apps!");
 					}else{
 						parseInfo.getRepository().setDelta(delta);

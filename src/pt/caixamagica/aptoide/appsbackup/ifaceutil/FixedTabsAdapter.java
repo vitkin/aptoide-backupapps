@@ -85,4 +85,10 @@ public class FixedTabsAdapter implements TabsAdapter {
 		}
 	}
 	
+	public void destroy() {
+		if(serviceDataIsBound){
+			context.unbindService(serviceDataConnection);
+		}
+	}
+	
 }

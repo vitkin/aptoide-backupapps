@@ -135,6 +135,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 
 //	private ImageView searchView;
 	private FixedTabsView pageIndicator;
+	private FixedTabsAdapter pageIndicatorAdapter;
 	private ViewPager appsListPager = null;
 //	private View emptyCategoriesList;
 	private View emptyAvailableAppsList;
@@ -805,8 +806,8 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 			appsListPager.setAdapter(pagerAdapter);
 
 			pageIndicator = (FixedTabsView) findViewById(R.id.indicator);
-			FixedTabsAdapter indicatorAdapter = new FixedTabsAdapter(this);
-			pageIndicator.setAdapter(indicatorAdapter);
+			pageIndicatorAdapter = new FixedTabsAdapter(this);
+			pageIndicator.setAdapter(pageIndicatorAdapter);
 			pageIndicator.setViewPager(appsListPager);
 			
 //			appsListFlipper.addView(loadingAvailableAppsList);
@@ -1898,6 +1899,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	@Override
 	protected void onDestroy() {
 		if (serviceDataIsBound) {
+			pageIndicatorAdapter.destroy();
 			try {
 				serviceDataCaller.callUnregisterAvailableAppsObserver(serviceDataCallback);
 			} catch (RemoteException e) {

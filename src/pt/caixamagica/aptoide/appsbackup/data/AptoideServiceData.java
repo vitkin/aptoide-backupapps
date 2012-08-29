@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import pt.caixamagica.aptoide.appsbackup.AIDLLogin;
 import pt.caixamagica.aptoide.appsbackup.AIDLUpload;
@@ -153,6 +154,8 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	private AtomicBoolean addingRepo;
 	private AtomicBoolean automaticBackupOn;
 	private AtomicBoolean registeredNetworkStateChangeReceiver;
+	
+	private AtomicInteger updateIcons;
 	
 	/**
 	 * When binding to the service, we return an interface to our AIDL stub
@@ -881,6 +884,8 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 			addingRepo = new AtomicBoolean(false);
 			automaticBackupOn = new AtomicBoolean(false);
 			
+			updateIcons = new AtomicInteger(0);
+			
 			registerInstalledAppsChangeReceiver();
 			
 //			registeredNetworkStateChangeReceiver = new AtomicBoolean(false);
@@ -1582,6 +1587,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 						int repoHashid = repository.getHashid();
 						if(repository != null){
 							reposInserting.add(repoHashid);
+							updateIcons.incrementAndGet();
 							if(!managerDownloads.isConnectionAvailable()){
 								throw new AptoideExceptionConnectivity();
 							}
@@ -1622,6 +1628,10 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 				}
 				resetAvailableLists();AptoideLog.d(AptoideServiceData.this, "parsing repo delta finished");
 				resetInstalledLists();
+			}
+			if(updateIcons.get() > 0){
+				updateIcons.decrementAndGet();
+				getRepoIcons(new ViewDownloadStatus(repository, Constants.FIRST_ELEMENT, EnumDownloadType.ICON));
 			}
 			
 	//		insertedRepo(repository.getHashid());
