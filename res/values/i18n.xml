@@ -54,8 +54,8 @@
     <string name="downloads">Downloads</string>    
     <string name="show_system_apps">Show system applications</string>
     
-    <string name="backup">BACKUP</string>
-    <string name="restore">RESTORE</string>
+    <string name="backup">Back Up</string>
+    <string name="restore">Restore</string>
     
     <string name="available">Available</string>
     <string name="installed">Installed</string>

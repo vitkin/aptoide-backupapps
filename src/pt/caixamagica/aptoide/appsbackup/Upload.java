@@ -29,12 +29,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import pt.caixamagica.aptoide.appsbackup.data.AIDLAptoideServiceData;
 import pt.caixamagica.aptoide.appsbackup.data.AptoideServiceData;
+import pt.caixamagica.aptoide.appsbackup.data.display.ViewApplicationUpload;
+import pt.caixamagica.aptoide.appsbackup.data.display.ViewApplicationUploadFailed;
+import pt.caixamagica.aptoide.appsbackup.data.display.ViewApplicationUploading;
 import pt.caixamagica.aptoide.appsbackup.data.model.ViewListIds;
 import pt.caixamagica.aptoide.appsbackup.data.util.Constants;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerUploadApkStatus;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewApk;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewUploadInfo;
 import pt.caixamagica.aptoide.appsbackup.debug.exceptions.AptoideException;
+import pt.caixamagica.aptoide.appsbackup.ifaceutil.ImageLoader;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -63,6 +67,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -89,17 +94,20 @@ public class Upload extends Activity {
 	private HashMap<Integer, ViewApk> uploadingApks;
 	private HashMap<Integer, EnumServerUploadApkStatus> doneApks;
 	
+	private ImageLoader imageLoader;
+	
 	LinearLayout uploading;
 	UploadingListAdapter uploadingAdapter;
-	ArrayList<HashMap<String, Integer>> uploadingProgress;
+	ArrayList<ViewApplicationUploading> uploadingProgress;
 	
 	LinearLayout uploaded;
-	ArrayAdapter<String> uploadedAdapter;
-	ArrayList<String> uploadedNames;
+//	ArrayAdapter<String> uploadedAdapter;
+	UploadedListAdapter uploadedAdapter;
+	ArrayList<ViewApplicationUpload> uploadedNames;
 	
 	LinearLayout notUploaded;
 	NotUploadedListAdapter notUploadedAdapter;
-	ArrayList<HashMap<String, String>> notUploadedNames;
+	ArrayList<ViewApplicationUploadFailed> notUploadedNames;
 	
 	Button backButton;
 	AtomicBoolean goingBackEnabled;
@@ -200,14 +208,15 @@ public class Upload extends Activity {
 			uploadingApks.get(done.getKey()).setProgress(100);
 			if(done.getValue().equals(EnumServerUploadApkStatus.SUCCESS)){
 				uploaded.setVisibility(View.VISIBLE);
-				uploadedNames.add(uploadingApks.get(done.getKey()).getName());
+				uploadedNames.add(new ViewApplicationUpload(uploadingApks.get(done.getKey()).getAppHashid(), uploadingApks.get(done.getKey()).getName()));
 			}else{
 				notUploaded.setVisibility(View.VISIBLE);
-				HashMap<String, String> failed = new HashMap<String, String>();
-				failed.put("hashid", Integer.toString(done.getKey()));
-				failed.put("name", uploadingApks.get(done.getKey()).getName());
-				failed.put("status", done.getValue().toString(this));
-				notUploadedNames.add(failed);
+//				HashMap<String, String> failed = new HashMap<String, String>();
+//				failed.put("hashid", Integer.toString(done.getKey()));
+//				failed.put("name", uploadingApks.get(done.getKey()).getName());
+//				failed.put("status", done.getValue().toString(this));
+//				notUploadedNames.add(failed);
+				notUploadedNames.add(new ViewApplicationUploadFailed(done.getKey(), uploadingApks.get(done.getKey()).getName(),done.getValue()));
 			}
 		}
 		uploadedAdapter.notifyDataSetChanged();
@@ -223,8 +232,7 @@ public class Upload extends Activity {
 		for (Entry<Integer, ViewApk> uploading : uploadingApks.entrySet()){
 			if(uploading.getValue().getProgress() != 100){
 				visible++;
-				HashMap<String, Integer> upload = new HashMap<String, Integer>(uploadingApks.size());
-				upload.put(uploading.getValue().getName(), uploading.getValue().getProgress());
+				ViewApplicationUploading upload = new ViewApplicationUploading(uploading.getValue().getAppHashid(), uploading.getValue().getName());
 				uploadingProgress.add(upload);
 			}
 		}
@@ -321,7 +329,8 @@ public class Upload extends Activity {
 		
 		uploaded = (LinearLayout) findViewById(R.id.uploaded_apps);
 		ListView uploadedList = (ListView) findViewById(R.id.uploaded_list);
-		uploadedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, uploadedNames);
+//		uploadedAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, uploadedNames);
+		uploadedAdapter = new UploadedListAdapter(this, uploadedNames);
 		uploadedList.setAdapter(uploadedAdapter);
 		uploaded.setVisibility(View.GONE);
 		
@@ -382,9 +391,11 @@ public class Upload extends Activity {
 //			waitingApks = new HashMap<Integer, ViewApk>();
 			doneApks = new HashMap<Integer, EnumServerUploadApkStatus>();
 			
-			uploadingProgress = new ArrayList<HashMap<String,Integer>>();
-			uploadedNames = new ArrayList<String>();
-			notUploadedNames = new ArrayList<HashMap<String,String>>();
+			uploadingProgress = new ArrayList<ViewApplicationUploading>();
+			uploadedNames = new ArrayList<ViewApplicationUpload>();
+			notUploadedNames = new ArrayList<ViewApplicationUploadFailed>();
+			
+			imageLoader = new ImageLoader(Upload.this);
 			
 			uploadsThreadPool = Executors.newFixedThreadPool(Constants.MAX_PARALLEL_UPOADS);
 			
@@ -803,17 +814,16 @@ public class Upload extends Activity {
 
 	public static class UploadingRowViewHolder{
 		TextView app_name;
-		ProgressBar progress;
+		ProgressBar app_progress;
+		ImageView app_icon;
 	}
 	
 	public class UploadingListAdapter extends BaseAdapter{
 
 		private LayoutInflater layoutInflater;
 
-		private ArrayList<HashMap<String, Integer>> uploadingProgress = null;
+		private ArrayList<ViewApplicationUploading> uploadingProgress = null;
 		
-		
-
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			
@@ -823,28 +833,25 @@ public class Upload extends Activity {
 				convertView = layoutInflater.inflate(R.layout.row_app_uploading, null);
 				
 				rowViewHolder = new UploadingRowViewHolder();
-				rowViewHolder.app_name = (TextView) convertView.findViewById(R.id.name);
-				rowViewHolder.progress = (ProgressBar) convertView.findViewById(R.id.progress);
-				
+				rowViewHolder.app_name = (TextView) convertView.findViewById(R.id.uploading_name);
+				rowViewHolder.app_progress = (ProgressBar) convertView.findViewById(R.id.uploading_progress);
+				rowViewHolder.app_icon = (ImageView) convertView.findViewById(R.id.uploading_icon); 
 				convertView.setTag(rowViewHolder);
 			}else{
 				rowViewHolder = (UploadingRowViewHolder) convertView.getTag();
 			}
 			
-			HashMap<String, Integer> upload = uploadingProgress.get(position);
-			String name = "";
-			for (String nameKey : upload.keySet()) {
-				name = nameKey;
-			}
-			rowViewHolder.app_name.setText(name);
-			if(upload.get(name) != 0 && upload.get(name) < 99){
-				rowViewHolder.progress.setIndeterminate(false);
-				rowViewHolder.progress.setMax(100);
-			}else{
-				rowViewHolder.progress.setIndeterminate(true);
-			}
-			rowViewHolder.progress.setProgress(upload.get(name));
+			ViewApplicationUploading upload = uploadingProgress.get(position);
 			
+			rowViewHolder.app_name.setText(upload.getAppName());
+			if(upload.getAppProgress() != 0 && upload.getAppProgress() < 99){
+				rowViewHolder.app_progress.setIndeterminate(false);
+				rowViewHolder.app_progress.setMax(100);
+			}else{
+				rowViewHolder.app_progress.setIndeterminate(true);
+			}
+			rowViewHolder.app_progress.setProgress(upload.getAppProgress());
+			imageLoader.DisplayImage(upload.getIconCachePath(), rowViewHolder.app_icon, Upload.this);
 			
 			return convertView;
 		}
@@ -860,7 +867,7 @@ public class Upload extends Activity {
 		}
 
 		@Override
-		public HashMap<String, Integer> getItem(int position) {
+		public ViewApplicationUploading getItem(int position) {
 			return uploadingProgress.get(position);
 		}
 
@@ -876,11 +883,12 @@ public class Upload extends Activity {
 		 * @param context
 		 * @param ArrayList<HashMap<String, Integer>> uploadingProgress
 		 */
-		public UploadingListAdapter(Context context, ArrayList<HashMap<String, Integer>> uploadingProgress){
+		public UploadingListAdapter(Context context, ArrayList<ViewApplicationUploading> uploadingProgress){
 			
 			this.uploadingProgress = uploadingProgress;
 
 			layoutInflater = LayoutInflater.from(context);
+			
 		} 
 	}
 	
@@ -888,13 +896,14 @@ public class Upload extends Activity {
 	public static class NotUploadedRowViewHolder{
 		TextView failed_name;
 		TextView failed_status;
+		ImageView failed_icon;
 	}
 	
 	public class NotUploadedListAdapter extends BaseAdapter{
 
 		private LayoutInflater layoutInflater;
 
-		private ArrayList<HashMap<String, String>> notUploadedNames = null;
+		private ArrayList<ViewApplicationUploadFailed> notUploadedNames = null;
 		
 		
 
@@ -909,15 +918,16 @@ public class Upload extends Activity {
 				rowViewHolder = new NotUploadedRowViewHolder();
 				rowViewHolder.failed_name = (TextView) convertView.findViewById(R.id.failed_name);
 				rowViewHolder.failed_status = (TextView) convertView.findViewById(R.id.failed_status);
-				
+				rowViewHolder.failed_icon = (ImageView) convertView.findViewById(R.id.failed_icon);
 				convertView.setTag(rowViewHolder);
 			}else{
 				rowViewHolder = (NotUploadedRowViewHolder) convertView.getTag();
 			}
 			
-			rowViewHolder.failed_name.setText(getItem(position).get("name"));
-			rowViewHolder.failed_status.setText(getItem(position).get("status"));
-			
+			rowViewHolder.failed_name.setText(getItem(position).getAppName());
+			rowViewHolder.failed_status.setText(getItem(position).getUploadStatus().toString(Upload.this));
+//			rowViewHolder.failed_icon.setImageResource(android.R.drawable.sym_def_app_icon);
+			imageLoader.DisplayImage(getItem(position).getIconCachePath(), rowViewHolder.failed_icon, Upload.this);
 			
 			return convertView;
 		}
@@ -933,13 +943,13 @@ public class Upload extends Activity {
 		}
 
 		@Override
-		public HashMap<String, String> getItem(int position) {
+		public ViewApplicationUploadFailed getItem(int position) {
 			return notUploadedNames.get(position);
 		}
 		
 		@Override
 		public long getItemId(int position) {
-			return Integer.parseInt(notUploadedNames.get(position).get("hashid"));
+			return notUploadedNames.get(position).getAppHashid();
 		}
 		
 		
@@ -949,7 +959,7 @@ public class Upload extends Activity {
 		 * @param context
 		 * @param ArrayList<HashMap<String, Integer>> uploadingProgress
 		 */
-		public NotUploadedListAdapter(Context context, ArrayList<HashMap<String, String>> notUploadedNames){
+		public NotUploadedListAdapter(Context context, ArrayList<ViewApplicationUploadFailed> notUploadedNames){
 			
 			this.notUploadedNames = notUploadedNames;
 
@@ -957,5 +967,59 @@ public class Upload extends Activity {
 		} 
 	}
 
+	public static class UploadedRowViewHolder{
+		TextView uploaded_name;
+		ImageView uploaded_icon;
+	}
 	
+	public class UploadedListAdapter extends BaseAdapter{
+
+		private LayoutInflater layoutInflater;
+
+		private ArrayList<ViewApplicationUpload> uploadedNames = null;
+		
+		public UploadedListAdapter(Context context, ArrayList<ViewApplicationUpload> uploadedNames){
+			
+			this.uploadedNames = uploadedNames;
+			
+			layoutInflater = LayoutInflater.from(context);
+		}
+		
+		@Override
+		public int getCount() {
+			return uploadedNames.size();
+		}
+
+		@Override
+		public ViewApplicationUpload getItem(int position) {
+			return uploadedNames.get(position);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			UploadedRowViewHolder rowViewHolder;
+			ViewApplicationUpload uploaded = this.getItem( position ); 
+			
+			if(convertView == null){
+				convertView = layoutInflater.inflate(R.layout.row_app_uploaded, null);
+				rowViewHolder = new UploadedRowViewHolder();
+				rowViewHolder.uploaded_name = (TextView) convertView.findViewById(R.id.uploaded_name);
+				rowViewHolder.uploaded_icon = (ImageView) convertView.findViewById(R.id.uploaded_icon);
+				convertView.setTag(rowViewHolder);
+			}else{
+				rowViewHolder = (UploadedRowViewHolder) convertView.getTag();
+			}
+			
+			rowViewHolder.uploaded_name.setText(uploaded.getAppName());
+			imageLoader.DisplayImage(uploaded.getIconCachePath(), rowViewHolder.uploaded_icon, Upload.this);
+						
+			return convertView;
+		}
+		
+	}
 }

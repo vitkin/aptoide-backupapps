@@ -163,13 +163,13 @@
                             android:textColor="#4f4f4f" />
                     </RadioGroup>
 
-                    <TextView
-                        android:id="@+id/bad_registration"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="2dp"
-                        android:textColor="#d90b0b" />
+<!--                     <TextView -->
+<!--                         android:id="@+id/bad_registration" -->
+<!--                         android:layout_width="wrap_content" -->
+<!--                         android:layout_height="wrap_content" -->
+<!--                         android:layout_gravity="center_horizontal" -->
+<!--                         android:layout_marginTop="2dp" -->
+<!--                         android:textColor="#d90b0b" /> -->
                 </LinearLayout>
 
                 <LinearLayout
