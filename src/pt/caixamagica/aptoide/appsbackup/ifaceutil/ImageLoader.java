@@ -36,14 +36,16 @@ public class ImageLoader {
     private Map<ImageView, String> imageViews=Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
     ExecutorService executorService; 
     Context context;
+    
     public ImageLoader(Context context){
+    	this.context = context;
 //        fileCache=new CacheFile(context);
         executorService=Executors.newFixedThreadPool(5);
     }
     
-    public void DisplayImage(String url, ImageView imageView,Context context)
+    public void DisplayImage(String url, ImageView imageView)//, Context context)
     {
-    	this.context=context;
+//    	this.context=context;
         imageViews.put(imageView, url);
         Bitmap bitmap=memoryCache.get(url);
         if(bitmap!=null){

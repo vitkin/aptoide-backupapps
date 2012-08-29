@@ -201,7 +201,7 @@ public class StaticInstalledAppsListAdapter extends BaseAdapter{
 //			rowViewHolder.app_icon.setImageResource(android.R.drawable.sym_def_app_icon);
 //		}
 		
-		imageLoader.DisplayImage(apps.get(position).getIconCachePath(), rowViewHolder.app_icon, context);
+		imageLoader.DisplayImage(apps.get(position).getIconCachePath(), rowViewHolder.app_icon);
 		
 		
 		rowViewHolder.app_name.setText(apps.get(position).getAppName());

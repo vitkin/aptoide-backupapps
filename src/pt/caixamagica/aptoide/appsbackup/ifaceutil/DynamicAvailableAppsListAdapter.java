@@ -65,6 +65,8 @@ import android.widget.TextView;
 public class DynamicAvailableAppsListAdapter extends BaseAdapter implements InterfaceAvailableAppsAdapter{
 	
 	private Context context;
+
+	ImageLoader imageLoader;
 	
 	private ListView listView;
 	private LayoutInflater layoutInflater;
@@ -510,12 +512,13 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter implements Inte
 			rowViewHolder = (AvailableRowViewHolder) convertView.getTag();
 		}
 		
-		File iconCache = new File(apps.get(position).getIconCachePath());
-		if(iconCache.exists() && iconCache.length() > 0){
-			rowViewHolder.app_icon.setImageURI(Uri.parse(apps.get(position).getIconCachePath()));
-		}else{
-			rowViewHolder.app_icon.setImageResource(android.R.drawable.sym_def_app_icon);
-		}
+//		File iconCache = new File(apps.get(position).getIconCachePath());
+//		if(iconCache.exists() && iconCache.length() > 0){
+//			rowViewHolder.app_icon.setImageURI(Uri.parse(apps.get(position).getIconCachePath()));
+//		}else{
+//			rowViewHolder.app_icon.setImageResource(android.R.drawable.sym_def_app_icon);
+//		}
+		imageLoader.DisplayImage(apps.get(position).getIconCachePath(), rowViewHolder.app_icon);
 		
 		rowViewHolder.app_name.setText(apps.get(position).getAppName());
 		rowViewHolder.version_name.setText(" "+apps.get(position).getVersionName());
@@ -628,6 +631,8 @@ public class DynamicAvailableAppsListAdapter extends BaseAdapter implements Inte
 	public DynamicAvailableAppsListAdapter(Context context, ListView listView, AIDLAptoideServiceData serviceDataCaller, Handler interfaceTasksHandler) {
 		
 		this.context = context;
+		
+		imageLoader = new ImageLoader(context);
 		
 		this.serviceDataCaller = serviceDataCaller;
 		this.aptoideTasksHandler = interfaceTasksHandler;

@@ -38,7 +38,9 @@ import pt.caixamagica.aptoide.appsbackup.data.webservices.EnumServerUploadApkSta
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewApk;
 import pt.caixamagica.aptoide.appsbackup.data.webservices.ViewUploadInfo;
 import pt.caixamagica.aptoide.appsbackup.debug.exceptions.AptoideException;
-import pt.caixamagica.aptoide.appsbackup.ifaceutil.ImageLoader;
+import pt.caixamagica.aptoide.appsbackup.ifaceutil.NotUploadedListAdapter;
+import pt.caixamagica.aptoide.appsbackup.ifaceutil.UploadedListAdapter;
+import pt.caixamagica.aptoide.appsbackup.ifaceutil.UploadingListAdapter;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -52,27 +54,21 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -93,8 +89,6 @@ public class Upload extends Activity {
 //	private HashMap<Integer, ViewApk> waitingApks;
 	private HashMap<Integer, ViewApk> uploadingApks;
 	private HashMap<Integer, EnumServerUploadApkStatus> doneApks;
-	
-	private ImageLoader imageLoader;
 	
 	LinearLayout uploading;
 	UploadingListAdapter uploadingAdapter;
@@ -395,7 +389,6 @@ public class Upload extends Activity {
 			uploadedNames = new ArrayList<ViewApplicationUpload>();
 			notUploadedNames = new ArrayList<ViewApplicationUploadFailed>();
 			
-			imageLoader = new ImageLoader(Upload.this);
 			
 			uploadsThreadPool = Executors.newFixedThreadPool(Constants.MAX_PARALLEL_UPOADS);
 			
@@ -810,216 +803,4 @@ public class Upload extends Activity {
 		
 	}
 	
-	
-
-	public static class UploadingRowViewHolder{
-		TextView app_name;
-		ProgressBar app_progress;
-		ImageView app_icon;
-	}
-	
-	public class UploadingListAdapter extends BaseAdapter{
-
-		private LayoutInflater layoutInflater;
-
-		private ArrayList<ViewApplicationUploading> uploadingProgress = null;
-		
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			
-			UploadingRowViewHolder rowViewHolder;
-			
-			if(convertView == null){
-				convertView = layoutInflater.inflate(R.layout.row_app_uploading, null);
-				
-				rowViewHolder = new UploadingRowViewHolder();
-				rowViewHolder.app_name = (TextView) convertView.findViewById(R.id.uploading_name);
-				rowViewHolder.app_progress = (ProgressBar) convertView.findViewById(R.id.uploading_progress);
-				rowViewHolder.app_icon = (ImageView) convertView.findViewById(R.id.uploading_icon); 
-				convertView.setTag(rowViewHolder);
-			}else{
-				rowViewHolder = (UploadingRowViewHolder) convertView.getTag();
-			}
-			
-			ViewApplicationUploading upload = uploadingProgress.get(position);
-			
-			rowViewHolder.app_name.setText(upload.getAppName());
-			if(upload.getAppProgress() != 0 && upload.getAppProgress() < 99){
-				rowViewHolder.app_progress.setIndeterminate(false);
-				rowViewHolder.app_progress.setMax(100);
-			}else{
-				rowViewHolder.app_progress.setIndeterminate(true);
-			}
-			rowViewHolder.app_progress.setProgress(upload.getAppProgress());
-			imageLoader.DisplayImage(upload.getIconCachePath(), rowViewHolder.app_icon, Upload.this);
-			
-			return convertView;
-		}
-		
-		
-		@Override
-		public int getCount() {
-			if(uploadingProgress != null){
-				return uploadingProgress.size();
-			}else{
-				return 0;
-			}
-		}
-
-		@Override
-		public ViewApplicationUploading getItem(int position) {
-			return uploadingProgress.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-		
-		
-		/**
-		 * UploadingListAdapter Constructor
-		 *
-		 * @param context
-		 * @param ArrayList<HashMap<String, Integer>> uploadingProgress
-		 */
-		public UploadingListAdapter(Context context, ArrayList<ViewApplicationUploading> uploadingProgress){
-			
-			this.uploadingProgress = uploadingProgress;
-
-			layoutInflater = LayoutInflater.from(context);
-			
-		} 
-	}
-	
-	
-	public static class NotUploadedRowViewHolder{
-		TextView failed_name;
-		TextView failed_status;
-		ImageView failed_icon;
-	}
-	
-	public class NotUploadedListAdapter extends BaseAdapter{
-
-		private LayoutInflater layoutInflater;
-
-		private ArrayList<ViewApplicationUploadFailed> notUploadedNames = null;
-		
-		
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			
-			NotUploadedRowViewHolder rowViewHolder;
-			
-			if(convertView == null){
-				convertView = layoutInflater.inflate(R.layout.row_app_not_uploaded, null);
-				
-				rowViewHolder = new NotUploadedRowViewHolder();
-				rowViewHolder.failed_name = (TextView) convertView.findViewById(R.id.failed_name);
-				rowViewHolder.failed_status = (TextView) convertView.findViewById(R.id.failed_status);
-				rowViewHolder.failed_icon = (ImageView) convertView.findViewById(R.id.failed_icon);
-				convertView.setTag(rowViewHolder);
-			}else{
-				rowViewHolder = (NotUploadedRowViewHolder) convertView.getTag();
-			}
-			
-			rowViewHolder.failed_name.setText(getItem(position).getAppName());
-			rowViewHolder.failed_status.setText(getItem(position).getUploadStatus().toString(Upload.this));
-//			rowViewHolder.failed_icon.setImageResource(android.R.drawable.sym_def_app_icon);
-			imageLoader.DisplayImage(getItem(position).getIconCachePath(), rowViewHolder.failed_icon, Upload.this);
-			
-			return convertView;
-		}
-		
-		
-		@Override
-		public int getCount() {
-			if(notUploadedNames != null){
-				return notUploadedNames.size();
-			}else{
-				return 0;
-			}
-		}
-
-		@Override
-		public ViewApplicationUploadFailed getItem(int position) {
-			return notUploadedNames.get(position);
-		}
-		
-		@Override
-		public long getItemId(int position) {
-			return notUploadedNames.get(position).getAppHashid();
-		}
-		
-		
-		/**
-		 * UploadingListAdapter Constructor
-		 *
-		 * @param context
-		 * @param ArrayList<HashMap<String, Integer>> uploadingProgress
-		 */
-		public NotUploadedListAdapter(Context context, ArrayList<ViewApplicationUploadFailed> notUploadedNames){
-			
-			this.notUploadedNames = notUploadedNames;
-
-			layoutInflater = LayoutInflater.from(context);
-		} 
-	}
-
-	public static class UploadedRowViewHolder{
-		TextView uploaded_name;
-		ImageView uploaded_icon;
-	}
-	
-	public class UploadedListAdapter extends BaseAdapter{
-
-		private LayoutInflater layoutInflater;
-
-		private ArrayList<ViewApplicationUpload> uploadedNames = null;
-		
-		public UploadedListAdapter(Context context, ArrayList<ViewApplicationUpload> uploadedNames){
-			
-			this.uploadedNames = uploadedNames;
-			
-			layoutInflater = LayoutInflater.from(context);
-		}
-		
-		@Override
-		public int getCount() {
-			return uploadedNames.size();
-		}
-
-		@Override
-		public ViewApplicationUpload getItem(int position) {
-			return uploadedNames.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			UploadedRowViewHolder rowViewHolder;
-			ViewApplicationUpload uploaded = this.getItem( position ); 
-			
-			if(convertView == null){
-				convertView = layoutInflater.inflate(R.layout.row_app_uploaded, null);
-				rowViewHolder = new UploadedRowViewHolder();
-				rowViewHolder.uploaded_name = (TextView) convertView.findViewById(R.id.uploaded_name);
-				rowViewHolder.uploaded_icon = (ImageView) convertView.findViewById(R.id.uploaded_icon);
-				convertView.setTag(rowViewHolder);
-			}else{
-				rowViewHolder = (UploadedRowViewHolder) convertView.getTag();
-			}
-			
-			rowViewHolder.uploaded_name.setText(uploaded.getAppName());
-			imageLoader.DisplayImage(uploaded.getIconCachePath(), rowViewHolder.uploaded_icon, Upload.this);
-						
-			return convertView;
-		}
-		
-	}
 }
