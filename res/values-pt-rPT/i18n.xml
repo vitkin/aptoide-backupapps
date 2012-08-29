@@ -53,8 +53,8 @@
     <string name="downloads">Descargas</string>    
     <string name="show_system_apps">Mostrar aplicações de sistema</string>
     
-    <string name="backup">COPIAR</string>
-    <string name="restore">RESTAURAR</string>
+    <string name="backup">Copiar</string>
+    <string name="restore">Restaurar</string>
     
     <string name="available">Disponível</string>
     <string name="installed">Instalada</string>

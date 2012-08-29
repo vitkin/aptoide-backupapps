@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-08-28 18:31+0100\n"
+"POT-Creation-Date: 2012-08-29 14:41+0100\n"
 "PO-Revision-Date: 2012-08-16 19:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: pt_PT <LL@li.org>\n"
@@ -220,13 +220,15 @@ msgctxt "show_system_apps"
 msgid "Show system applications"
 msgstr "Mostrar aplicações de sistema"
 
+#, fuzzy
 msgctxt "backup"
-msgid "BACKUP"
-msgstr "COPIAR"
+msgid "Back Up"
+msgstr "Cópia segura"
 
+#, fuzzy
 msgctxt "restore"
-msgid "RESTORE"
-msgstr "RESTAURAR"
+msgid "Restore"
+msgstr "Loja"
 
 msgctxt "available"
 msgid "Available"
@@ -709,4 +711,12 @@ msgid "Please wait, the server is being updated, this may take several minutes!"
 msgstr ""
 "Aguarde por favor, o servidor está a ser actualizado, isto pode demorar "
 "alguns minutos!"
+
+#~ msgctxt "backup"
+#~ msgid "BACKUP"
+#~ msgstr "COPIAR"
+
+#~ msgctxt "restore"
+#~ msgid "RESTORE"
+#~ msgstr "RESTAURAR"
 
