@@ -67,6 +67,7 @@ public class Settings extends PreferenceActivity {
 	ViewIconDownloadPermissions iconDownloadPermissions;
 	
 	Preference clearServerLogin;
+	CheckBoxPreference automaticBackup;
 	CheckBoxPreference hwFilter;
 	ListPreference ageRating;
 	
@@ -109,17 +110,38 @@ public class Settings extends PreferenceActivity {
 	
 
 	
-	private void isLoginSet(){
+	private boolean isLoginSet(){
 		String token = null;
 		try {
 			token = serviceDataCaller.callGetServerToken();
 		} catch (RemoteException e2) {
 			e2.printStackTrace();
 		}
-//		if(token != null){ //TODO uncomment and add a returnfromactivity to trigger this method call
-			clearServerLogin.setEnabled(true);
-//		}
+		if(token != null){ //TODO add a returnfromactivity to trigger this method call
+			loggedIn(true);
+			return true;
+		}else{
+			loggedIn(false);
+			return false;
+		}
 	}
+	
+	private void loggedIn(boolean yes){
+		if(!yes){
+			try {
+				clearServerLogin.setEnabled(false);
+				automaticBackup.setChecked(false);
+				automaticBackup.setEnabled(false);
+			} catch (Exception e) { }		
+		}else{
+			try {
+				clearServerLogin.setEnabled(true);
+				automaticBackup.setEnabled(true);
+			} catch (Exception e) { }
+		}
+	}
+	
+	
 	private void showSettings(){
 		addPreferencesFromResource(R.xml.settings);
 //		setContentView(R.layout.settings);
@@ -204,31 +226,24 @@ public class Settings extends PreferenceActivity {
 		});
 		
 		clearServerLogin = (Preference) findPreference("clear_server_login");
-		String token = null;
-		try {
-			token = serviceDataCaller.callGetServerToken();
-		} catch (RemoteException e2) {
-			e2.printStackTrace();
-		}
-		if(token != null){
 			clearServerLogin.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 				@Override
 				public boolean onPreferenceClick(Preference preference) {
 					Log.d("Aptoide-Settings", "clicked clear server login");
-					try {
-						serviceDataCaller.callClearServerLogin();
-						Toast.makeText(Settings.this, "Login cleared", Toast.LENGTH_SHORT).show();
-					} catch (RemoteException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					if(isLoginSet()){
+						try {
+							serviceDataCaller.callClearServerLogin();
+							Toast.makeText(Settings.this, "Login cleared", Toast.LENGTH_SHORT).show();
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
-					clearServerLogin.setEnabled(false);
+					loggedIn(false);
 					return true;
 				}
 			});
-		}else{
-			clearServerLogin.setEnabled(false);
-		}
+		
 		
 		
 		Preference setServerLogin = (Preference) findPreference("set_server_login");
@@ -265,7 +280,7 @@ public class Settings extends PreferenceActivity {
 //					Toast.makeText(Settings.this, "Login already set", Toast.LENGTH_SHORT).show();
 //					dialogLogin.show();
 				}
-				isLoginSet();
+				loggedIn(true);
 				return true;
 			}
 		});
@@ -339,23 +354,25 @@ public class Settings extends PreferenceActivity {
 //			}
 //		});
 		
-		final CheckBoxPreference automaticBackup = (CheckBoxPreference) findPreference("automatic_install");
-		automaticBackup.setChecked(storedSettings.isAutomaticInstallOn());
-		automaticBackup.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-			@Override
-			public boolean onPreferenceChange(Preference preference, Object newValue) { //isChecked on preferences returns oposite value
-				Log.d("Aptoide-Settings", "automatic backup isChecked: "+!automaticBackup.isChecked()+" storedValue: "+storedSettings.isAutomaticInstallOn());
-				if(!automaticBackup.isChecked() != storedSettings.isAutomaticInstallOn()){
-					try {
-						serviceDataCaller.callSetAutomaticInstall(!automaticBackup.isChecked());
-					} catch (RemoteException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+		automaticBackup = (CheckBoxPreference) findPreference("automatic_install");
+			automaticBackup.setChecked(storedSettings.isAutomaticInstallOn());
+			automaticBackup.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(Preference preference, Object newValue) { //isChecked on preferences returns oposite value
+					Log.d("Aptoide-Settings", "automatic backup isChecked: "+!automaticBackup.isChecked()+" storedValue: "+storedSettings.isAutomaticInstallOn());
+					if(isLoginSet()){
+						if(!automaticBackup.isChecked() != storedSettings.isAutomaticInstallOn()){
+							try {
+								serviceDataCaller.callSetAutomaticInstall(!automaticBackup.isChecked());
+							} catch (RemoteException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
 					}
+					return true;
 				}
-				return true;
-			}
-		});		
+			});
 		
 		
 		Preference iconDownloadTextView = (Preference) findPreference("icon_download_permissions");
@@ -503,7 +520,7 @@ public class Settings extends PreferenceActivity {
 			}
 		});
 		
-		
+		isLoginSet();
 	}
 	
 	
