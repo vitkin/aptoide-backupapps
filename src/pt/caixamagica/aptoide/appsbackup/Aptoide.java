@@ -42,15 +42,15 @@ import pt.caixamagica.aptoide.appsbackup.debug.AptoideLog;
 import pt.caixamagica.aptoide.appsbackup.debug.InterfaceAptoideLog;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.DynamicAvailableAppsListAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.EnumAppStatus;
-import pt.caixamagica.aptoide.appsbackup.ifaceutil.FixedTabsAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.InterfaceAvailableAppsAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticAvailableAppsListAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticAvailableAppsListAdapter.AvailableRowViewHolder;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticCategoriesListAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticInstalledAppsListAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticUpdatableAppsListAdapter;
-import pt.caixamagica.aptoide.appsbackup.ifaceutil.ViewPagerAdapter;
 import pt.caixamagica.aptoide.appsbackup.ifaceutil.StaticInstalledAppsListAdapter.InstalledRowViewHolder;
+import pt.caixamagica.aptoide.appsbackup.ifaceutil.pagerIndicater.FixedTabsAdapter;
+import pt.caixamagica.aptoide.appsbackup.ifaceutil.pagerIndicater.ViewPagerAdapter;
 
 import com.astuetz.viewpager.extensions.FixedTabsView;
 
@@ -809,7 +809,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 			pageIndicatorAdapter = new FixedTabsAdapter(this);
 			pageIndicator.setAdapter(pageIndicatorAdapter);
 			pageIndicator.setViewPager(appsListPager);
-			pageIndicatorAdapter.selectTab(appsListPager.getCurrentItem());
+			pageIndicatorAdapter.selectTab(EnumAppsLists.BACKUP.ordinal());
 			
 //			appsListFlipper.addView(loadingAvailableAppsList);
 //			appsListFlipper.addView(loadingInstalledAppsList);

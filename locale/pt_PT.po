@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-08-29 14:41+0100\n"
+"POT-Creation-Date: 2012-08-30 19:46+0100\n"
 "PO-Revision-Date: 2012-08-16 19:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: pt_PT <LL@li.org>\n"
@@ -443,7 +443,8 @@ msgctxt "casual_games"
 msgid "Casual (Games)"
 msgstr "Casual (Jogos)"
 
-msgctxt "form_rating"
+#, fuzzy
+msgctxt "app_rating"
 msgid "App rating"
 msgstr "Classificação"
 
@@ -711,12 +712,4 @@ msgid "Please wait, the server is being updated, this may take several minutes!"
 msgstr ""
 "Aguarde por favor, o servidor está a ser actualizado, isto pode demorar "
 "alguns minutos!"
-
-#~ msgctxt "backup"
-#~ msgid "BACKUP"
-#~ msgstr "COPIAR"
-
-#~ msgctxt "restore"
-#~ msgid "RESTORE"
-#~ msgstr "RESTAURAR"
 

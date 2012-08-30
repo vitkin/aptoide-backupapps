@@ -120,7 +120,7 @@
     <string name="cards_casino_games">Cards &amp; Casino (Games)</string>
     <string name="casual_games">Casual (Games)</string>
 	 
-    <string name="form_rating">App rating</string>
+    <string name="app_rating">App rating</string>
     <string name="all">All</string>
     <string name="pre_teen">Pre-Teen (minimal age: 10)</string>
     <string name="teen">Teen (minimal age: 16)</string>

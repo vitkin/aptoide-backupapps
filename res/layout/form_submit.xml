@@ -64,7 +64,7 @@
                     android:id="@+id/form_rating_id"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/form_rating"
+                    android:text="@string/app_rating"
                     android:textColor="#424542"
                     android:textSize="15sp" />
 
@@ -73,7 +73,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/rating_array"
-                    android:prompt="@string/form_rating"
+                    android:prompt="@string/app_rating"
                     android:textSize="8pt" />
 
                 <TextView

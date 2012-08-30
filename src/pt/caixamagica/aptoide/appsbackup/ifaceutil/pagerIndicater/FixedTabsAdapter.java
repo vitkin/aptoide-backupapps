@@ -1,4 +1,4 @@
-package pt.caixamagica.aptoide.appsbackup.ifaceutil;
+package pt.caixamagica.aptoide.appsbackup.ifaceutil.pagerIndicater;
 
 import pt.caixamagica.aptoide.appsbackup.DialogBeforeRestoringAlert;
 import pt.caixamagica.aptoide.appsbackup.EnumAppsLists;

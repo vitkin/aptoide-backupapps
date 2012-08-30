@@ -119,7 +119,7 @@
     <string name="cards_casino_games">Cartas &amp; Casino (Jogos)</string>
     <string name="casual_games">Casual (Jogos)</string>
 	 
-    <string name="form_rating">Classificação</string>
+    <string name="app_rating">Classificação</string>
     <string name="all">Todos</string>
     <string name="pre_teen">Pré-Adolescente (minimal age: 10)</string>
     <string name="teen">Adolescente (minimal age: 16)</string>
