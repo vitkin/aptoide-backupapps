@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.astuetz.viewpager.extensions.ViewPagerTabButton xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/com.astuetz.viewpager.extensions.example"
+<Button xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="0dip"
     android:layout_height="wrap_content"
     android:layout_weight="1"
@@ -8,6 +7,10 @@
     android:gravity="center"
     android:paddingBottom="16dip"
     android:paddingTop="15dip"
-    android:textColor="#FFF"
-    android:textSize="12sp"
+    android:shadowColor="#7F000000"
+    android:shadowDx="1"
+    android:shadowDy="1"
+    android:shadowRadius="2"
+    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:textColor="@color/tabs_text_color"
     android:textStyle="bold" />
