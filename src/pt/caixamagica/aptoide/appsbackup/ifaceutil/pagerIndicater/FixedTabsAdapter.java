@@ -10,6 +10,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,30 +58,23 @@ public class FixedTabsAdapter implements TabsAdapter {
     	}
 	}
 
-	Button tabButtons[] = new Button[2];
-	
 	@Override
 	public View getView(int position) {
+		
+		ViewPagerTabButton tab;
 		
 		EnumAppsLists newVisiblePage = EnumAppsLists.reverseOrdinal(position);
 //		Log.d("Aptoide-AppsBackup", "Viewing page: "+newVisiblePage);
 		
 		LayoutInflater inflater = context.getLayoutInflater();
-		tabButtons[position] = (Button) inflater.inflate(R.layout.tab_fixed, null); 
-		tabButtons[position].setText(newVisiblePage.toString(context));
+		tab = (ViewPagerTabButton) inflater.inflate(R.layout.tab_fixed, null);
+		tab.setLineColorSelected(0x8365148);
+		tab.setLineColor(0x8365148);
+		tab.setText(newVisiblePage.toString(context));
 		
-		return tabButtons[position];
+		return tab;
 	}
 
-	public void selectTab(int position) {
-		for (int i = 0, pos = 0; i < tabButtons.length; i++) {
-			if (this.tabButtons[i] instanceof Button) {
-				this.tabButtons[i].setSelected(pos == position);
-				pos++;
-			}
-		}
-	}
-	
 	@Override
 	public void onPageSelected(int position) {
 		EnumAppsLists newVisiblePage = EnumAppsLists.reverseOrdinal(position);
@@ -94,7 +88,7 @@ public class FixedTabsAdapter implements TabsAdapter {
 		if(newVisiblePage.equals(EnumAppsLists.RESTORE) && token == null){
         	new DialogBeforeRestoringAlert(context).show();
 		}
-		selectTab(position);
+//		selectTab(position);
 	}
 	
 	public void destroy() {

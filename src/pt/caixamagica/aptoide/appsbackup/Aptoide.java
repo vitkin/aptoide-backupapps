@@ -809,7 +809,6 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 			pageIndicatorAdapter = new FixedTabsAdapter(this);
 			pageIndicator.setAdapter(pageIndicatorAdapter);
 			pageIndicator.setViewPager(appsListPager);
-			pageIndicatorAdapter.selectTab(EnumAppsLists.BACKUP.ordinal());
 			
 //			appsListFlipper.addView(loadingAvailableAppsList);
 //			appsListFlipper.addView(loadingInstalledAppsList);

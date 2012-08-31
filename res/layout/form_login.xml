@@ -22,7 +22,7 @@
             android:padding="10dp"
             android:singleLine="true"
             android:text="@string/bazaar_login"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#fff" />
 
         <Button
