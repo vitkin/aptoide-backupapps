@@ -1161,12 +1161,12 @@ public class ManagerDatabase {
 	public void insertInstalledApplications(ArrayList<ViewApplicationInstalled> installedApplications){
 		try{
 			db.beginTransaction();
-//			db.execSQL(Constants.DROP_TABLE_APP_INSTALLED);		//TODO Switched to replace to speed up, may cause unreliable timestamp readings
-//			db.execSQL(Constants.CREATE_TABLE_APP_INSTALLED);
+			db.execSQL(Constants.DROP_TABLE_APP_INSTALLED);	
+			db.execSQL(Constants.CREATE_TABLE_APP_INSTALLED);
 			
 			InsertHelper insertInstalledApplication = new InsertHelper(db, Constants.TABLE_APP_INSTALLED);
 			for (ViewApplicationInstalled application : installedApplications) {
-				if(insertInstalledApplication.replace(application.getValues()) == Constants.DB_ERROR){ 
+				if(insertInstalledApplication.insert(application.getValues()) == Constants.DB_ERROR){ 
 					//TODO throw exception;
 				}
 			}
