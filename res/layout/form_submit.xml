@@ -16,7 +16,7 @@
             android:id="@+id/form_intro"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="#7fa45c"
+            android:background="@drawable/header_background"
             android:padding="10dp"
             android:text="@string/form_intro"
             android:textAppearance="?android:attr/textAppearanceLarge"

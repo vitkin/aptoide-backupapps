@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="50dp"
     android:layout_gravity="top"
-    android:background="@drawable/greenbarwithshadow" >
+    android:background="@drawable/header_background" >
 
     <ImageView
         android:id="@+id/aptoide_icon"

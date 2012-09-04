@@ -9,7 +9,7 @@
         android:id="@+id/self_update"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#7fa45c"
+        android:background="@drawable/header_background"
         android:padding="10dp"
         android:text="@string/self_update"
         android:textAppearance="?android:attr/textAppearanceLarge"
