@@ -123,13 +123,13 @@ public class ManagerSystemSync {
 //			}
 			
 			/* ************* Signature check ******************** */
-//			if(installedAppInfo.packageName.equals("pt.caixamagica.aptoide.uploader")){
+//			if(installedAppInfo.packageName.equals("pt.aptoide.uploader")){
 //				PackageInfo info;
 //				try {
 //					info = packageManager.getPackageInfo(installedAppInfo.packageName, PackageManager.GET_SIGNATURES);
 //					Signature[] sig = info.signatures; 
 //					String sigstring = new String(sig[0].toChars()); 
-//					Log.d("Aptoide-SystemSync", "pt.caixamagica.aptoide.uploader  versionName: "+installedAppInfo.versionName+"versioncode: "+installedAppInfo.versionCode+"sig: "+sigstring);
+//					Log.d("Aptoide-SystemSync", "pt.aptoide.uploader  versionName: "+installedAppInfo.versionName+"versioncode: "+installedAppInfo.versionCode+"sig: "+sigstring);
 //					
 //				} catch (NameNotFoundException e) {
 //					e.printStackTrace();

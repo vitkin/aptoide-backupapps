@@ -114,8 +114,8 @@ public class Constants {
 	public static final String FILE_SELF_UPDATE = PATH_CACHE + "latestSelfUpdate.apk";	//TODO possibly change apk name to reflect version code
 	public static final String FILE_PREFERENCES = "aptoide_preferences";
 
-	public static final String APTOIDE_PACKAGE_NAME = "pt.caixamagica.aptoide.appsbackup";
-	public static final String SERVICE_DATA_CLASS_NAME = "pt.caixamagica.aptoide.appsbackup.data.ServiceData";
+	public static final String APTOIDE_PACKAGE_NAME = "pt.aptoide.appsbackup";
+	public static final String SERVICE_DATA_CLASS_NAME = "pt.aptoide.appsbackup.data.ServiceData";
 	
 	public static final String MIMETYPE_MYAPP = "application/vnd.cm.aptoide.pt";
 	public static final String SCHEME_APTOIDE_REPO = "aptoiderepo"; 
