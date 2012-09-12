@@ -920,9 +920,7 @@ public class ManagerDownloads {
 
 				if(localCache.hasMd5Sum()){
 					if(!getManagerCache().md5CheckOk(localCache)){
-						if(!resuming){
-							managerCache.clearCache(download.getCache());
-						}
+						managerCache.clearCache(download.getCache());
 						throw new AptoideExceptionDownload("md5 check failed!");
 					}
 				}
