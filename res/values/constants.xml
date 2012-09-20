@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="self_name">Aptoide Apps Backup</string>
+    <string name="self_name">Aptoide Backup Apps</string>
     
     <string name="wifi">WiFi</string>
     <string name="ethernet">Ethernet</string>
