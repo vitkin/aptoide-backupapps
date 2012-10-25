@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2012-09-12 17:49+0100\n"
+"POT-Creation-Date: 2012-10-25 20:22+0100\n"
 "PO-Revision-Date: 2012-08-16 19:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: pt_PT <LL@li.org>\n"
@@ -259,9 +259,10 @@ msgctxt "no_apps"
 msgid "No apps to display!"
 msgstr "Sem aplicações para mostrar!"
 
+#, fuzzy
 msgctxt "loading_apps"
-msgid "Loading apps..."
-msgstr "A carregar applicações..."
+msgid "Loading apps…"
+msgstr "Apps a carregar:"
 
 msgctxt "uninstall"
 msgid "Uninstall"
@@ -302,6 +303,32 @@ msgid ""
 msgstr ""
 "Ao registar, está a concordar com os Termos de Serviço e a Política de "
 "Conteúdos para Programadores do Aptoide"
+
+msgctxt "social_networks"
+msgid "Social networks"
+msgstr ""
+
+msgctxt "social_network_intro"
+msgid ""
+"Your feedback is important. You can find us on Facebook and/or follow us "
+"on Twitter."
+msgstr ""
+
+msgctxt "find_us_on_facebook"
+msgid "Find us on Facebook"
+msgstr ""
+
+msgctxt "follow_twitter"
+msgid "Follow us on Twitter"
+msgstr ""
+
+msgctxt "loading_facebook"
+msgid "Loading Facebook…"
+msgstr ""
+
+msgctxt "loading_twitter"
+msgid "Loading Twitter…"
+msgstr ""
 
 msgctxt "no_network_connection"
 msgid "No network connection"
@@ -712,4 +739,8 @@ msgid "Please wait, the server is being updated, this may take several minutes!"
 msgstr ""
 "Aguarde por favor, o servidor está a ser actualizado, isto pode demorar "
 "alguns minutos!"
+
+#~ msgctxt "loading_apps"
+#~ msgid "Loading apps..."
+#~ msgstr "A carregar applicações..."
 

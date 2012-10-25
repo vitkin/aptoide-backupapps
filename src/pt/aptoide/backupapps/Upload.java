@@ -76,7 +76,7 @@ import android.widget.TextView;
 
 
 /**
- * Uplaod, handles Aptoide's upload interface
+ * Upload, handles Aptoide's upload interface
  * 
  * @author dsilveira
  * @since 3.0

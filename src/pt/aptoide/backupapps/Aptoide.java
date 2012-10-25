@@ -1590,13 +1590,16 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 		menu.add(Menu.NONE, EnumOptionsMenu.UN_SELECT_ALL.ordinal(), EnumOptionsMenu.UN_SELECT_ALL.ordinal(), R.string.un_select_all)
 			.setIcon(android.R.drawable.ic_menu_add);
 
-		menu.add(Menu.NONE, EnumOptionsMenu.ABOUT.ordinal(),EnumOptionsMenu.ABOUT.ordinal(),R.string.about)
+		menu.add(Menu.NONE, EnumOptionsMenu.ABOUT.ordinal(), EnumOptionsMenu.ABOUT.ordinal(),R.string.about)
 			.setIcon(android.R.drawable.ic_menu_help);
 		menu.add(Menu.NONE, EnumOptionsMenu.SETTINGS.ordinal(), EnumOptionsMenu.SETTINGS.ordinal(), R.string.settings)
 			.setIcon(android.R.drawable.ic_menu_preferences);
 		
 		menu.add(Menu.NONE, EnumOptionsMenu.LOGIN.ordinal(), EnumOptionsMenu.LOGIN.ordinal(), R.string.login)
 			.setIcon(android.R.drawable.ic_menu_edit);
+		
+		menu.add(Menu.NONE, EnumOptionsMenu.FOLLOW.ordinal(), EnumOptionsMenu.FOLLOW.ordinal(),R.string.social_networks)
+			.setIcon(android.R.drawable.ic_menu_share);
 		
 		
 		return super.onCreateOptionsMenu(menu);
@@ -1834,6 +1837,10 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 				}
 				return true;
 				
+			case FOLLOW:
+				new DialogFollowOnSocialNets(this).show();
+				return true;
+			
 //			case SCHEDULED_DOWNLOADS:
 //				availableAdapter.sleep();
 //				Intent manageScheduled = new Intent(this, ManageScheduled.class);

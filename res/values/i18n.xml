@@ -66,7 +66,7 @@
     <string name="backed_up">Backed up</string>
     
     <string name="no_apps">No apps to display!</string>
-    <string name="loading_apps">Loading apps...</string>
+    <string name="loading_apps">Loading apps&#8230;</string>
     
     <string name="uninstall">Uninstall</string>
     
@@ -78,6 +78,13 @@
     <string name="publc">Public</string>
     <string name="privt">Private</string>
     <string name="accept_terms">By signing up you are agreeing to the Aptoide Terms of Service and Aptoide Content Policy for Developers</string>
+    
+    <string name="social_networks">Social networks</string>
+    <string name="social_network_intro">Your feedback is important. You can find us on Facebook and/or follow us on Twitter.</string>   
+    <string name="find_us_on_facebook">Find us on Facebook</string>
+    <string name="follow_twitter">Follow us on Twitter</string> 
+    <string name="loading_facebook">Loading Facebook&#8230;</string>
+    <string name="loading_twitter">Loading Twitter&#8230;</string>
     
     <string name="no_network_connection">No network connection</string>
     <string name="no_permitted_network_connection">No permitted network connection</string>

@@ -47,6 +47,7 @@ public enum EnumPreferences {
 	SERVER_NAME,
 	SERVER_PRIVATE;
 	
+
 	public static EnumPreferences reverseOrdinal(int ordinal){
 		return values()[ordinal];
 	}

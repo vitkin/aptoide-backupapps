@@ -65,7 +65,7 @@
     <string name="backed_up">Cópia segura</string>
     
     <string name="no_apps">Sem aplicações para mostrar!</string>
-    <string name="loading_apps">A carregar applicações...</string>
+    <string name="loading_apps">A carregar applicações&#8230;</string>
     
     <string name="uninstall">Desinstalar</string>
     
@@ -77,6 +77,13 @@
     <string name="publc">Pública</string>
     <string name="privt">Privada</string>
     <string name="accept_terms">Ao registar, está a concordar com os Termos de Serviço e a Política de Conteúdos para Programadores do Aptoide</string>
+    
+    <string name="social_networks">Redes sociais</string> 
+    <string name="social_network_intro">O seu retorno é importante. Encontre-nos no Facebook e/ou siga-nos no Twitter.</string>  
+    <string name="find_us_on_facebook">Encontre-nos no Facebook</string>
+    <string name="follow_twitter">Siga-nos no Twitter</string>   
+    <string name="loading_facebook">A carregar o Facebook&#8230;</string>
+    <string name="loading_twitter">A carregar o Twitter&#8230;</string>
     
     <string name="no_network_connection">Sem ligação à rede</string>
     <string name="no_permitted_network_connection">Sem ligação à rede, permitida</string>

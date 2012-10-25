@@ -34,6 +34,7 @@ public enum EnumOptionsMenu {
 	ABOUT,
 	SETTINGS,
 	LOGIN,
+	FOLLOW,
 	ADD_REPO,
 	EDIT_REPO,
 	REMOVE_REPO,

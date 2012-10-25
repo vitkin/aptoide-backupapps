@@ -1,6 +1,6 @@
 /**
- * DialogFirstRunState, part of Aptoide
- * Copyright (C) 2011 Duarte Silveira
+ * DialogFollowOnSocialNets, part of Aptoide
+ * Copyright (C) 2012 Duarte Silveira
  * duarte.silveira@caixamagica.pt
  *
  * This program is free software; you can redistribute it and/or
@@ -28,39 +28,37 @@ import android.widget.Button;
 
 
 /**
- * DialogFirstRunState, handles informing user of how to get going, when there is no login configured
+ * DialogFollowOnSocialNets, handles giving the user the option to follow on Social Networks
  * 
  * @author dsilveira
  *
  */
-public class DialogFirstRunState extends Dialog{
+public class DialogFollowOnSocialNets extends Dialog{
 	
 	
-	public DialogFirstRunState(Context context) {
+	public DialogFollowOnSocialNets(Context context) {
 		super(context);
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setTitle(R.string.first_run);
-		setContentView(R.layout.dialog_first_run_state);
+		setTitle(R.string.social_networks);
+		setContentView(R.layout.dialog_follow_on_social_nets);
+		setCancelable(true);
 		
 		
-		((Button)this.findViewById(R.id.later)).setOnClickListener(new View.OnClickListener(){
-			
+		((Button)this.findViewById(R.id.find_facebook)).setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v) {
- 				dismiss();
+				Intent intent = new Intent(getContext(), WebViewFacebook.class);
+				getContext().startActivity(intent);
 			}
-			
 		});
 		
-		((Button)this.findViewById(R.id.setup_now)).setOnClickListener(new View.OnClickListener(){
+		((Button)this.findViewById(R.id.follow_twitter)).setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v) {
- 				Intent login = new Intent(getContext(), BazaarLogin.class);
-				login.putExtra("InvoqueType", BazaarLogin.InvoqueType.NO_CREDENTIALS_SET.ordinal());
-				getContext().startActivity(login);
-				dismiss();
+				Intent intent = new Intent(getContext(), WebViewTwitter.class);
+				getContext().startActivity(intent);
 			}
 		});
 		

@@ -35,7 +35,7 @@ public class Md5Handler {
 		} catch (NoSuchAlgorithmException e) {e.printStackTrace();	}
 	}
 	
-	public String md5Calc(File f){
+	public String md5Calc(File f){	//TODO make static (moving initialization to here)
 		int i;
 		String md5hash = "";		
 		byte[] buffer = new byte[1024];

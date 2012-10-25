@@ -43,6 +43,14 @@
 		<activity android:name=".BazaarSignUp" android:process=":aabInterface" android:launchMode="singleTask" 
 		    	  android:configChanges="keyboardHidden|orientation|screenSize" >
 		</activity>
+
+		<activity android:name=".WebViewFacebook" android:process=":aabInterface" android:launchMode="singleTask" 
+		    	  android:configChanges="keyboardHidden|orientation|screenSize" >
+		</activity>
+
+		<activity android:name=".WebViewTwitter" android:process=":aabInterface" android:launchMode="singleTask" 
+		    	  android:configChanges="keyboardHidden|orientation|screenSize" >
+		</activity>
 		
 		<service android:name=".data.AptoideServiceData" android:process=":aabData">
 <!-- ###### THESE NEXT INTENT FILTERS ARE ONLY FOR REFERENCE SINCE THEY ARE DYNAMICALLY FILTERED ######
