@@ -25,10 +25,8 @@ import java.util.UUID;
 import pt.aptoide.backupapps.EnumAppsSorting;
 import pt.aptoide.backupapps.R;
 import pt.aptoide.backupapps.data.AptoideServiceData;
-import pt.aptoide.backupapps.data.EnumConnectionLevels;
 import pt.aptoide.backupapps.data.ViewClientStatistics;
 import pt.aptoide.backupapps.data.model.ViewLogin;
-import pt.aptoide.backupapps.data.model.ViewRepository;
 import pt.aptoide.backupapps.data.system.ViewScreenDimensions;
 import pt.aptoide.backupapps.data.util.Constants;
 import pt.aptoide.backupapps.data.webservices.EnumIconDownloadsPermission;
@@ -36,7 +34,6 @@ import pt.aptoide.backupapps.data.webservices.ViewIconDownloadPermissions;
 import pt.aptoide.backupapps.data.webservices.ViewServerLogin;
 import pt.aptoide.backupapps.debug.AptoideLog;
 import pt.aptoide.backupapps.debug.InterfaceAptoideLog;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -69,16 +66,12 @@ public class ManagerPreferences implements InterfaceAptoideLog{
 			createLauncherShortcut(serviceData.getApplicationContext());
 			setAptoideClientUUID( UUID.randomUUID().toString() );
 		}
-		
-		if(getAuthorizedDownloadConnections() == EnumConnectionLevels.NONE){
-			setAuthorizedDownloadConnections(EnumConnectionLevels.OTHER);
-		}
 	}
 	
 	private void createLauncherShortcut(Context context){
 		Intent shortcutIntent = new Intent(Intent.ACTION_MAIN);
-		shortcutIntent.setClassName(context, "pt.aptoide.backupapps.Aptoide");
-		shortcutIntent.putExtra("pt.aptoide.backupapps", context.getString(R.string.description));
+		shortcutIntent.setClassName(context, Constants.APTOIDE_CLASS_NAME);
+		shortcutIntent.putExtra(Constants.APTOIDE_PACKAGE_NAME, context.getString(R.string.description));
 
 		final Intent intent = new Intent();
 		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
@@ -124,15 +117,6 @@ public class ManagerPreferences implements InterfaceAptoideLog{
 	
 	public void completeStatistics(ViewClientStatistics statistics){
 		statistics.completeStatistics(getAptoideClientUUID(), getScreenDimensions());
-	}
-	
-	public void setAuthorizedDownloadConnections(EnumConnectionLevels connectionLevel){
-		setPreferences.putInt(EnumPreferences.AUTHORIZED_DOWNLOAD_CONNECTIONS.name(), connectionLevel.ordinal());
-		setPreferences.commit();
-	}
-	
-	public EnumConnectionLevels getAuthorizedDownloadConnections(){
-		return EnumConnectionLevels.reverseOrdinal(getPreferences.getInt(EnumPreferences.AUTHORIZED_DOWNLOAD_CONNECTIONS.name(), EnumConnectionLevels.NONE.ordinal()));
 	}
 	
 	public boolean getShowApplicationsByCategory(){

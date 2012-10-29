@@ -19,7 +19,7 @@
 */
 package pt.aptoide.backupapps;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,7 +33,7 @@ import android.widget.Button;
  * @author dsilveira
  *
  */
-public class DialogFollowOnSocialNets extends Dialog{
+public class DialogFollowOnSocialNets extends AlertDialog{
 	
 	
 	public DialogFollowOnSocialNets(Context context) {
@@ -44,6 +44,7 @@ public class DialogFollowOnSocialNets extends Dialog{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.social_networks);
+		setIcon(android.R.drawable.ic_menu_share);
 		setContentView(R.layout.dialog_follow_on_social_nets);
 		setCancelable(true);
 		

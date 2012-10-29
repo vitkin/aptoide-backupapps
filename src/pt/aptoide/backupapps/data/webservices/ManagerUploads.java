@@ -216,6 +216,8 @@ public class ManagerUploads {
 		try {
 			URL endpoint = new URL(Constants.URI_LOGIN_CREATE_WS);
 			HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection(); //Careful with UnknownHostException. Throws MalformedURLException, IOException
+			connection.setConnectTimeout(Constants.SERVER_CONNECTION_TIMEOUT);
+			connection.setReadTimeout(Constants.SERVER_READ_TIMEOUT);
 			
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Accept", "application/xml");
@@ -306,11 +308,13 @@ public class ManagerUploads {
 			endpointString = String.format(Constants.URI_FORMAT_LOGIN_WS, URLEncoder.encode(serverLogin.getUsername()), URLEncoder.encode(serverLogin.getPasshash()), URLEncoder.encode(serverLogin.getRepoName()));
 		}
 
-//    	Log.d("Aptoide-ManagerUploads login", endpointString);
+    	Log.d("Aptoide-ManagerUploads login", endpointString);
 
 		try {
 			URL endpoint = new URL(endpointString);
 			HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection(); //Careful with UnknownHostException. Throws MalformedURLException, IOException
+			connection.setConnectTimeout(Constants.SERVER_CONNECTION_TIMEOUT);
+			connection.setReadTimeout(Constants.SERVER_READ_TIMEOUT);
 			
 			connection.setRequestMethod("GET");
 			connection.setRequestProperty("Accept", "application/xml");
@@ -359,6 +363,8 @@ public class ManagerUploads {
 		try {
 			URL endpoint = new URL(endpointString);
 			HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection(); //Careful with UnknownHostException. Throws MalformedURLException, IOException
+			connection.setConnectTimeout(Constants.SERVER_CONNECTION_TIMEOUT);
+			connection.setReadTimeout(Constants.SERVER_READ_TIMEOUT);
 			
 			connection.setRequestMethod("GET");
 			connection.setRequestProperty("Accept", "application/xml");
@@ -393,7 +399,9 @@ public class ManagerUploads {
 			URL endpoint = new URL(Constants.URI_ADD_COMMENT_POST_WS);
 			
 			HttpURLConnection connection = (HttpURLConnection) endpoint.openConnection();//Careful with UnknownHostException 
-
+			connection.setConnectTimeout(Constants.SERVER_CONNECTION_TIMEOUT);
+			connection.setReadTimeout(Constants.SERVER_READ_TIMEOUT);
+			
 			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Accept", "application/xml");
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");

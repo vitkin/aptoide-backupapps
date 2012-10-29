@@ -23,25 +23,17 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class Md5Handler {
 	
-	private MessageDigest digest;
-	
-	public Md5Handler (){
-		try {
-			digest = MessageDigest.getInstance("MD5");
-		} catch (NoSuchAlgorithmException e) {e.printStackTrace();	}
-	}
-	
-	public String md5Calc(File f){	//TODO make static (moving initialization to here)
+	public static String md5Calc(File f){
 		int i;
 		String md5hash = "";		
 		byte[] buffer = new byte[1024];
 		int read = 0;
 		
 		try {
+			MessageDigest digest = MessageDigest.getInstance("MD5");
 			InputStream is = new FileInputStream(f);
 			while( (read = is.read(buffer)) > 0) {
 				digest.update(buffer, 0, read);

@@ -375,19 +375,17 @@ public class ManagerCache {
 	
 	public void calculateMd5Hash(ViewCache cache){
 		File file = new File(cache.getLocalPath());
-		Md5Handler hash = new Md5Handler();
 		
-		cache.setMd5Sum(hash.md5Calc(file));		
+		cache.setMd5Sum(Md5Handler.md5Calc(file));		
 	}
 	
 	public boolean md5CheckOk(ViewCache cache){
 		File file = new File(cache.getLocalPath());
-		Md5Handler hash = new Md5Handler();
-		if(cache.getMd5sum().equalsIgnoreCase(hash.md5Calc(file))){
+		if(cache.getMd5sum().equalsIgnoreCase(Md5Handler.md5Calc(file))){
 			Log.d("Aptoide-ManagerCache", "md5Check OK!");
 			return true;
 		}else{
-			Log.d("Aptoide-ManagerCache",cache.getMd5sum()+ " VS " + hash.md5Calc(file));	//TODO refactor log
+			Log.d("Aptoide-ManagerCache",cache.getMd5sum()+ " VS " + Md5Handler.md5Calc(file));	//TODO refactor log
 			return false;
 		}
 	}

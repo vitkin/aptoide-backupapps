@@ -19,7 +19,6 @@
 */
 package pt.aptoide.backupapps.data.preferences;
 
-import pt.aptoide.backupapps.EnumReposInfoTasks;
 import pt.aptoide.backupapps.data.webservices.ViewIconDownloadPermissions;
 import android.os.Parcel;
 import android.os.Parcelable;

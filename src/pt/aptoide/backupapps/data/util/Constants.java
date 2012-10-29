@@ -73,6 +73,10 @@ public class Constants {
 	public static final int MAX_PARALLEL_UPOADS = 3;
 	public static final int MAX_PARALLEL_SERVICE_REQUESTS = 4;
 	
+	/** miliseconds **/
+	public static final int SERVER_CONNECTION_TIMEOUT = 5000;
+	public static final int SERVER_READ_TIMEOUT = 30000;
+	
 	public static final int NUMBER_OF_STARS = 5;
 	/** interval between repos updating, in hours **/
 	public static final int REPOS_UPDATE_INTERVAL = 24;
@@ -115,6 +119,7 @@ public class Constants {
 	public static final String FILE_PREFERENCES = "aptoide_preferences";
 
 	public static final String APTOIDE_PACKAGE_NAME = "pt.aptoide.backupapps";
+	public static final String APTOIDE_CLASS_NAME = APTOIDE_PACKAGE_NAME+".Aptoide";
 	public static final String SERVICE_DATA_CLASS_NAME = APTOIDE_PACKAGE_NAME+".data.ServiceData";
 	
 	public static final String MIMETYPE_MYAPP = "application/vnd.cm.aptoide.pt";

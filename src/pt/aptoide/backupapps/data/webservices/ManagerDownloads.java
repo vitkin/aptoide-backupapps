@@ -822,6 +822,17 @@ public class ManagerDownloads {
 		try{
 			fileOutputStream = new FileOutputStream(localPath, !overwriteCache);
 			DefaultHttpClient httpClient = new DefaultHttpClient();
+			HttpParams httpParameters = new BasicHttpParams();
+    		// Set the timeout in milliseconds until a connection is established.
+    		// The default value is zero, that means the timeout is not used. 
+    		int timeoutConnection = Constants.SERVER_CONNECTION_TIMEOUT;
+    		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+    		// Set the default socket timeout (SO_TIMEOUT) 
+    		// in milliseconds which is the timeout for waiting for data.
+    		int timeoutSocket = Constants.SERVER_READ_TIMEOUT;
+    		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+    		httpClient.setParams(httpParameters);
+			
 			HttpGet httpGet = new HttpGet(remotePath);
 			Log.d("Aptoide-download","downloading from: "+remotePath+" to: "+localPath);
 			Log.d("Aptoide-download","downloading with: "+getUserAgentString()+"    private: "+download.isLoginRequired());
@@ -860,71 +871,97 @@ public class ManagerDownloads {
 					throw new TimeoutException();
 				}
 			}
+			
+			
+			int httpStatusCode = httpResponse.getStatusLine().getStatusCode();
+			Log.d("Aptoide-download","Server Response Status Code: "+httpStatusCode);
 
-			if(httpResponse.getStatusLine().getStatusCode() == 401){
-				Log.d("Aptoide-ManagerDownloads","401 Timed out!");
-				fileOutputStream.close();
-				if(!resuming){
-					managerCache.clearCache(download.getCache());
-				}
-				throw new TimeoutException();
-			}else if(httpResponse.getStatusLine().getStatusCode() == 404){
-				fileOutputStream.close();
-				if(!resuming){
-					managerCache.clearCache(download.getCache());
-				}
-				throw new AptoideExceptionNotFound("404 Not found!");
-			}else{
-				
-				Log.d("Aptoide-ManagerDownloads", "Download target size: "+notification.getProgressCompletionTarget());
-				
-//				if(download.isSizeKnown()){
-//					targetBytes = download.getSize()*Constants.KBYTES_TO_BYTES;	//TODO check if server sends kbytes or bytes
-//					notification.setProgressCompletionTarget(targetBytes);
-//				}else{
+			switch (httpStatusCode) {
+				case 401:
+					fileOutputStream.close();
+    				if(!resuming){
+    					managerCache.clearCache(download.getCache());
+    				}
+//    				download.setFailReason(EnumDownloadFailReason.TIMEOUT);
+    				throw new TimeoutException(httpStatusCode+" "+httpResponse.getStatusLine().getReasonPhrase());
+				case 403:
+					fileOutputStream.close();
+    				if(!resuming){
+    					managerCache.clearCache(download.getCache());
+    				}
+//    				download.setFailReason(EnumDownloadFailReason.IP_BLACKLISTED);
+    				throw new AptoideExceptionDownload(httpStatusCode+" "+httpResponse.getStatusLine().getReasonPhrase());
+				case 404:
+					fileOutputStream.close();
+    				if(!resuming){
+    					managerCache.clearCache(download.getCache());
+    				}
+//    				download.setFailReason(EnumDownloadFailReason.NOT_FOUND);
+    				throw new AptoideExceptionNotFound(httpStatusCode+" "+httpResponse.getStatusLine().getReasonPhrase());
+				case 416:
+					fileOutputStream.close();
+    				if(!resuming){
+    					managerCache.clearCache(download.getCache());
+    				}
+    				notification.setCompleted(true);
+//    				try {
+//						downloadStatusClient.updateDownloadStatus(cache.hashCode(), download);
+//					} catch (RemoteException e4) {
+//						e4.printStackTrace();
+//					}
+					return;
 
-				if(httpResponse.containsHeader("Content-Length") && resumeLengthInt != 0){
-					targetBytes = Integer.parseInt(httpResponse.getFirstHeader("Content-Length").getValue());
-					Log.d("Aptoide-ManagerDownloads","targetBytes: "+targetBytes);
-//					notification.setProgressCompletionTarget(targetBytes);
-				}
-//				}
-				
-
-				InputStream inputStream= null;
-				
-				if((httpResponse.getEntity().getContentEncoding() != null) && (httpResponse.getEntity().getContentEncoding().getValue().equalsIgnoreCase("gzip"))){
-
-					Log.d("Aptoide-ManagerDownloads","with gzip");
-					inputStream = new GZIPInputStream(httpResponse.getEntity().getContent());
-
-				}else{
-
-//					Log.d("Aptoide-ManagerDownloads","No gzip");
-					inputStream = httpResponse.getEntity().getContent();
-
-				}
-				
-				byte data[] = new byte[8096];
-				int bytesRead;
-
-				while((bytesRead = inputStream.read(data, 0, 8096)) > 0) {
-					notification.incrementProgress(bytesRead);
-					fileOutputStream.write(data,0,bytesRead);
-				}
-				Log.d("Aptoide-ManagerDownloads","Download done! Name: "+notification.getActionsTargetName()+" localPath: "+localPath);
-				notification.setCompleted(true);
-				fileOutputStream.flush();
-				fileOutputStream.close();
-				inputStream.close();
-
-				if(localCache.hasMd5Sum()){
-					if(!getManagerCache().md5CheckOk(localCache)){
-						managerCache.clearCache(download.getCache());
-						throw new AptoideExceptionDownload("md5 check failed!");
+				default:
+							
+					Log.d("Aptoide-ManagerDownloads", "Download target size: "+notification.getProgressCompletionTarget());
+					
+	//				if(download.isSizeKnown()){
+	//					targetBytes = download.getSize()*Constants.KBYTES_TO_BYTES;	//TODO check if server sends kbytes or bytes
+	//					notification.setProgressCompletionTarget(targetBytes);
+	//				}else{
+	
+					if(httpResponse.containsHeader("Content-Length") && resumeLengthInt != 0){
+						targetBytes = Integer.parseInt(httpResponse.getFirstHeader("Content-Length").getValue());
+						Log.d("Aptoide-ManagerDownloads","targetBytes: "+targetBytes);
+	//					notification.setProgressCompletionTarget(targetBytes);
 					}
-				}
-
+	//				}
+					
+	
+					InputStream inputStream= null;
+					
+					if((httpResponse.getEntity().getContentEncoding() != null) && (httpResponse.getEntity().getContentEncoding().getValue().equalsIgnoreCase("gzip"))){
+	
+						Log.d("Aptoide-ManagerDownloads","with gzip");
+						inputStream = new GZIPInputStream(httpResponse.getEntity().getContent());
+	
+					}else{
+	
+	//					Log.d("Aptoide-ManagerDownloads","No gzip");
+						inputStream = httpResponse.getEntity().getContent();
+	
+					}
+					
+					byte data[] = new byte[8096];
+					int bytesRead;
+	
+					while((bytesRead = inputStream.read(data, 0, 8096)) > 0) {
+						notification.incrementProgress(bytesRead);
+						fileOutputStream.write(data,0,bytesRead);
+					}
+					Log.d("Aptoide-ManagerDownloads","Download done! Name: "+notification.getActionsTargetName()+" localPath: "+localPath);
+					notification.setCompleted(true);
+					fileOutputStream.flush();
+					fileOutputStream.close();
+					inputStream.close();
+	
+					if(localCache.hasMd5Sum()){
+						if(!getManagerCache().md5CheckOk(localCache)){
+							managerCache.clearCache(download.getCache());
+							throw new AptoideExceptionDownload("md5 check failed!");
+						}
+					}
+				return;
 			}
 		}catch (Exception e) {
 			try {
