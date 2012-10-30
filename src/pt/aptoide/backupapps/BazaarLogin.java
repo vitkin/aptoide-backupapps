@@ -19,16 +19,12 @@
 */
 package pt.aptoide.backupapps;
 
-import pt.aptoide.backupapps.R;
+import pt.aptoide.backupapps.data.AIDLAptoideServiceData;
 import pt.aptoide.backupapps.data.AptoideServiceData;
 import pt.aptoide.backupapps.data.model.ViewListIds;
-import pt.aptoide.backupapps.data.webservices.EnumServerLoginCreateStatus;
 import pt.aptoide.backupapps.data.webservices.EnumServerLoginStatus;
 import pt.aptoide.backupapps.data.webservices.ViewServerLogin;
-import pt.aptoide.backupapps.AIDLLogin;
-import pt.aptoide.backupapps.data.AIDLAptoideServiceData;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -43,7 +39,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -122,9 +117,9 @@ public class BazaarLogin extends Activity {
 	
 	private ProgressDialog dialogProgress;
 	private boolean success;	
-	private LoginState loginState;
+//	private LoginState loginState;
 	
-	private ViewServerLogin serverLogin;
+//	private ViewServerLogin serverLogin;
 	
 	private boolean afterAction;
 	private ViewListIds actionListIds;
@@ -132,12 +127,12 @@ public class BazaarLogin extends Activity {
 	
 	private InvoqueType invoqueType;
 	
-	public static enum LoginState{
-		WAITING,
-		SUCCESS,
-		BAD_LOGIN,
-		REPO_NOT_FROM_USER
-	}
+//	public static enum LoginState{
+//		WAITING,
+//		SUCCESS,
+//		BAD_LOGIN,
+//		REPO_NOT_FROM_USER
+//	}
 	
 	public static enum InvoqueType{ 
 		CREDENTIALS_FAILED,
@@ -187,7 +182,7 @@ public class BazaarLogin extends Activity {
 		}
 		
 		this.invoqueType = InvoqueType.reverseOrdinal(extras.getInt("InvoqueType"));	
-		loginState = LoginState.WAITING;
+//		loginState = LoginState.WAITING;
 		success = false;
 		
 		if(!serviceDataIsBound){
@@ -528,13 +523,13 @@ public class BazaarLogin extends Activity {
 				}else{	
 					success = false;
 					dialogProgress.setCancelable(true);
-					Toast.makeText(BazaarLogin.this, status.toString(BazaarLogin.this), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, status.toString(context), Toast.LENGTH_SHORT).show();
 					dialogProgress.dismiss();
 				}
 				
 			}else{
 				dialogProgress.setCancelable(true);
-				Toast.makeText(BazaarLogin.this, getString(R.string.login_service_unavailable), Toast.LENGTH_SHORT).show();
+				Toast.makeText(context, getString(R.string.login_service_unavailable), Toast.LENGTH_SHORT).show();
 				dialogProgress.dismiss();
 			}
 	    }

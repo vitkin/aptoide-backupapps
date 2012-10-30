@@ -462,7 +462,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 
 		@Override
 		public void callServerLoginAfterCreate(ViewServerLogin serverLogin) throws RemoteException {
-			serverLoginAfterCreate(serverLogin);
+//			serverLoginAfterCreate(serverLogin);
 		}
 
 		@Override
@@ -676,12 +676,12 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
     		loadingAvailableListData();
     	}
     	
-    	if(managerPreferences.isServerInconsistenState()){
-    		serverLoginAfterCreate(managerPreferences.getServerInconsistentStore());
-    		return EnumAvailableAppsStatus.NO_REPO_IN_USE.ordinal();
-    	}else{
+//    	if(managerPreferences.isServerInconsistenState()){
+//    		serverLoginAfterCreate(managerPreferences.getServerInconsistentStore());
+//    		return EnumAvailableAppsStatus.NO_REPO_IN_USE.ordinal();
+//    	}else{
     		return checkIfAnyReposInUse();
-    	}
+//    	}
 	}
 	
 	public void unregisterAvailableDataObserver(AIDLAptoideInterface availableAppsObserver){
@@ -1169,6 +1169,17 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	}
 	
 	public void repoInserted(){
+		delayedExecutionHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				try{
+					loginClient.repoInserted();
+				} catch (Exception e) { }
+			}
+		}, 1000);
+	}
+	
+	public void repoAvailable(){
 		delayedExecutionHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -2317,6 +2328,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 			}
 			AptoideLog.d(AptoideServiceData.this, "repoConnection status: "+repoConnectionStatus);
 			if(repoConnectionStatus == EnumServerLoginStatus.SUCCESS){
+				repoAvailable();
 				if( repoInUse == null ){
 					ViewRepository dormentRepo;
 					try {
@@ -2409,42 +2421,42 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 		return loginCreateStatus.ordinal();
 	}
 	
-	public void serverLoginAfterCreate(final ViewServerLogin serverLogin){
-		cachedThreadPool.execute(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).switchAvailableToWaitingOnServer();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-		    	Log.d("Aptoide-LoginAfterCreate", "Trying to Login with: "+serverLogin);
-		    	
-		    	if( getManagerUploads().login(serverLogin) == EnumServerLoginStatus.SUCCESS ){
-		    		repoInserted();
-		        	String token = managerPreferences.getToken();
-					if(EnumServerLoginStatus.reverseOrdinal(serverLoginInsertRepo(serverLogin)) == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
-						managerPreferences.setServerInconsistentStore(serverLogin, token);
-						delayedExecutionHandler.postDelayed(new Runnable() {
-							public void run() {
-								try {
-									serverLoginAfterCreate(serverLogin);
-								} catch (Exception e) { }
-							}
-						}, 15000);
-					}
-		    	}else{
-		    		delayedExecutionHandler.postDelayed(new Runnable() {
-		    			public void run() {
-		    				try {
-		    					serverLoginAfterCreate(serverLogin);
-		    				} catch (Exception e) { }
-		    			}
-		    		}, 15000);
-		    	}
-			}
-		});
-	}
+//	public void serverLoginAfterCreate(final ViewServerLogin serverLogin){
+//		cachedThreadPool.execute(new Runnable() {
+//			@Override
+//			public void run() {
+//				try {
+//					aptoideClients.get(EnumServiceDataCallback.UPDATE_AVAILABLE_LIST).switchAvailableToWaitingOnServer();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//		    	Log.d("Aptoide-LoginAfterCreate", "Trying to Login with: "+serverLogin);
+//		    	
+//		    	if( getManagerUploads().login(serverLogin) == EnumServerLoginStatus.SUCCESS ){
+//		    		repoInserted();
+//		        	String token = managerPreferences.getToken();
+//					if(EnumServerLoginStatus.reverseOrdinal(serverLoginInsertRepo(serverLogin)) == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
+//						managerPreferences.setServerInconsistentStore(serverLogin, token);
+//						delayedExecutionHandler.postDelayed(new Runnable() {
+//							public void run() {
+//								try {
+//									serverLoginAfterCreate(serverLogin);
+//								} catch (Exception e) { }
+//							}
+//						}, 15000);
+//					}
+//		    	}else{
+//		    		delayedExecutionHandler.postDelayed(new Runnable() {
+//		    			public void run() {
+//		    				try {
+//		    					serverLoginAfterCreate(serverLogin);
+//		    				} catch (Exception e) { }
+//		    			}
+//		    		}, 15000);
+//		    	}
+//			}
+//		});
+//	}
 
 	public int serverLogin(ViewServerLogin serverLogin) {
 		EnumServerLoginStatus loginStatus;
