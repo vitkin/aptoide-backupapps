@@ -401,7 +401,8 @@ public class ManagerDownloads {
 			connection.setRequestMethod("GET");
 			connection.setRequestProperty("Accept", "application/xml");
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-//			connection.setConnectTimeout(TIME_OUT);
+			connection.setConnectTimeout(Constants.SERVER_CONNECTION_TIMEOUT);
+			connection.setReadTimeout(Constants.SERVER_READ_TIMEOUT);
 			
 			
 //        	HttpGet httpGet = new HttpGet(uri);
