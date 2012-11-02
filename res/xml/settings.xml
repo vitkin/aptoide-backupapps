@@ -10,10 +10,10 @@
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/bazaar_login" >
-        <Preference
-            android:key="clear_server_login"
-            android:summary="@string/clear_login_sum"
-            android:title="@string/clear_login" />
+<!--         <Preference -->
+<!--             android:key="clear_server_login" -->
+<!--             android:summary="@string/clear_login_sum" -->
+<!--             android:title="@string/clear_login" /> -->
         <Preference
             android:key="set_server_login"
             android:summary="@string/set_new_login_sum"

@@ -226,24 +226,24 @@ public class Settings extends PreferenceActivity {
 			}
 		});
 		
-		clearServerLogin = (Preference) findPreference("clear_server_login");
-			clearServerLogin.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-				@Override
-				public boolean onPreferenceClick(Preference preference) {
-					Log.d("Aptoide-Settings", "clicked clear server login");
-					if(isLoginSet()){
-						try {
-							serviceDataCaller.callClearServerLogin();
-							Toast.makeText(Settings.this, "Login cleared", Toast.LENGTH_SHORT).show();
-						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-					loggedIn(false);
-					return true;
-				}
-			});
+//		clearServerLogin = (Preference) findPreference("clear_server_login");
+//			clearServerLogin.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//				@Override
+//				public boolean onPreferenceClick(Preference preference) {
+//					Log.d("Aptoide-Settings", "clicked clear server login");
+//					if(isLoginSet()){
+//						try {
+//							serviceDataCaller.callClearServerLogin();
+//							Toast.makeText(Settings.this, "Login cleared", Toast.LENGTH_SHORT).show();
+//						} catch (RemoteException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//					}
+//					loggedIn(false);
+//					return true;
+//				}
+//			});
 		
 		
 		
