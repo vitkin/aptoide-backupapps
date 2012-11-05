@@ -117,7 +117,7 @@ public class Constants {
 	public static final String FILE_LATEST_VERSION_INFO = PATH_CACHE + "latestVersionInfo.xml";
 	public static final String FILE_SELF_UPDATE = PATH_CACHE + "latestSelfUpdate.apk";	//TODO possibly change apk name to reflect version code
 	public static final String FILE_PREFERENCES = "aptoide_preferences";
-
+	
 	public static final String APTOIDE_PACKAGE_NAME = "pt.aptoide.backupapps";
 	public static final String APTOIDE_CLASS_NAME = APTOIDE_PACKAGE_NAME+".Aptoide";
 	public static final String SERVICE_DATA_CLASS_NAME = APTOIDE_PACKAGE_NAME+".data.ServiceData";
@@ -137,6 +137,12 @@ public class Constants {
 	
 	
 	public static final String MYAPP_NEW_REPOS_WAITING = "myappNewRepos";
+	
+
+	public static final String FACEBOOK_PACKAGE_NAME = "com.facebook.katana";
+	public static final String FACEBOOK_APTOIDE_ADDRESS = "fb://profile/225295240870860";
+	public static final String TWITTER_PACKAGE_NAME = "com.twitter.android";
+	public static final String TWITTER_APTOIDE_URL = "http://www.twitter.com/aptoide";	
 	
 
 	/**  repoHashid + uri + size + inUse + requiresLogin + login */

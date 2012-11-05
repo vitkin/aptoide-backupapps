@@ -1838,7 +1838,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 				return true;
 				
 			case FOLLOW:
-				new DialogFollowOnSocialNets(this).show();
+				new DialogFollowOnSocialNets(this, serviceDataCaller).show();
 				return true;
 			
 //			case SCHEDULED_DOWNLOADS:

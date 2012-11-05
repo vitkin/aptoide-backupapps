@@ -164,4 +164,6 @@ interface AIDLAptoideServiceData {
 	
 	boolean callIsInsertingRepo();
 	
+	boolean callIsAppInstalled(String packageName);
+	
 }

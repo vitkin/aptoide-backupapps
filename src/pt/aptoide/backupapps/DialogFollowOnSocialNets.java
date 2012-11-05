@@ -19,10 +19,14 @@
 */
 package pt.aptoide.backupapps;
 
+import pt.aptoide.backupapps.data.AIDLAptoideServiceData;
+import pt.aptoide.backupapps.data.util.Constants;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.view.View;
 import android.widget.Button;
 
@@ -34,10 +38,12 @@ import android.widget.Button;
  *
  */
 public class DialogFollowOnSocialNets extends Dialog{
+
+	private AIDLAptoideServiceData serviceDataCaller = null;
 	
-	
-	public DialogFollowOnSocialNets(Context context) {
+	public DialogFollowOnSocialNets(Context context, AIDLAptoideServiceData serviceDataCaller) {
 		super(context);
+		this.serviceDataCaller = serviceDataCaller;
 	}
 	
 	@Override
@@ -51,15 +57,34 @@ public class DialogFollowOnSocialNets extends Dialog{
 		
 		((Button)this.findViewById(R.id.find_facebook)).setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v) {
-				Intent intent = new Intent(getContext(), WebViewFacebook.class);
-				getContext().startActivity(intent);
+				Intent facebook;
+				try {
+					if(serviceDataCaller.callIsAppInstalled(Constants.FACEBOOK_PACKAGE_NAME)){
+						facebook = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.FACEBOOK_APTOIDE_ADDRESS));
+					}else{
+						facebook = new Intent(getContext(), WebViewFacebook.class);
+					}
+					getContext().startActivity(facebook);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		
 		((Button)this.findViewById(R.id.follow_twitter)).setOnClickListener(new View.OnClickListener(){
 			public void onClick(View v) {
-				Intent intent = new Intent(getContext(), WebViewTwitter.class);
-				getContext().startActivity(intent);
+				Intent twitter;
+				try {
+					if(serviceDataCaller.callIsAppInstalled(Constants.TWITTER_PACKAGE_NAME)){
+						twitter = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.TWITTER_APTOIDE_URL));
+					}else{
+						twitter = new Intent(getContext(), WebViewTwitter.class);
+					}
+					getContext().startActivity(twitter);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		

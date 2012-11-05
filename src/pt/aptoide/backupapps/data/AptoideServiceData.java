@@ -635,6 +635,11 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 //			return (reposInserting.size() > 0);
 			return addingRepo.get();
 		}
+
+		@Override
+		public boolean callIsAppInstalled(String packageName) throws RemoteException {
+			return managerDatabase.isApplicationInstalled(packageName);
+		}
 		
 	}; 
 
