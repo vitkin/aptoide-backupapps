@@ -103,17 +103,16 @@ public class Constants {
 	public static final String DOMAIN_APTOIDE_STORE = ".store.aptoide.com/";
 	
 	public static final String URI_SEARCH_BAZAAR = "http://m.aptoide.com/searchview.php?search=";
-	public static final String URI_FORMAT_LOGIN_WS = "http://www.aptoide.com/webservices/checkUserCredentials/%1$s/%2$s/repo/%3$s/xml";		//TODO adapt to multiple servers
-	public static final String URI_FORMAT_LOGIN_DEFAULT_REPO_WS = "http://www.aptoide.com/webservices/checkUserCredentials/%1$s/%2$s/xml";
-	public static final String URI_FORMAT_ADD_LIKE_WS = "http://www.aptoide.com/webservices/addApkLike/%1$s/%2$s/apphashid/%3$s/like/xml";
-	public static final String URI_FORMAT_ADD_DISLIKE_WS = "http://www.aptoide.com/webservices/addApkLike/%1$s/%2$s/apphashid/%3$s/dontlike/xml";
-	public static final String URI_FORMAT_COMMENTS_WS = "http://www.aptoide.com/webservices/listApkComments/%1$s/apphashid/%2$s/xml";
-	public static final String URI_FORMAT_CHECK_REPO_WS = "http://www.aptoide.com/webservices/listRepositoryChange/%1$s//xml";
-	public static final String URI_ADD_COMMENT_POST_WS = "http://www.aptoide.com/webservices/addApkComment";
-	public static final String URI_UPLOAD_WS = "http://www.aptoide.com/webservices/uploadAppToRepo";
-	public static final String URI_LOGIN_CREATE_WS = "http://www.aptoide.com/webservices/createUser";
+	public static final String URI_FORMAT_LOGIN_WS = "http://webservices.aptoide.com/webservices/checkUserCredentials/%1$s/%2$s/repo/%3$s/xml";		//TODO adapt to multiple servers
+	public static final String URI_FORMAT_LOGIN_DEFAULT_REPO_WS = "http://webservices.aptoide.com/webservices/checkUserCredentials/%1$s/%2$s/xml";
+	public static final String URI_FORMAT_ADD_LIKE_WS = "http://webservices.aptoide.com/webservices/addApkLike/%1$s/%2$s/apphashid/%3$s/like/xml";
+	public static final String URI_FORMAT_ADD_DISLIKE_WS = "http://webservices.aptoide.com/webservices/addApkLike/%1$s/%2$s/apphashid/%3$s/dontlike/xml";
+	public static final String URI_FORMAT_COMMENTS_WS = "http://webservices.aptoide.com/webservices/listApkComments/%1$s/apphashid/%2$s/xml";
+	public static final String URI_ADD_COMMENT_POST_WS = "http://webservices.aptoide.com/webservices/addApkComment";
+	public static final String URI_UPLOAD_WS = "http://webservices.aptoide.com/webservices/uploadAppToRepo";
+	public static final String URI_LOGIN_CREATE_WS = "http://webservices.aptoide.com/webservices/createUser";
 	
-	public static final String URI_LATEST_VERSION_XML = "http://aptoide.com/latest_version_appsbackup.xml"; //TODO change to backup apps on server also
+	public static final String URI_LATEST_VERSION_XML = "http://imgs.aptoide.com/latest_version_appsbackup.xml"; //TODO change to backup apps on server also
 	public static final String FILE_LATEST_VERSION_INFO = PATH_CACHE + "latestVersionInfo.xml";
 	public static final String FILE_SELF_UPDATE = PATH_CACHE + "latestSelfUpdate.apk";	//TODO possibly change apk name to reflect version code
 	public static final String FILE_PREFERENCES = "aptoide_preferences";
@@ -138,11 +137,12 @@ public class Constants {
 	
 	public static final String MYAPP_NEW_REPOS_WAITING = "myappNewRepos";
 	
-
+	
 	public static final String FACEBOOK_PACKAGE_NAME = "com.facebook.katana";
 	public static final String FACEBOOK_APTOIDE_ADDRESS = "fb://profile/225295240870860";
 	public static final String TWITTER_PACKAGE_NAME = "com.twitter.android";
 	public static final String TWITTER_APTOIDE_URL = "http://www.twitter.com/aptoide";	
+	
 	
 
 	/**  repoHashid + uri + size + inUse + requiresLogin + login */
