@@ -1792,18 +1792,18 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 				return true;	
 				
 			case LOGIN:
-				boolean insertingRepo = false;
-				try {
-					insertingRepo = serviceDataCaller.callIsInsertingRepo();
-				} catch (RemoteException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				if(insertingRepo){
-					AptoideLog.d(Aptoide.this, getString(R.string.updating_repo_please_wait));
-					Toast.makeText(getApplicationContext(), getResources().getString(R.string.updating_repo_please_wait), Toast.LENGTH_SHORT).show();
-				}
-				else{
+//				boolean insertingRepo = false;
+//				try {
+//					insertingRepo = serviceDataCaller.callIsInsertingRepo();
+//				} catch (RemoteException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//				if(insertingRepo){
+//					AptoideLog.d(Aptoide.this, getString(R.string.updating_repo_please_wait));
+//					Toast.makeText(getApplicationContext(), getResources().getString(R.string.updating_repo_please_wait), Toast.LENGTH_SHORT).show();
+//				}
+//				else{
 					Log.d("Aptoide-Settings", "clicked set server login");
 					String token = null;
 					try {
@@ -1834,7 +1834,7 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	//					Toast.makeText(Settings.this, "Login already set", Toast.LENGTH_SHORT).show();
 	//					dialogLogin.show();
 					}
-				}
+//				}
 				return true;
 				
 			case FOLLOW:

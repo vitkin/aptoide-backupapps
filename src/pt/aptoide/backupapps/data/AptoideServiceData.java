@@ -1854,7 +1854,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	public void getRepoIcons(final ViewDownloadStatus downloadStatus){
 
 		AptoideLog.d(AptoideServiceData.this, "getRepoIcons offset: "+downloadStatus.getOffset()+" repoSize: "+downloadStatus.getRepository().getSize());
-		if(downloadStatus.getRepository().getSize() < downloadStatus.getOffset()){
+		if(downloadStatus.getRepository().getSize() < downloadStatus.getOffset() || !reposInserting.contains(downloadStatus.getRepository().getHashid())){
 //			refreshAvailableDisplay();
 //			resetAvailableLists();
 //			addingRepo.set(false);
@@ -2301,7 +2301,7 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 	}
 
 	public int serverLoginInsertRepo(ViewServerLogin serverLogin){
-		EnumServerLoginStatus repoConnectionStatus;
+		EnumServerLoginStatus repoConnectionStatus = null;
 		ViewRepository repoInUse = null;
 		if(managerDatabase.anyReposInUse()){
 			try {
@@ -2318,18 +2318,28 @@ public class AptoideServiceData extends Service implements InterfaceAptoideLog {
 			repoConnectionStatus = EnumServerLoginStatus.SUCCESS;
 			repoInserted();
 		}else{
-
+			if(!reposInserting.isEmpty()){
+				reposInserting.clear();
+				Log.d("AptoideAppsBakup-ServiceData", "ServerLoginInsertRepo - stopping previous repo insertion");
+			}
+			
 			repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
 			if(repoConnectionStatus.equals(EnumServerLoginStatus.BAD_REPO_PRIVACY_LOGIN)){
 				Log.d("Aptoide-Login", "Private Repo");
 				serverLogin.setRepoPrivate(serverLogin.getUsername(), serverLogin.getPasshash());
 				repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
 			}
-			if(repoConnectionStatus == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
-				repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
-			}
-			if(repoConnectionStatus == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
-				repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
+			try {
+				if(repoConnectionStatus == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
+					Thread.sleep(Constants.SERVER_CONNECTION_TIMEOUT);
+					repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
+				}
+				if(repoConnectionStatus == EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE){
+					Thread.sleep(Constants.SERVER_CONNECTION_TIMEOUT);
+					repoConnectionStatus = getManagerDownloads().checkServerConnection(serverLogin);
+				}
+			} catch (InterruptedException e2) {
+				e2.printStackTrace();
 			}
 			AptoideLog.d(AptoideServiceData.this, "repoConnection status: "+repoConnectionStatus);
 			if(repoConnectionStatus == EnumServerLoginStatus.SUCCESS){
