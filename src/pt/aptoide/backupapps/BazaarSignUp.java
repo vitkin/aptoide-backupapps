@@ -22,6 +22,7 @@ package pt.aptoide.backupapps;
 import pt.aptoide.backupapps.R;
 import pt.aptoide.backupapps.data.AptoideServiceData;
 import pt.aptoide.backupapps.data.model.ViewListIds;
+import pt.aptoide.backupapps.data.util.Constants;
 import pt.aptoide.backupapps.data.webservices.EnumServerLoginCreateStatus;
 import pt.aptoide.backupapps.data.webservices.EnumServerLoginStatus;
 import pt.aptoide.backupapps.data.webservices.ViewServerLogin;
@@ -159,6 +160,8 @@ public class BazaarSignUp extends Activity {
 // 	private EditText priv_password;
 //	private CheckBox priv_showPass;
 	
+	private Button signup;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -254,9 +257,9 @@ public class BazaarSignUp extends Activity {
  //		priv_showPass.setEnabled(false);
  		
  		
- 		((Button)findViewById(R.id.sign_up)).setOnClickListener(new View.OnClickListener(){
+ 		signup = ((Button)findViewById(R.id.sign_up));
+ 		signup.setOnClickListener(new View.OnClickListener(){
  			public void onClick(View arg) {
- 				signupSuccess = false;
  				if(username.getText().toString().trim().equals("")){
  					Toast.makeText(BazaarSignUp.this, BazaarSignUp.this.getString(R.string.no_username), Toast.LENGTH_SHORT).show();
  				}else if(password.getText().toString().trim().equals("")){
@@ -270,16 +273,17 @@ public class BazaarSignUp extends Activity {
 // 					Toast.makeText(Login.this, Login.this.getString(R.string.no_private_repo_password), Toast.LENGTH_SHORT).show();
 // 				}
  				else{
- 					
+ 	 				if(!signupSuccess){
  					serverLogin =  new ViewServerLogin(username.getText().toString(), password.getText().toString());
- 					if(serverLogin.getPasshash() == null){
- 						serverLogin =  new ViewServerLogin(username.getText().toString(), password.getText().toString());
- 					}
- 					serverLogin.setRepoName(repository.getText().toString());
- 					if(privt.isChecked()){
-// 						serverLogin.setRepoPrivate(priv_username.getText().toString(), priv_password.getText().toString());
- 						serverLogin.setRepoPrivate(serverLogin.getUsername(), serverLogin.getPasshash());
- 					}
+	 					if(serverLogin.getPasshash() == null){
+	 						serverLogin =  new ViewServerLogin(username.getText().toString(), password.getText().toString());
+	 					}
+	 					serverLogin.setRepoName(repository.getText().toString());
+	 					if(privt.isChecked()){
+//	 						serverLogin.setRepoPrivate(priv_username.getText().toString(), priv_password.getText().toString());
+	 						serverLogin.setRepoPrivate(serverLogin.getUsername(), serverLogin.getPasshash());
+	 					}
+ 	 				}
  					
  //					(new DialogName(Login.this)).show();
  					
@@ -406,6 +410,8 @@ public class BazaarSignUp extends Activity {
  					repository.setEnabled(false);
  					privt.setEnabled(false);
  					
+ 					signup.setText(R.string.login);
+ 					
  					new LoginTask(BazaarSignUp.this, serverLogin).execute();
  					
  					
@@ -450,8 +456,9 @@ public class BazaarSignUp extends Activity {
 		protected EnumServerLoginStatus doInBackground(Void... args) {
 			dialogProgress.setCancelable(false);
 			try {
+				Thread.sleep(Constants.SERVER_CONNECTION_TIMEOUT);
 				return EnumServerLoginStatus.reverseOrdinal(serviceDataCaller.callServerLogin(serverLogin));
-			} catch (RemoteException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return null;
 			}

@@ -147,7 +147,7 @@
     <string name="not_uploaded_apps">Failed to upload:</string>    
     <string name="return_to_apps_list">Return to apps list</string>
     
-    <string name="login_service_unavailable">Login service currently unavailable</string>
+    <string name="login_service_unavailable">Login service currently unavailable, please retry!</string>
     <string name="login_create_service_unavailable">User creation service currently unavailable</string>
     <string name="repo_service_unavailable">Store service currently unavailable</string>
     <string name="repo_not_associated_with_user">This store is not associated with this user, please correct it!</string>

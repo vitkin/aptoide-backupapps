@@ -1508,12 +1508,23 @@ public class Aptoide extends Activity implements InterfaceAptoideLog, OnItemClic
 	    	}
     	}else{
     		ViewDisplayApplicationBackup available = ((ViewDisplayApplicationBackup) availableAdapter.getItem(position));
-    		AvailableRowViewHolder viewHolder = (AvailableRowViewHolder) view.getTag();
-    		if(available.toggleCheck()){
-	    		viewHolder.setChecked(true);
-	    	}else{
-	    		viewHolder.setChecked(false);
-	    	}
+    		if(view.getTag() instanceof DynamicAvailableAppsListAdapter.AvailableRowViewHolder){
+	    		DynamicAvailableAppsListAdapter.AvailableRowViewHolder viewHolder = (DynamicAvailableAppsListAdapter.AvailableRowViewHolder) view.getTag();
+	    		
+	    		if(available.toggleCheck()){
+		    		viewHolder.setChecked(true);
+		    	}else{
+		    		viewHolder.setChecked(false);
+		    	}
+    		}else{
+    			AvailableRowViewHolder viewHolder = (AvailableRowViewHolder) view.getTag();
+	    		
+	    		if(available.toggleCheck()){
+		    		viewHolder.setChecked(true);
+		    	}else{
+		    		viewHolder.setChecked(false);
+		    	}
+    		}
     	}
     	
 //    	if(!swyping.get()){

@@ -176,7 +176,7 @@ public class ParserDOMSmallRequests{
     	        	}else if(error.equals("Invalid login credentials")){
     	        		status = EnumServerLoginStatus.BAD_LOGIN;
     	        	}else if(error.equals("The provided store does not exist.")){
-    	        		status = EnumServerLoginStatus.REPO_NOT_FROM_DEVELOPPER;
+    	        		status = EnumServerLoginStatus.REPO_SERVICE_UNAVAILABLE;
     	        	}
     	        }
         	}

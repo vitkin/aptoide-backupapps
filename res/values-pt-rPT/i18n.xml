@@ -146,7 +146,7 @@
     <string name="not_uploaded_apps">Cargas falhadas:</string>    
     <string name="return_to_apps_list">Retornar à lista de apps</string>
     
-    <string name="login_service_unavailable">Serviço de autenticação actualmente indisponível</string>
+    <string name="login_service_unavailable">Serviço de autenticação actualmente indisponível, tente novamente por favor!</string>
     <string name="login_create_service_unavailable">Serviço de criação de utilizadores actualmente indisponível</string>
     <string name="repo_service_unavailable">Serviço de Loja actualmente indisponível</string>
     <string name="repo_not_associated_with_user">Esta loja não está associada a este utilizador, por favor corrija-a!</string>
